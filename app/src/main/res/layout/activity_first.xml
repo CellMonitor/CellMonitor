@@ -45,11 +45,6 @@
             />
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="5ara 3lak"/>
-
 
     </LinearLayout>
 
