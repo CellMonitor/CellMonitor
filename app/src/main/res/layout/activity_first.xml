@@ -30,6 +30,7 @@
             android:layout_weight="1"
             android:text="Parent"
             android:textAllCaps="false"
+            android:onClick="buttonClicked"
             />
 
         <Button
