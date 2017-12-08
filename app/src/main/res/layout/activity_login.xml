@@ -107,7 +107,7 @@
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/register_txt"
@@ -117,5 +117,17 @@
         android:layout_alignRight="@+id/signinButton"
         android:layout_alignEnd="@+id/signinButton"
         />
+    <com.google.android.gms.common.SignInButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/googleBtn"
+        android:layout_alignLeft="@+id/signinButton"
+        android:layout_alignStart="@+id/signinButton"
+        android:layout_alignRight="@+id/signinButton"
+        android:layout_alignEnd="@+id/signinButton"
+        android:layout_below="@+id/login_button"
+        >
+
+    </com.google.android.gms.common.SignInButton>
 
 </RelativeLayout>
