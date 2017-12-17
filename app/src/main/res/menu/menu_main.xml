@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+   <item
+       android:id="@+id/action_profile"
+       android:orderInCategory="100"
+       android:title="Profile"
+       app:showAsAction="never"
+       />
+
+    <item
+        android:id="@+id/action_sections"
+        android:orderInCategory="100"
+        android:title="Sections"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_requests"
+        android:orderInCategory="100"
+        android:title="Requests"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_logOut"
+        android:orderInCategory="100"
+        android:title="Log out"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/action_map"
+        android:orderInCategory="100"
+        android:title="Map"
+        app:showAsAction="always"
+        />
+</menu>
