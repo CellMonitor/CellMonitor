@@ -33,6 +33,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import static com.example.joe.cellmonitor.HomeActivity.USER_ID;
+
 public class LoginActivity extends AppCompatActivity {
 
     private SignInButton mGoogleBtn;
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private GoogleSignInClient mGoogleSignInClient;
+    private Intent HomeActivityIntent;
+    private String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         mGoogleBtn = (SignInButton) findViewById(R.id.googleBtn);
 
+
+        HomeActivityIntent = new Intent(LoginActivity.this,HomeActivity.class);
 
 
 
@@ -103,8 +109,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
+
+                userID = loginResult.getAccessToken().getUserId();
                 Toast.makeText(LoginActivity.this,"Login Success \n" + loginResult.getAccessToken().getUserId()
                         + " \n " + loginResult.getAccessToken().getToken(),Toast.LENGTH_LONG).show();
+
+                HomeActivityIntent.putExtra(USER_ID , userID);
+                startActivity(HomeActivityIntent);
             }
 
             @Override
@@ -166,6 +177,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             Toast.makeText(LoginActivity.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
+
+                            userID = task.getResult().getUser().getUid();
+                            HomeActivityIntent.putExtra(USER_ID,userID);
+                            startActivity(HomeActivityIntent);
+
+
                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -187,6 +204,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (currentUser != null){
+
+            startActivity(HomeActivityIntent);
+
+        }
+
        // updateUI(currentUser);
     }
 
