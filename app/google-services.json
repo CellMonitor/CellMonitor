@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "928005593643",
+    "firebase_url": "https://cellmonitor-644a8.firebaseio.com",
+    "project_id": "cellmonitor-644a8",
+    "storage_bucket": "cellmonitor-644a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:928005593643:android:073a4f6c344b3068",
+        "android_client_info": {
+          "package_name": "com.example.joe.cellmonitor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "928005593643-55qimbahglj3jtervtruiibas6224j5b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.joe.cellmonitor",
+            "certificate_hash": "ee09d6ec240afb2b83c25ebc1db1d77a469f5901"
+          }
+        },
+        {
+          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBggf-_u546HBZ2Sq8QcBIqyxE4-5rSEuE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
