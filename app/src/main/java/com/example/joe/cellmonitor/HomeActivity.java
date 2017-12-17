@@ -23,6 +23,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        mAuth = FirebaseAuth.getInstance();
     }
 
 
@@ -50,7 +51,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         else if (id == R.id.action_logOut) {
-            mAuth = FirebaseAuth.getInstance();
+
             mAuth.signOut();
             LoginManager.getInstance().logOut();
             startActivity(new Intent(HomeActivity.this,LoginActivity.class));
