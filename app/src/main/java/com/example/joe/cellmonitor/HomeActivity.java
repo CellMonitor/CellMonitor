@@ -1,10 +1,12 @@
 package com.example.joe.cellmonitor;
 
 import android.content.Intent;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.facebook.FacebookButtonBase;
 import com.facebook.FacebookSdk;
@@ -24,6 +26,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+
+        TextView textView = (TextView) findViewById(R.id.uid);
+        String uid = (String) getIntent().getExtras().get(USER_ID);
+        textView.setText(uid);
+
     }
 
 

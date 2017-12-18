@@ -75,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
+
+
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -116,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
 
                 HomeActivityIntent.putExtra(USER_ID , userID);
                 startActivity(HomeActivityIntent);
+
+
+
             }
 
             @Override
@@ -127,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Toast.makeText(LoginActivity.this,"Login Error",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,exception.toString(),Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -207,7 +212,9 @@ public class LoginActivity extends AppCompatActivity {
 
         if (currentUser != null){
 
+
             startActivity(HomeActivityIntent);
+
 
         }
 
