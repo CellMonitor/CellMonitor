@@ -30,9 +30,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
 
-        TextView textView = (TextView) findViewById(R.id.uid);
+
         String uid = (String) getIntent().getExtras().get(USER_ID);
-        textView.setText(uid);
+
 
     }
 
