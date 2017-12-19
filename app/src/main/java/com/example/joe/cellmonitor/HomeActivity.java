@@ -2,11 +2,13 @@ package com.example.joe.cellmonitor;
 
 import android.content.Intent;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookButtonBase;
 import com.facebook.FacebookSdk;
@@ -18,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class HomeActivity extends AppCompatActivity {
 
 
+    private Boolean exit = false;
     private FirebaseAuth mAuth;
     public static final String USER_ID = "";
 
@@ -75,4 +78,25 @@ public class HomeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            //LoginManager.getInstance().logOut();
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+
+        }
+
+    }
+
 }

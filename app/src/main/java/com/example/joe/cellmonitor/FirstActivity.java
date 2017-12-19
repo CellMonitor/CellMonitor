@@ -21,6 +21,9 @@ public class FirstActivity extends AppCompatActivity {
     public void buttonClicked(View view){
 
         Intent intent = new Intent(FirstActivity.this,LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
 
     }

@@ -10,10 +10,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.LoginStatusCallback;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -49,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private Intent HomeActivityIntent;
     private String userID;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
         HomeActivityIntent = new Intent(LoginActivity.this,HomeActivity.class);
+        HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
 
 
 
@@ -112,10 +121,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
 
-                userID = loginResult.getAccessToken().getUserId();
+
                 Toast.makeText(LoginActivity.this,"Login Success \n" + loginResult.getAccessToken().getUserId()
                         + " \n " + loginResult.getAccessToken().getToken(),Toast.LENGTH_LONG).show();
 
+                userID = loginResult.getAccessToken().getUserId();
                 HomeActivityIntent.putExtra(USER_ID , userID);
                 startActivity(HomeActivityIntent);
 
@@ -209,6 +219,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+
 
         if (currentUser != null){
 
