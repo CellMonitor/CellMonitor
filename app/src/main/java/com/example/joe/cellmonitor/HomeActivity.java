@@ -10,18 +10,21 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.FacebookButtonBase;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
 
-    private Boolean exit = false;
+
     private FirebaseAuth mAuth;
+    private AccessToken token;
     public static final String USER_ID = "";
 
     @Override
@@ -80,23 +83,23 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (exit) {
-            //LoginManager.getInstance().logOut();
-            finish(); // finish activity
-        } else {
-            Toast.makeText(this, "Press Back again to Exit.",
-                    Toast.LENGTH_SHORT).show();
-            exit = true;
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    exit = false;
-                }
-            }, 3 * 1000);
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        token = AccessToken.getCurrentAccessToken();
+
+
+
+        if (currentUser == null && token == null){
+
+
+            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+
 
         }
-
     }
-
 }
