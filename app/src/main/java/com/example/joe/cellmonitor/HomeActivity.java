@@ -1,21 +1,12 @@
 package com.example.joe.cellmonitor;
 
 import android.content.Intent;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.facebook.AccessToken;
-import com.facebook.FacebookButtonBase;
-import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
-import com.google.firebase.auth.FacebookAuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -24,8 +15,8 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private FirebaseAuth mAuth;
-    private AccessToken token;
-    public static final String USER_ID = "";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        String uid = (String) getIntent().getExtras().get(USER_ID);
+
 
 
     }
@@ -86,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        token = AccessToken.getCurrentAccessToken();
+        AccessToken token = AccessToken.getCurrentAccessToken();
 
 
 
