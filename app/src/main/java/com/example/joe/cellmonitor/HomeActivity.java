@@ -17,12 +17,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+
 import com.squareup.picasso.Picasso;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -33,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +39,8 @@ public class HomeActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
 
 
-        ImageView imgProfile = (ImageView) findViewById(R.id.profile_pic);
-        Picasso.with(HomeActivity.this).load(user.getPhotoUrl()).into(imgProfile);
+        ImageView imgProfile = findViewById(R.id.profile_pic);
+        Picasso.with(HomeActivity.this).load(user != null ? user.getPhotoUrl() : null).into(imgProfile);
 
 
 
