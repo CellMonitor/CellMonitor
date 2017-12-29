@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -64,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         LoginButton loginButton = findViewById(R.id.login_button);
-        SignInButton mGoogleBtn = findViewById(R.id.googleBtn);
+        Button mGoogleBtn =  findViewById(R.id.googleBtn);
 
 
 

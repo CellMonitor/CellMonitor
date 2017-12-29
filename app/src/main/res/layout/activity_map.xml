@@ -39,13 +39,15 @@
         <AutoCompleteTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/ic_magnify"
             android:layout_centerVertical="true"
             android:textSize="15sp"
             android:textColor="#000"
             android:id="@+id/input_search"
             android:background="@null"
-            android:hint="  Enter Address , City or Zip code"
+            android:hint="Enter Address , City or Zip code"
             android:textColorHint="#3e3e3e"
             android:imeOptions="actionSearch"
             />
