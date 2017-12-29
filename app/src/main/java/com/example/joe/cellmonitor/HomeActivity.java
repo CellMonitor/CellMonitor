@@ -26,6 +26,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
+
     private static final String TAG = "HomeActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private FirebaseAuth mAuth;
@@ -48,28 +49,24 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public boolean isServicesOK(){
+        Log.d(TAG, "isServicesOK: checking google services version");
 
-        Log.d(TAG,"isServicesOK : checking google services version");
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(HomeActivity.this);
 
-        if (available == ConnectionResult.SUCCESS){
+        if(available == ConnectionResult.SUCCESS){
             //everything is fine and the user can make map requests
-            Log.d(TAG , "isServicesOK : Google Play Services is working");
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-
         }
-        else if ( GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occured byt we can resolve it
-            Log.d(TAG , "isServicesOK : an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HomeActivity.this,available,ERROR_DIALOG_REQUEST);
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occured but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HomeActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        } else{
-            Toast.makeText(this , " You Can't make map requests",Toast.LENGTH_SHORT).show();
-
+        }else{
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
-
-
     }
 
 
@@ -140,6 +137,8 @@ public class HomeActivity extends AppCompatActivity {
 
         }
     }
+
+
 
     public void addConnectionButtonClicked (View view){}
 }
