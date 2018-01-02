@@ -111,9 +111,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         //Direction between two points on map
 
-        //String url = getRequestUrl(new LatLng(29.985327, 30.940379), new LatLng(29.972629, 30.944205));
-        //TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-        //taskRequestDirections.execute(url);
+        String url = getRequestUrl(new LatLng(29.985327, 30.940379), new LatLng(29.972629, 30.944205));
+        TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+        taskRequestDirections.execute(url);
         getLocationPermission();
 
 
@@ -526,6 +526,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            mMap.getUiSettings().setMapToolbarEnabled(false);
 
             init();
         }
