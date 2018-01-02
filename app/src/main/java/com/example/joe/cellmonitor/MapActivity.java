@@ -4,9 +4,11 @@ package com.example.joe.cellmonitor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -47,16 +49,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener{
+        GoogleApiClient.OnConnectionFailedListener {
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -69,12 +81,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40,-168), new LatLng(71,136));
+            new LatLng(-40, -168), new LatLng(71, 136));
     private static final int PLACE_PICKER_REQUEST = 1;
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo , mPlacePicker;
+    private ImageView mGps, mInfo, mPlacePicker;
 
 
     //vars
@@ -85,6 +97,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private PlaceInfo mPlace;
     private Marker mMarker;
 
+    //Directions
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,12 +108,144 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
         mPlacePicker = findViewById(R.id.place_picker);
+
+        //Direction between two points on map
+
+        //String url = getRequestUrl(new LatLng(29.985327, 30.940379), new LatLng(29.972629, 30.944205));
+        //TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+        //taskRequestDirections.execute(url);
         getLocationPermission();
 
 
     }
 
-    private void init(){
+    private String getRequestUrl(LatLng origin, LatLng dest) {
+        //Value of origin
+        String str_org = "origin=" + origin.latitude + "," + origin.longitude;
+        //Value of destination
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        //Set value enable the sensor
+        String sensor = "sensor=false";
+        //Mode for find direction
+        String mode = "mode=driving";
+        //Build the full param
+        String param = str_org + "&" + str_dest + "&" + sensor + "&" + mode;
+        //Output format
+        String output = "json";
+        //Create url to request
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + param;
+        return url;
+    }
+
+    private String requestDirection(String reqUrl) throws IOException {
+        String responseString = "";
+        InputStream inputStream = null;
+        HttpURLConnection httpURLConnection = null;
+        try {
+            URL url = new URL(reqUrl);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.connect();
+
+            //Get the response result
+            inputStream = httpURLConnection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuffer stringBuffer = new StringBuffer();
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+            }
+
+            responseString = stringBuffer.toString();
+            bufferedReader.close();
+            inputStreamReader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            httpURLConnection.disconnect();
+        }
+        return responseString;
+    }
+
+    public class TaskRequestDirections extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String responseString = "";
+            try {
+                responseString = requestDirection(strings[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return responseString;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            //Parse json here
+            TaskParser taskParser = new TaskParser();
+            taskParser.execute(s);
+        }
+    }
+
+    public class TaskParser extends AsyncTask<String, Void, List<List<HashMap<String, String>>>> {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... strings) {
+            JSONObject jsonObject = null;
+            List<List<HashMap<String, String>>> routes = null;
+            try {
+                jsonObject = new JSONObject(strings[0]);
+                DirectionsParser directionsParser = new DirectionsParser();
+                routes = directionsParser.parse(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
+            //Get list route and display it into the map
+
+            ArrayList points = null;
+
+            PolylineOptions polylineOptions = null;
+
+            for (List<HashMap<String, String>> path : lists) {
+                points = new ArrayList();
+                polylineOptions = new PolylineOptions();
+
+                for (HashMap<String, String> point : path) {
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lon = Double.parseDouble(point.get("lon"));
+
+                    points.add(new LatLng(lat, lon));
+                }
+
+                polylineOptions.addAll(points);
+                polylineOptions.width(10);
+                polylineOptions.color(Color.GREEN);
+                polylineOptions.geodesic(true);
+            }
+
+            if (polylineOptions != null) {
+                mMap.addPolyline(polylineOptions);
+            } else {
+                Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
+
+
+    private void init() {
 
         Log.d(TAG, "init: initializing");
         mGoogleApiClient = new GoogleApiClient
@@ -110,7 +256,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 .build();
         mSearchText.setOnItemClickListener(mAutocompleteClickListener);
 
-        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this,mGoogleApiClient,LAT_LNG_BOUNDS,null);
+        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
         mSearchText.setAdapter(mPlaceAutocompleteAdapter);
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -119,7 +265,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER ){
+                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
 
                     //execute our method for searching
 
@@ -144,15 +290,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked place info");
-                try{
-                    if(mMarker.isInfoWindowShown()){
+                try {
+                    if (mMarker.isInfoWindowShown()) {
                         mMarker.hideInfoWindow();
-                    }else{
+                    } else {
                         Log.d(TAG, "onClick: place info: " + mPlace.toString());
                         mMarker.showInfoWindow();
                     }
-                }catch (NullPointerException e){
-                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage());
                 }
             }
         });
@@ -166,9 +312,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 try {
                     startActivityForResult(builder.build(MapActivity.this), PLACE_PICKER_REQUEST);
                 } catch (GooglePlayServicesRepairableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage() );
+                    Log.e(TAG, "onClick: GooglePlayServicesRepairableException: " + e.getMessage());
                 } catch (GooglePlayServicesNotAvailableException e) {
-                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage() );
+                    Log.e(TAG, "onClick: GooglePlayServicesNotAvailableException: " + e.getMessage());
                 }
             }
         });
@@ -189,27 +335,27 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    private void geoLocate(){
+    private void geoLocate() {
 
         Log.d(TAG, "geoLocate: geolocating");
         String searchString = mSearchText.getText().toString();
 
         Geocoder geocoder = new Geocoder(MapActivity.this);
-        List<Address>list = new ArrayList<>();
+        List<Address> list = new ArrayList<>();
         try {
-            list = geocoder.getFromLocationName(searchString,1);
-        }catch (IOException e){
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage() );
+            list = geocoder.getFromLocationName(searchString, 1);
+        } catch (IOException e) {
+            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
             e.printStackTrace();
         }
 
-        if (list.size() > 0 ){
+        if (list.size() > 0) {
             Address address = list.get(0);
 
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            Toast.makeText(this,address.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
 
-            moveCamera(new LatLng(address.getLatitude(),address.getLongitude()),DEFAULT_ZOOM, address.getAddressLine(0));
+            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM, address.getAddressLine(0));
         }
     }
 
@@ -231,7 +377,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             Log.d(TAG, "onComplete: found location!");
                             Location currentLocation = (Location) task.getResult();
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM,"My Location");
+                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
 
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
@@ -242,22 +388,22 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             }
 
         } catch (SecurityException e) {
-            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
+            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
 
         }
 
     }
 
-    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo){
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
+    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         mMap.clear();
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(MapActivity.this));
 
-        if(placeInfo != null){
-            try{
+        if (placeInfo != null) {
+            try {
                 String snippet = "Address: " + placeInfo.getAddress() + "\n" +
                         "Phone Number: " + placeInfo.getPhoneNumber() + "\n" +
                         "Website: " + placeInfo.getWebsiteUri() + "\n" +
@@ -269,10 +415,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                         .snippet(snippet);
                 mMarker = mMap.addMarker(options);
 
-            }catch (NullPointerException e){
-                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage() );
+            } catch (NullPointerException e) {
+                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
             }
-        }else{
+        } else {
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
@@ -280,7 +426,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     }
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
-        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
         if (!title.equals("My Location")) {
@@ -311,18 +457,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mLocationPermissionGranted = true;
                 initMap();
-            }else{
+            } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        }else{
+        } else {
             ActivityCompat.requestPermissions(this,
                     permissions,
                     LOCATION_PERMISSION_REQUEST_CODE);
@@ -374,7 +520,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
                 return;
             }
@@ -385,10 +531,10 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         }
     }
 
-    private void hideSoftKeyboard(){
+    private void hideSoftKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             assert imm != null;
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
@@ -416,14 +562,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
-            if(!places.getStatus().isSuccess()){
+            if (!places.getStatus().isSuccess()) {
                 Log.d(TAG, "onResult: Place query did not complete successfully: " + places.getStatus().toString());
                 places.release();
                 return;
             }
             final Place place = places.get(0);
 
-            try{
+            try {
                 mPlace = new PlaceInfo();
                 mPlace.setName(place.getName().toString());
                 Log.d(TAG, "onResult: name: " + place.getName());
@@ -441,8 +587,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 Log.d(TAG, "onResult: website uri: " + place.getWebsiteUri());
 
                 Log.d(TAG, "onResult: place: " + mPlace.toString());
-            }catch (NullPointerException e){
-                Log.e(TAG, "onResult: NullPointerException: " + e.getMessage() );
+            } catch (NullPointerException e) {
+                Log.e(TAG, "onResult: NullPointerException: " + e.getMessage());
             }
 
             moveCamera(new LatLng(place.getViewport().getCenter().latitude,
@@ -451,7 +597,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             places.release();
         }
     };
-
 
 
 }
