@@ -28,8 +28,12 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Intent HomeActivityIntent;
+
 
 
 
@@ -120,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void handleFacebookAccessToken(AccessToken token) {
+    private void handleFacebookAccessToken(final AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
@@ -131,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(LoginActivity.this,"Logged into firebase",Toast.LENGTH_LONG).show();
+                            saveData();
                             startActivity(HomeActivityIntent);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -176,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -186,11 +192,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            startActivity(HomeActivityIntent);
-
-
                             Toast.makeText(LoginActivity.this, "Authentication success.",
                                     Toast.LENGTH_SHORT).show();
+                            saveData();
+                            startActivity(HomeActivityIntent);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -202,6 +208,24 @@ public class LoginActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+
+    }
+
+    private void saveData(){
+
+        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        assert current_user != null;
+        String uid = current_user.getUid();
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+
+        HashMap<String , String> userMap = new HashMap<>();
+        userMap.put("name",current_user.getDisplayName());
+        userMap.put("status","Hey there ! .. I am using Cell Monitor");
+        userMap.put("image",current_user.getPhotoUrl().toString());
+        userMap.put("thumb_image","default");
+
+        myRef.setValue(userMap);
+
 
     }
 

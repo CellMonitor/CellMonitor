@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -59,9 +59,12 @@
 
         <activity
             android:name=".MapActivity"
-            android:label="@string/title_activity_map">
-
-        </activity>
+            android:label="@string/title_activity_map" />
+        <activity
+            android:name=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".StatusActivity"
+            android:parentActivityName=".ProfileActivity"></activity>
     </application>
 
 </manifest>

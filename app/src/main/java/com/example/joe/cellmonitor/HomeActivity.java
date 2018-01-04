@@ -86,7 +86,8 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            return true;
+            Intent profileIntent = new Intent(HomeActivity.this,ProfileActivity.class);
+            startActivity(profileIntent);
         }
 
         else if (id == R.id.action_map) {
