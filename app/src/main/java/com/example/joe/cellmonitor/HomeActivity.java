@@ -21,10 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 
-
 public class HomeActivity extends AppCompatActivity {
-
-
 
 
     private static final String TAG = "HomeActivity";
@@ -44,26 +41,23 @@ public class HomeActivity extends AppCompatActivity {
         Picasso.with(HomeActivity.this).load(user != null ? user.getPhotoUrl() : null).into(imgProfile);
 
 
-
-
     }
 
-    public boolean isServicesOK(){
+    public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
 
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(HomeActivity.this);
 
-        if(available == ConnectionResult.SUCCESS){
+        if (available == ConnectionResult.SUCCESS) {
             //everything is fine and the user can make map requests
             Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
-        }
-        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+        } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //an error occured but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(HomeActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
-        }else{
+        } else {
             Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
@@ -86,31 +80,23 @@ public class HomeActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile) {
-            Intent profileIntent = new Intent(HomeActivity.this,ProfileActivity.class);
+            Intent profileIntent = new Intent(HomeActivity.this, ProfileActivity.class);
             startActivity(profileIntent);
-        }
+        } else if (id == R.id.action_map) {
+            if (isServicesOK()) {
 
-        else if (id == R.id.action_map) {
-            if (isServicesOK()){
-
-                Intent intent = new Intent(HomeActivity.this,MapActivity.class);
+                Intent intent = new Intent(HomeActivity.this, MapActivity.class);
                 startActivity(intent);
 
             }
-        }
-
-        else if (id == R.id.action_logOut) {
+        } else if (id == R.id.action_logOut) {
 
             mAuth.signOut();
             LoginManager.getInstance().logOut();
-            startActivity(new Intent(HomeActivity.this,LoginActivity.class));
-        }
-
-        else if (id == R.id.action_requests) {
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+        } else if (id == R.id.action_requests) {
             return true;
-        }
-
-        else if (id == R.id.action_sections) {
+        } else if (id == R.id.action_sections) {
             return true;
         }
 
@@ -125,11 +111,10 @@ public class HomeActivity extends AppCompatActivity {
         AccessToken token = AccessToken.getCurrentAccessToken();
 
 
+        if (currentUser == null && token == null) {
 
-        if (currentUser == null && token == null){
 
-
-            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -140,6 +125,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void addConnectionButtonClicked(View view) {
 
-    public void addConnectionButtonClicked (View view){}
+    }
 }

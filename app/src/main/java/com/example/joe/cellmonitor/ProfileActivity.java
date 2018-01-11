@@ -50,7 +50,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +91,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String status_value = mStatus.getText().toString();
-                Intent intent = new Intent(ProfileActivity.this,StatusActivity.class);
-                intent.putExtra("status_value",status_value);
+                Intent intent = new Intent(ProfileActivity.this, StatusActivity.class);
+                intent.putExtra("status_value", status_value);
                 startActivity(intent);
             }
         });
@@ -105,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
 
-                startActivityForResult(Intent.createChooser(galleryIntent,"Select Image"), GALLERY_PICK);
+                startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), GALLERY_PICK);
 
             }
         });
@@ -116,12 +115,12 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
             Uri imageUri = data.getData();
 
 
             CropImage.activity(imageUri)
-                    .setAspectRatio(1,1)
+                    .setAspectRatio(1, 1)
                     .start(this);
 
         }
@@ -142,17 +141,17 @@ public class ProfileActivity extends AppCompatActivity {
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()){
-                                String download_url = task.getResult().getDownloadUrl().toString();
-                                mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            mProgressDialog.dismiss();
-                                        }
+                        if (task.isSuccessful()) {
+                            String download_url = task.getResult().getDownloadUrl().toString();
+                            mUserDatabase.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        mProgressDialog.dismiss();
                                     }
-                                });
-                        }else {
+                                }
+                            });
+                        } else {
                             mProgressDialog.dismiss();
                         }
 

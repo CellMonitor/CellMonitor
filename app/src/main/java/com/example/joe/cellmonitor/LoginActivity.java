@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -38,15 +39,12 @@ import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private CallbackManager callbackManager ;
-    private static final int RC_SIGN_IN = 1 ;
+    private CallbackManager callbackManager;
+    private static final int RC_SIGN_IN = 1;
     private static final String TAG = "GoogleActivity";
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Intent HomeActivityIntent;
-
-
-
 
 
     @Override
@@ -66,20 +64,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
         LoginButton loginButton = findViewById(R.id.login_button);
-        Button mGoogleBtn =  findViewById(R.id.googleBtn);
+        Button mGoogleBtn = findViewById(R.id.googleBtn);
 
 
-
-        HomeActivityIntent = new Intent(LoginActivity.this,HomeActivity.class);
+        HomeActivityIntent = new Intent(LoginActivity.this, HomeActivity.class);
         HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-
-
-
-
-
 
 
         // Configure Google Sign In
@@ -88,8 +79,7 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(LoginActivity.this,gso);
-
+        mGoogleSignInClient = GoogleSignIn.getClient(LoginActivity.this, gso);
 
 
         mGoogleBtn.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         // Callback registration
-        loginButton.setReadPermissions("email","public_profile");
+        loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -114,13 +104,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCancel() {
                 // App code
-                Toast.makeText(LoginActivity.this,"Login Cancelled",Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Login Cancelled", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Toast.makeText(LoginActivity.this,exception.toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, exception.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -135,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(LoginActivity.this,"Logged into firebase",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Logged into firebase", Toast.LENGTH_LONG).show();
                             saveData();
                             startActivity(HomeActivityIntent);
                         } else {
@@ -152,13 +142,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-
 
 
     @Override
@@ -202,7 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                           // updateUI(null);
+                            // updateUI(null);
                         }
 
                         // ...
@@ -211,24 +198,23 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void saveData(){
+    private void saveData() {
 
         FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
         assert current_user != null;
         String uid = current_user.getUid();
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
 
-        HashMap<String , String> userMap = new HashMap<>();
-        userMap.put("name",current_user.getDisplayName());
-        userMap.put("status","Hey there ! .. I am using Cell Monitor");
-        userMap.put("image",current_user.getPhotoUrl().toString());
-        userMap.put("thumb_image","default");
+        HashMap<String, String> userMap = new HashMap<>();
+        userMap.put("name", current_user.getDisplayName());
+        userMap.put("status", "Hey there ! .. I am using Cell Monitor");
+        userMap.put("image", current_user.getPhotoUrl().toString());
+        userMap.put("thumb_image", "default");
 
         myRef.setValue(userMap);
 
 
     }
-
 
 
 }

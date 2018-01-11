@@ -16,11 +16,11 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
 
 
-
     }
-    public void buttonClicked(View view){
 
-        Intent intent = new Intent(FirstActivity.this,HomeActivity.class);
+    public void buttonClicked(View view) {
+
+        Intent intent = new Intent(FirstActivity.this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

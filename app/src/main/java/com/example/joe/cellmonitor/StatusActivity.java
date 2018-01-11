@@ -39,7 +39,6 @@ public class StatusActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(StatusActivity.this);
 
 
-
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = mCurrentUser.getUid();
         myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
@@ -59,10 +58,10 @@ public class StatusActivity extends AppCompatActivity {
                 myRef.child("status").setValue(status).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             mProgress.dismiss();
                         } else {
-                            Toast.makeText(getApplicationContext(),"There was some error" ,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "There was some error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
