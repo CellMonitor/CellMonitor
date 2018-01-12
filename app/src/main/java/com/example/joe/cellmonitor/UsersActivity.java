@@ -4,6 +4,7 @@ package com.example.joe.cellmonitor;
 import android.app.ProgressDialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,6 +87,16 @@ public class UsersActivity extends AppCompatActivity  {
                 holder.setUserStatus(model.getStatus());
                 holder.setUserImage(model.getThumb_image(),getApplicationContext());
                 progressDialog.dismiss();
+                final String user_id = getRef(position).getKey();
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(UsersActivity.this,UserProfileActivity.class);
+                        intent.putExtra("user_id",user_id);
+                        startActivity(intent);
+                    }
+                });
 
             }
 
