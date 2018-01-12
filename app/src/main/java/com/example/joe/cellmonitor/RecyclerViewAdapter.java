@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Dell on 1/12/2018.
@@ -41,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Users users = list.get(position);
 
         holder.name.setText(users.getName());
-
+        Picasso.with(context).load(users.getThumb_image()).placeholder(R.drawable.avatar).into(holder.thumb_image);
         holder.status.setText(users.getStatus());
 
     }
@@ -56,12 +60,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         public TextView name;
         public TextView status;
+        public CircleImageView thumb_image;
 
         public ViewHolder(View itemView) {
 
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.user_single_name);
             status = (TextView) itemView.findViewById(R.id.user_single_status);
+            thumb_image = (CircleImageView)itemView.findViewById(R.id.user_single_image);
+        }
+
+        public void setUserImage ( String thumb_image ){
+
         }
     }
 }

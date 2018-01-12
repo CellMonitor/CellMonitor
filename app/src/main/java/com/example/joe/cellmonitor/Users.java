@@ -6,7 +6,7 @@ package com.example.joe.cellmonitor;
 
 public class Users {
 
-    public String name, image, status;
+    public String name, image, status , thumb_image;
 
     public Users(){
 
@@ -24,6 +24,14 @@ public class Users {
         return image;
     }
 
+    public String getThumb_image() {
+        return thumb_image;
+    }
+
+    public void setThumb_image(String thumb_image) {
+        this.thumb_image = thumb_image;
+    }
+
     public void setImage(String image) {
         this.image = image;
     }
@@ -36,10 +44,12 @@ public class Users {
         this.status = status;
     }
 
-    public Users(String name, String image, String status) {
+    public Users(String name, String image, String status, String thumb_image) {
         this.name = name;
         this.image = image;
         this.status = status;
+        this.thumb_image =  thumb_image;
+
     }
 
 
