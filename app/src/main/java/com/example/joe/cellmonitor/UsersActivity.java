@@ -3,46 +3,61 @@ package com.example.joe.cellmonitor;
 
 import android.app.ProgressDialog;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
-import java.util.List;
 
-public class UsersActivity extends AppCompatActivity implements RecyclerViewAdapter.ListItemClickListener {
 
-    DatabaseReference databaseReference;
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class UsersActivity extends AppCompatActivity  {
+
+    public DatabaseReference databaseReference;
 
     ProgressDialog progressDialog;
 
-    List<Users> list = new ArrayList<>();
-
     RecyclerView recyclerView;
-
-    RecyclerView.Adapter adapter ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
-        recyclerView = (RecyclerView) findViewById(R.id.users_list);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+        recyclerView =  findViewById(R.id.users_list);
 
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(UsersActivity.this));
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         progressDialog = new ProgressDialog(UsersActivity.this);
 
@@ -50,39 +65,65 @@ public class UsersActivity extends AppCompatActivity implements RecyclerViewAdap
 
         progressDialog.show();
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+
+        Query firebaseSearchQuery = databaseReference.orderByChild("name");
+        FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
+                .setQuery(firebaseSearchQuery,Users.class)
+                .setLifecycleOwner(this)
+                .build();
+        FirebaseRecyclerAdapter<Users,ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, ViewHolder>(options) {
+
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshott : dataSnapshot.getChildren()) {
+            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
 
-                    Users users = dataSnapshott.getValue(Users.class);
+                return new ViewHolder(view);
+            }
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Users model) {
 
-                    list.add(users);
-                }
-                adapter = new RecyclerViewAdapter(UsersActivity.this, list ,  UsersActivity.this);
-
-                recyclerView.setAdapter(adapter);
-
+                holder.setDisplayName(model.getName());
+                holder.setUserStatus(model.getStatus());
+                holder.setUserImage(model.getThumb_image(),getApplicationContext());
                 progressDialog.dismiss();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
 
 
-
+        };
+        recyclerView.setAdapter(firebaseRecyclerAdapter);
 
 
     }
 
-    @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        ViewHolder(View itemView) {
+
+            super(itemView);
+
+            mView = itemView;
+
+
+        }
+
+        void setDisplayName(String name){
+            TextView userNameView = mView.findViewById(R.id.user_single_name);
+            userNameView.setText(name);
+
+        }
+        void setUserStatus(String status){
+            TextView userStatusView = mView.findViewById(R.id.user_single_status);
+            userStatusView.setText(status);
+
+        }
+        void setUserImage(String thumb_image, Context ctx){
+            CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
+            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+        }
 
 
     }
-
-
 }
