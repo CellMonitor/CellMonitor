@@ -126,6 +126,7 @@ public class HomeActivity extends AppCompatActivity {
 
 
     public void addConnectionButtonClicked(View view) {
-
+        Intent intent = new Intent(HomeActivity.this,UsersActivity.class);
+        startActivity(intent);
     }
 }
