@@ -74,7 +74,8 @@
         <activity
             android:name=".AddUsersActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".UsersActivity"></activity>
+        <activity android:name=".UsersActivity" />
+        <activity android:name=".UserProfileActivity"></activity>
     </application>
 
 </manifest>

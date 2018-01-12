@@ -2,10 +2,13 @@ package com.example.joe.cellmonitor;
 
 
 import android.app.ProgressDialog;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsersActivity extends AppCompatActivity {
+public class UsersActivity extends AppCompatActivity implements RecyclerViewAdapter.ListItemClickListener {
 
     DatabaseReference databaseReference;
 
@@ -56,7 +59,7 @@ public class UsersActivity extends AppCompatActivity {
 
                     list.add(users);
                 }
-                adapter = new RecyclerViewAdapter(UsersActivity.this, list);
+                adapter = new RecyclerViewAdapter(UsersActivity.this, list ,  UsersActivity.this);
 
                 recyclerView.setAdapter(adapter);
 
@@ -68,6 +71,15 @@ public class UsersActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
+
+    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
 
 
     }

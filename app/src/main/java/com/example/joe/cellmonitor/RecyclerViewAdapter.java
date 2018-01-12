@@ -1,6 +1,7 @@
 package com.example.joe.cellmonitor;
 
 import android.content.Context;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
+
+
     Context context;
     List<Users> list;
 
-    public RecyclerViewAdapter(Context context, List<Users> TempList) {
+    final private ListItemClickListener mOnClickListener;
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public RecyclerViewAdapter(Context context, List<Users> TempList , ListItemClickListener listener) {
 
         this.list = TempList;
-
+        mOnClickListener = listener;
         this.context = context;
     }
 
@@ -48,6 +57,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Picasso.with(context).load(users.getThumb_image()).placeholder(R.drawable.avatar).into(holder.thumb_image);
         holder.status.setText(users.getStatus());
 
+
     }
 
     @Override
@@ -56,7 +66,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return list.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView name;
         public TextView status;
@@ -68,10 +78,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             name = (TextView) itemView.findViewById(R.id.user_single_name);
             status = (TextView) itemView.findViewById(R.id.user_single_status);
             thumb_image = (CircleImageView)itemView.findViewById(R.id.user_single_image);
+            itemView.setOnClickListener(this);
         }
 
         public void setUserImage ( String thumb_image ){
 
+        }
+
+        @Override
+        public void onClick(View view) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
         }
     }
 }
