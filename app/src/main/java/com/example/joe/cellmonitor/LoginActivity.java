@@ -31,8 +31,11 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 
@@ -45,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Intent HomeActivityIntent;
+    FirebaseUser current_user;
 
 
     @Override
@@ -200,18 +204,37 @@ public class LoginActivity extends AppCompatActivity {
 
     private void saveData() {
 
-        FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+        current_user = FirebaseAuth.getInstance().getCurrentUser();
         assert current_user != null;
-        String uid = current_user.getUid();
-        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+        final String uid = current_user.getUid();
+        final DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference users = myRef.child("Users");
+        users.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.child(uid).exists()){
+                    Toast.makeText(LoginActivity.this,"Welcome back friend",Toast.LENGTH_SHORT).show();
+                }else {
+                    DatabaseReference usersData = users.child(uid);
+                    HashMap<String, String> userMap = new HashMap<>();
+                    userMap.put("name", current_user.getDisplayName());
+                    userMap.put("status", "Hey there ! .. I am using Cell Monitor");
+                    userMap.put("image", current_user.getPhotoUrl().toString());
+                    userMap.put("thumb_image", "default");
+                    usersData.setValue(userMap);
 
-        HashMap<String, String> userMap = new HashMap<>();
-        userMap.put("name", current_user.getDisplayName());
-        userMap.put("status", "Hey there ! .. I am using Cell Monitor");
-        userMap.put("image", current_user.getPhotoUrl().toString());
-        userMap.put("thumb_image", "default");
+                }
+            }
 
-        myRef.setValue(userMap);
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        //myRef.setValue(userMap);
 
 
     }
