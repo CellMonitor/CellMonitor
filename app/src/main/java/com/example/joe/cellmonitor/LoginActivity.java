@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -36,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
@@ -213,15 +215,25 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(uid).exists()){
-                    Toast.makeText(LoginActivity.this,"Welcome back friend",Toast.LENGTH_SHORT).show();
+
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                    users.child(uid).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(LoginActivity.this,"Welcome back friend",Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }else {
+                    String deviceToken = FirebaseInstanceId.getInstance().getToken();
                     DatabaseReference usersData = users.child(uid);
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("name", current_user.getDisplayName());
                     userMap.put("status", "Hey there ! .. I am using Cell Monitor");
                     userMap.put("image", current_user.getPhotoUrl().toString());
                     userMap.put("thumb_image", "default");
+                    userMap.put("device_token", deviceToken);
                     usersData.setValue(userMap);
+
 
                 }
             }
