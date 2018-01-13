@@ -36,7 +36,7 @@
         android:id="@+id/profile_send_req_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button4"
+        android:layout_above="@+id/profile_decline_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="Send Frined Request" />
@@ -51,7 +51,7 @@
         android:text="Mutual Friends" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/profile_decline_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

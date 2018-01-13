@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -74,12 +76,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         String current_uid = mCurrentUser.getUid();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(current_uid);
+        mUserDatabase.keepSynced(true);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
                 String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
 
@@ -88,7 +91,19 @@ public class ProfileActivity extends AppCompatActivity {
 
                 if (!image.equals("default")) {
 
-                    Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
+                    //Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
+                    Picasso.with(ProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.avatar).into(mDisplayImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
+                        }
+                    });
 
                 }
 
