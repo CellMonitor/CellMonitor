@@ -218,27 +218,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             PolylineOptions polylineOptions = null;
 
-            for (List<HashMap<String, String>> path : lists) {
-                points = new ArrayList();
-                polylineOptions = new PolylineOptions();
+            if (lists != null) {
+                for (List<HashMap<String, String>> path : lists) {
+                    points = new ArrayList();
+                    polylineOptions = new PolylineOptions();
 
-                for (HashMap<String, String> point : path) {
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lon = Double.parseDouble(point.get("lon"));
+                    for (HashMap<String, String> point : path) {
+                        double lat = Double.parseDouble(point.get("lat"));
+                        double lon = Double.parseDouble(point.get("lon"));
 
-                    points.add(new LatLng(lat, lon));
+                        points.add(new LatLng(lat, lon));
+                    }
+
+                    polylineOptions.addAll(points);
+                    polylineOptions.width(10);
+                    polylineOptions.color(Color.GREEN);
+                    polylineOptions.geodesic(true);
                 }
 
-                polylineOptions.addAll(points);
-                polylineOptions.width(10);
-                polylineOptions.color(Color.GREEN);
-                polylineOptions.geodesic(true);
-            }
-
-            if (polylineOptions != null) {
-                mMap.addPolyline(polylineOptions);
-            } else {
-                Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+                if (polylineOptions != null) {
+                    mMap.addPolyline(polylineOptions);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+                }
             }
 
         }
