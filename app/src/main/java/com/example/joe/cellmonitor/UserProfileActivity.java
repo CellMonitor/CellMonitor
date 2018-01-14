@@ -262,7 +262,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
 
-                // ----------- UNFRIENDS --------------
+                // ----------- UNFRIENDS -------------
                 if (mCurrent_state.equals("friends")){
 
                     Map unfriendMap = new HashMap();
