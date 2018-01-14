@@ -121,10 +121,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Login Cancelled", Toast.LENGTH_LONG).show();
             }
 
+
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Toast.makeText(LoginActivity.this, exception.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, exception.toString(), Toast.LENGTH_LONG  ).show();
             }
         });
     }
@@ -147,6 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
                             //updateUI(null);
                         }
 
@@ -205,6 +207,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
+                            mProgressDialog.dismiss();
                             // updateUI(null);
                         }
 
