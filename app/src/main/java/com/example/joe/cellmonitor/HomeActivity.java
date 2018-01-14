@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -17,7 +16,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.squareup.picasso.Picasso;
+
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -33,11 +32,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
 
 
-        ImageView imgProfile = findViewById(R.id.profile_pic);
-        Picasso.with(HomeActivity.this).load(user != null ? user.getPhotoUrl() : null).into(imgProfile);
+
+
 
 
     }
