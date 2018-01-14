@@ -1,4 +1,4 @@
-package com.example.joe.cellmonitor;
+package com.example.joe.cellmonitor.models;
 
 /**
  * Created by Dell on 1/11/2018.

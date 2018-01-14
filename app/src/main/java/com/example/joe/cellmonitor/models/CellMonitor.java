@@ -1,4 +1,4 @@
-package com.example.joe.cellmonitor;
+package com.example.joe.cellmonitor.models;
 
 import android.app.Application;
 

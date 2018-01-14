@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -108,10 +107,10 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        AccessToken token = AccessToken.getCurrentAccessToken();
 
 
-        if (currentUser == null && token == null) {
+
+        if (currentUser == null) {
 
 
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);

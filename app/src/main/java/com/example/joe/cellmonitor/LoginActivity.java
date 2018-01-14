@@ -1,5 +1,6 @@
 package com.example.joe.cellmonitor;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private Intent HomeActivityIntent;
     FirebaseUser current_user;
+    ProgressDialog mProgressDialog;
 
 
     @Override
@@ -64,6 +66,11 @@ public class LoginActivity extends AppCompatActivity {
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setTitle("Loading .. Please wait :)");
+        mProgressDialog.setMessage("Please wait while logging in .");
+        mProgressDialog.setCanceledOnTouchOutside(false);
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
@@ -103,6 +110,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 // App code
 
+                mProgressDialog.show();
                 handleFacebookAccessToken(loginResult.getAccessToken());
 
             }
@@ -164,11 +172,13 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
+                mProgressDialog.show();
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, "Failed to Log in using Google account", Toast.LENGTH_SHORT).show();
                 // ...
             }
         }
@@ -246,7 +256,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        //myRef.setValue(userMap);
+        mProgressDialog.dismiss();
 
 
     }
