@@ -2,12 +2,13 @@ package com.example.joe.cellmonitor;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -32,6 +33,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
+
+        ViewPager mViewPager = findViewById(R.id.main_tabPager);
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        TabLayout mTabLayout = findViewById(R.id.main_tabs);
+        mTabLayout.setupWithViewPager(mViewPager);
 
 
 
@@ -122,8 +130,5 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void addConnectionButtonClicked(View view) {
-        Intent intent = new Intent(HomeActivity.this,UsersActivity.class);
-        startActivity(intent);
-    }
+
 }
