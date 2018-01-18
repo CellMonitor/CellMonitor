@@ -49,7 +49,7 @@
             android:alpha="0.5"
             android:background="@android:color/white"
             android:padding="10dp"
-            android:src="@drawable/ic_add_emoji_icon" />
+            app:srcCompat="@drawable/ic_add_emoji_icon" />
 
         <EditText
             android:id="@+id/chat_message_view"
@@ -73,7 +73,7 @@
             android:alpha="0.5"
             android:background="@android:color/white"
             android:padding="10dp"
-            android:src="@drawable/ic_send_message_icon" />
+            app:srcCompat="@drawable/ic_send_message_icon" />
     </LinearLayout>
 
 

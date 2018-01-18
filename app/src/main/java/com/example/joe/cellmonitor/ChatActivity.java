@@ -2,9 +2,7 @@ package com.example.joe.cellmonitor;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
@@ -19,9 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.joe.cellmonitor.models.Messages;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,9 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.theartofdev.edmodo.cropper.CropImage;
+import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatActivity extends AppCompatActivity {
 
     private String mChatUser;
+    private Toolbar mChatToolbar;
 
     private DatabaseReference mRootRef;
 
@@ -92,13 +88,14 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        getSupportActionBar().setTitle(mChatUser);
 
+        mChatToolbar = findViewById(R.id.chat_app_bar);
+        setSupportActionBar(mChatToolbar);
 
-        //ActionBar actionBar = getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
 
-        //actionBar.setDisplayHomeAsUpEnabled(true);
-        //actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -108,24 +105,24 @@ public class ChatActivity extends AppCompatActivity {
         String userName = getIntent().getStringExtra("user_name");
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        //View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);
+        View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);
 
-        //actionBar.setCustomView(action_bar_view);
+        actionBar.setCustomView(action_bar_view);
 
         // ---- Custom Action bar Items ----
 
-        //mTitleView = (TextView) findViewById(R.id.custom_bar_title);
-        mLastSeenView = (TextView) findViewById(R.id.custom_bar_seen);
-        mProfileImage = (CircleImageView) findViewById(R.id.custom_bar_image);
+        mTitleView = findViewById(R.id.custom_bar_title);
+        mLastSeenView = findViewById(R.id.custom_bar_seen);
+        mProfileImage = findViewById(R.id.custom_bar_image);
 
-        mChatAddBtn = (ImageButton) findViewById(R.id.chat_add_btn);
-        mChatSendBtn = (ImageButton) findViewById(R.id.chat_send_btn);
-        mChatMessageView = (EditText) findViewById(R.id.chat_message_view);
+        mChatAddBtn = findViewById(R.id.chat_add_btn);
+        mChatSendBtn = findViewById(R.id.chat_send_btn);
+        mChatMessageView = findViewById(R.id.chat_message_view);
 
         mAdapter = new MessageAdapter(messagesList);
 
-        mMessagesList = (RecyclerView) findViewById(R.id.messages_list);
-        mRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.message_swipe_layout);
+        mMessagesList = findViewById(R.id.messages_list);
+        mRefreshLayout = findViewById(R.id.message_swipe_layout);
         mLinearLayout = new LinearLayoutManager(this);
 
         mMessagesList.setHasFixedSize(true);
@@ -141,31 +138,31 @@ public class ChatActivity extends AppCompatActivity {
         loadMessages();
 
 
-        //mTitleView.setText(userName);
+        mTitleView.setText(userName);
 
         mRootRef.child("Users").child(mChatUser).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if (dataSnapshot.hasChild("online")) {
-                    String online = dataSnapshot.child("online").getValue().toString();
-                    String image = dataSnapshot.child("image").getValue().toString();
+                String online = dataSnapshot.child("online").getValue().toString();
+                String image = dataSnapshot.child("thumb_image").getValue().toString();
+                Picasso.with(ChatActivity.this).load(image).into(mProfileImage);
 
-                    if (online.equals("true")) {
+                if(online.equals("true")) {
 
-                        mLastSeenView.setText("Online");
+                    mLastSeenView.setText("Online");
 
-                    } else {
 
-                        GetTimeAgo getTimeAgo = new GetTimeAgo();
+                } else {
 
-                        long lastTime = Long.parseLong(online);
+                    GetTimeAgo getTimeAgo = new GetTimeAgo();
 
-                        String lastSeenTime = getTimeAgo.getTimeAgo(lastTime, getApplicationContext());
+                    long lastTime = Long.parseLong(online);
 
-                        mLastSeenView.setText(lastSeenTime);
+                    String lastSeenTime = getTimeAgo.getTimeAgo(lastTime, getApplicationContext());
 
-                    }
+                    mLastSeenView.setText(lastSeenTime);
+
                 }
 
             }
