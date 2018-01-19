@@ -21,6 +21,7 @@ import com.example.joe.cellmonitor.models.Friends;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,7 @@ public class FriendsFragment extends Fragment {
 
     private RecyclerView mFriendsList;
 
+    private FirebaseAuth mAuth;
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUsersDatabase;
 
@@ -51,6 +53,8 @@ public class FriendsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
+
+        mAuth = FirebaseAuth.getInstance();
 
 
         FloatingActionButton fab = mMainView.findViewById(R.id.fab);
@@ -86,6 +90,22 @@ public class FriendsFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+
+
+        if (currentUser == null) {
+
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+
+
+        }
 
         FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
                 .setQuery(mFriendsDatabase,Friends.class)
