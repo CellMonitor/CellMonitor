@@ -92,6 +92,8 @@ public class ChatActivity extends AppCompatActivity {
         mChatToolbar = findViewById(R.id.chat_app_bar);
         setSupportActionBar(mChatToolbar);
 
+
+
         ActionBar actionBar = getSupportActionBar();
 
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -103,6 +105,15 @@ public class ChatActivity extends AppCompatActivity {
 
         mChatUser = getIntent().getStringExtra("user_id");
         String userName = getIntent().getStringExtra("user_name");
+
+        mChatToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent profileIntent = new Intent(ChatActivity.this,UserProfileActivity.class);
+                profileIntent.putExtra("user_id",mChatUser);
+                startActivity(profileIntent);
+            }
+        });
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View action_bar_view = inflater.inflate(R.layout.chat_custom_bar, null);
