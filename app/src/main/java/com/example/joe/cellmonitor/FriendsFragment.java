@@ -41,24 +41,17 @@ public class FriendsFragment extends Fragment {
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUsersDatabase;
 
-    private FirebaseAuth mAuth;
-
-    private String mCurrent_user_id;
-
-    private CardView cardView;
-    private View mMainView;
-
     public FriendsFragment() {
         // Required empty public constructor
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
-        cardView = mMainView.findViewById(R.id.addConnections);
+        View mMainView = inflater.inflate(R.layout.fragment_friends, container, false);
+        CardView cardView = mMainView.findViewById(R.id.addConnections);
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,10 +61,10 @@ public class FriendsFragment extends Fragment {
             }
         });
 
-        mFriendsList = (RecyclerView) mMainView.findViewById(R.id.friends_list);
-        mAuth = FirebaseAuth.getInstance();
+        mFriendsList = mMainView.findViewById(R.id.friends_list);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        mCurrent_user_id = mAuth.getCurrentUser().getUid();
+        String mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
         mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
         mFriendsDatabase.keepSynced(true);
@@ -109,7 +102,7 @@ public class FriendsFragment extends Fragment {
             @Override
             protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
 
-                friendsViewHolder.setDate(friends.getDate());
+
 
                 final String list_user_id = getRef(position).getKey();
 
@@ -119,6 +112,7 @@ public class FriendsFragment extends Fragment {
 
                         final String userName = dataSnapshot.child("name").getValue().toString();
                         String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                        String status = dataSnapshot.child("status").getValue().toString();
 
                         if(dataSnapshot.hasChild("online")) {
 
@@ -129,6 +123,7 @@ public class FriendsFragment extends Fragment {
 
 
                         friendsViewHolder.setName(userName);
+                        friendsViewHolder.setStatus(status);
                         friendsViewHolder.setUserImage(userThumb, getContext());
 
                         friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -194,36 +189,37 @@ public class FriendsFragment extends Fragment {
 
         View mView;
 
-        public FriendsViewHolder(View itemView) {
+        FriendsViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
 
         }
 
-        public void setDate(String date) {
 
-            TextView userStatusView = (TextView) mView.findViewById(R.id.user_single_status);
-            userStatusView.setText(date);
-
-        }
 
         public void setName(String name) {
 
-            TextView userNameView = (TextView) mView.findViewById(R.id.user_single_name);
+            TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
 
         }
 
-        public void setUserImage(String thumb_image, Context ctx) {
+        public void setStatus(String status){
+            TextView userStatusView =  mView.findViewById(R.id.user_single_status);
+            userStatusView.setText(status);
 
-            CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
+        }
+
+        void setUserImage(String thumb_image, Context ctx) {
+
+            CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
             Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
 
         }
-        public void setUserOnline(String online_status) {
+        void setUserOnline(String online_status) {
 
-            ImageView userOnlineView = (ImageView) mView.findViewById(R.id.user_single_online_icon);
+            ImageView userOnlineView = mView.findViewById(R.id.user_single_online_icon);
 
             if(online_status.equals("true")){
 

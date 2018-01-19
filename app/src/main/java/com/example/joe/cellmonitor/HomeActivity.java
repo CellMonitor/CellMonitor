@@ -42,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(1);
         TabLayout mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
 

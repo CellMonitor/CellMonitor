@@ -3,14 +3,13 @@ package com.example.joe.cellmonitor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.ViewGroup;
 
-/**
- * Created by Dell on 1/16/2018.
- */
+
 
 class SectionsPagerAdapter extends FragmentPagerAdapter{
 
-    public SectionsPagerAdapter(FragmentManager fm) {
+    SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
@@ -20,16 +19,13 @@ class SectionsPagerAdapter extends FragmentPagerAdapter{
         switch (position){
 
             case 0:
-                RequestsFragment requestsFragment = new RequestsFragment();
-                return requestsFragment;
+                return new SectionsFragment();
 
             case 1:
-                ChatsFragment chatsFragment = new ChatsFragment();
-                return chatsFragment;
+                return new ChatsFragment();
 
             case 2:
-                FriendsFragment friendsFragment = new FriendsFragment();
-                return friendsFragment;
+                return new FriendsFragment();
 
                 default:
                     return null;
@@ -37,6 +33,8 @@ class SectionsPagerAdapter extends FragmentPagerAdapter{
         }
 
     }
+
+
 
     @Override
     public int getCount() {
@@ -46,7 +44,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position){
         switch (position){
             case 0:
-                return "REQUESTS";
+                return "SECTIONS";
 
             case 1:
                 return "CHATS";
