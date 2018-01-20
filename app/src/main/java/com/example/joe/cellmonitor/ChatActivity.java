@@ -2,6 +2,8 @@ package com.example.joe.cellmonitor;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SyncContext;
+import android.content.SyncRequest;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -229,6 +231,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 sendMessage();
+
 
             }
         });

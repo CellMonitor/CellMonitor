@@ -2,12 +2,8 @@ package com.example.joe.cellmonitor;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +20,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -118,7 +113,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             //Convert timestamp to local device time
 
-            SimpleDateFormat sfd = new SimpleDateFormat("HH:mm a");
+            SimpleDateFormat sfd = new SimpleDateFormat("hh:mm a");
             String time = sfd.format(new Date(message_time));
 
 
@@ -168,7 +163,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 builder.setTitle("Select Options");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(DialogInterface dialogInterface, final int i) {
 
                         //Click Event for each item.
                         if(i == 0){
@@ -178,7 +173,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                         messageSnapshot.getRef().removeValue();
-                                        notifyDataSetChanged();
 
                                     }
                                 }
@@ -194,7 +188,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                         messageSnapshot.getRef().removeValue();
-                                        notifyDataSetChanged();
 
                                     }
                                 }
