@@ -221,12 +221,22 @@ public class ChatsFragment extends Fragment {
         public void setMessage(String message, boolean isSeen){
 
             TextView userStatusView = (TextView) mView.findViewById(R.id.user_single_status);
-            userStatusView.setText(message);
 
-            if(!isSeen){
-                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
+            if (message!=null) {
+
+                if (!message.startsWith("https://firebasestorage.googleapis.com")) {
+                    userStatusView.setText(message);
+
+                    if (!isSeen) {
+                        userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.BOLD);
+                    } else {
+                        userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
+                    }
+                } else {
+                    userStatusView.setText("Photo");
+                }
             } else {
-                userStatusView.setTypeface(userStatusView.getTypeface(), Typeface.NORMAL);
+                userStatusView.setText("");
             }
 
         }
