@@ -224,7 +224,7 @@ public class ChatsFragment extends Fragment {
 
             if (message!=null) {
 
-                if (!message.startsWith("https://firebasestorage.googleapis.com")) {
+                if (!message.startsWith("https://firebasestorage.googleapis.com/v0/b/cellmonitor-644a8.appspot.com/o/message_images")) {
                     userStatusView.setText(message);
 
                     if (!isSeen) {
