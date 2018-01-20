@@ -43,6 +43,7 @@ public class UsersActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_users);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        databaseReference.keepSynced(true);
 
         recyclerView =  findViewById(R.id.users_list);
 
@@ -133,7 +134,7 @@ public class UsersActivity extends AppCompatActivity  {
         }
         void setUserImage(String thumb_image, Context ctx){
             CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
-            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView);
+            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
         }
 
 
