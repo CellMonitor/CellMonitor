@@ -88,6 +88,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         String from_user = c.getFrom();
         String message_type = c.getType();
         final long message_time = c.getTime();
+        final long timestamp = c.getTime();
 
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
@@ -132,6 +133,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
 
 
+
+
+
+
+
         } else {
 
             viewHolder.messageText.setVisibility(View.INVISIBLE);
@@ -140,13 +146,20 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         }
 
+        // ----------------- DELETE FEATURE --------------------
+
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("messages")
+                DatabaseReference senderRef = FirebaseDatabase.getInstance().getReference("messages")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(mChatUser);
 
-                final Query query = myRef.orderByChild("message").equalTo("go");
+                DatabaseReference receiverRef = FirebaseDatabase.getInstance().getReference("messages")
+                        .child(mChatUser).child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+                final Query receiverQuery = receiverRef.orderByChild("time").equalTo(timestamp);
+
+                final Query senderQuery = senderRef.orderByChild("time").equalTo(timestamp);
 
                 CharSequence options[] = new CharSequence[]{"Delete message"};
 
@@ -160,11 +173,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         //Click Event for each item.
                         if(i == 0){
 
-                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            senderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot appleSnapshot: dataSnapshot.getChildren()) {
-                                        appleSnapshot.getRef().removeValue();
+                                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                                        messageSnapshot.getRef().removeValue();
+                                        notifyDataSetChanged();
+
                                     }
                                 }
 
@@ -173,6 +188,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                                 }
                             });
+
+                            receiverQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
+                                        messageSnapshot.getRef().removeValue();
+                                        notifyDataSetChanged();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
 
                         }
 
