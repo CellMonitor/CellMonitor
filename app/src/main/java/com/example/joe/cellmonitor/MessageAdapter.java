@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Message;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -53,10 +58,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         public CircleImageView profileImage;
         public TextView displayName;
         public ImageView messageImage;
+        public TextView messageTime;
 
         public MessageViewHolder(View view) {
             super(view);
 
+            messageTime = (TextView) view.findViewById(R.id.time_text_layout);
             messageText = (TextView) view.findViewById(R.id.message_text_layout);
             profileImage = (CircleImageView) view.findViewById(R.id.message_profile_layout);
             displayName = (TextView) view.findViewById(R.id.name_text_layout);
@@ -72,6 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         String from_user = c.getFrom();
         String message_type = c.getType();
+        long message_time = c.getTime();
 
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
@@ -79,6 +87,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
 
                 String name = dataSnapshot.child("name").getValue().toString();
                 String image = dataSnapshot.child("thumb_image").getValue().toString();
@@ -98,8 +107,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         if(message_type.equals("text")) {
 
+            //Convert timestamp to local device time
+
+            SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+            String x = sfd.format(new Date(message_time));
+
+
+
+
             viewHolder.messageText.setText(c.getMessage());
             viewHolder.messageImage.setVisibility(View.INVISIBLE);
+            viewHolder.messageTime.setText(x);
+
+
+
+
+
+
 
 
         } else {

@@ -266,6 +266,8 @@ public class UserProfileActivity extends AppCompatActivity {
                 // ----------- UNFRIENDS -------------
                 if (mCurrent_state.equals("friends")){
 
+                    mNotificationDatabase.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).removeValue();
+
                     Map unfriendMap = new HashMap();
                     unfriendMap.put("Friends/" + mCurrent_user.getUid() + "/" + user_id, null);
                     unfriendMap.put("Friends/" + user_id + "/" + mCurrent_user.getUid(), null);
