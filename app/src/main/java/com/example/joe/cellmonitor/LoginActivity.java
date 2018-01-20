@@ -186,6 +186,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+    public void signUpClicked(View view){
+
+        Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(intent);
+
+    }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
 
