@@ -20,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -109,15 +110,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
             //Convert timestamp to local device time
 
-            SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-            String x = sfd.format(new Date(message_time));
-
-
+            SimpleDateFormat sfd = new SimpleDateFormat("HH:mm a");
+            String time = sfd.format(new Date(message_time));
 
 
             viewHolder.messageText.setText(c.getMessage());
             viewHolder.messageImage.setVisibility(View.INVISIBLE);
-            viewHolder.messageTime.setText(x);
+            viewHolder.messageTime.setText(time);
 
 
 
