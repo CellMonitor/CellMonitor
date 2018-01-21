@@ -110,7 +110,10 @@ public class HomeActivity extends AppCompatActivity {
             LoginManager.getInstance().logOut();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
         } else if (id == R.id.action_requests) {
-            return true;
+
+            Intent requestIntent = new Intent(HomeActivity.this,RequestActivity.class);
+            startActivity(requestIntent);
+
         } else if (id == R.id.action_sections) {
             return true;
         }

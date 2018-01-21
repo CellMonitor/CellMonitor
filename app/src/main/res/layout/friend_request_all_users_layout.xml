@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:src="@drawable/avatar"
+            android:id="@+id/request_profile_image"
+            />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Display Name"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/request_profile_name"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Display user status"
+                android:padding="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/request_profile_status"
+                />
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="7dp"
+                >
+                
+                <Button
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:textSize="16sp"
+                    android:text="Accept"
+                    android:background="#3dc431"
+                    android:id="@+id/request_accept_btn"
+                    android:layout_marginLeft="5dp"
+                    />
+
+                <Button
+                    android:layout_width="90dp"
+                    android:layout_height="40dp"
+                    android:textSize="16sp"
+                    android:text="Cancel"
+                    android:background="#b70000"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#ffffff"
+                    android:id="@+id/request_decline_btn"
+                    />
+                
+            </LinearLayout>
+            
+        </LinearLayout>
+        
+        
+    </LinearLayout>
+
+</LinearLayout>

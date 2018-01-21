@@ -152,7 +152,7 @@ public class FriendsFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
 
-                                CharSequence options[] = new CharSequence[]{"Open Profile", "Send message"};
+                                CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
 
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

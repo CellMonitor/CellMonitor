@@ -78,7 +78,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 mProfileName.setText(display_name);
                 mProfileStatus.setText(status);
 
-                Picasso.with(UserProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(mProfileImage);
+                Picasso.with(UserProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mProfileImage);
 
                 if(mCurrent_user.getUid().equals(user_id)){
 
