@@ -65,14 +65,20 @@ public class ChatsFragment extends Fragment {
         mConvList = (RecyclerView) mMainView.findViewById(R.id.conv_list);
         mAuth = FirebaseAuth.getInstance();
 
-        mCurrent_user_id = mAuth.getCurrentUser().getUid();
+        if (mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(getContext(),LoginActivity.class);
+            startActivity(intent);
+        }else{
+            mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
-        mConvDatabase = FirebaseDatabase.getInstance().getReference().child("Chat").child(mCurrent_user_id);
+            mConvDatabase = FirebaseDatabase.getInstance().getReference().child("Chat").child(mCurrent_user_id);
 
-        mConvDatabase.keepSynced(true);
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        mMessageDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrent_user_id);
-        mUsersDatabase.keepSynced(true);
+            mConvDatabase.keepSynced(true);
+            mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+            mMessageDatabase = FirebaseDatabase.getInstance().getReference().child("messages").child(mCurrent_user_id);
+            mUsersDatabase.keepSynced(true);
+        }
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
@@ -107,103 +113,106 @@ public class ChatsFragment extends Fragment {
 
         }
 
-        Query conversationQuery = mConvDatabase.orderByChild("timestamp");
+        else {
+
+            Query conversationQuery = mConvDatabase.orderByChild("timestamp");
 
 
-        FirebaseRecyclerOptions<Conv> options = new FirebaseRecyclerOptions.Builder<Conv>()
-                .setQuery(conversationQuery, Conv.class)
-                .setLifecycleOwner(this)
-                .build();
-        FirebaseRecyclerAdapter<Conv, ConvViewHolder> firebaseConvAdapter = new FirebaseRecyclerAdapter<Conv, ConvViewHolder>(options) {
+            FirebaseRecyclerOptions<Conv> options = new FirebaseRecyclerOptions.Builder<Conv>()
+                    .setQuery(conversationQuery, Conv.class)
+                    .setLifecycleOwner(this)
+                    .build();
+            FirebaseRecyclerAdapter<Conv, ConvViewHolder> firebaseConvAdapter = new FirebaseRecyclerAdapter<Conv, ConvViewHolder>(options) {
 
-            @Override
-            public ConvViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+                @Override
+                public ConvViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
 
-                return new ConvViewHolder(view);
-            }
-
-
-            @Override
-            protected void onBindViewHolder(@NonNull final ConvViewHolder convViewHolder, int position, @NonNull final Conv conv) {
-                final String list_user_id = getRef(position).getKey();
-
-                Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
-
-                lastMessageQuery.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                        String data = dataSnapshot.child("message").getValue().toString();
-                        convViewHolder.setMessage(data, conv.isSeen());
-
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                    return new ConvViewHolder(view);
+                }
 
 
-                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                @Override
+                protected void onBindViewHolder(@NonNull final ConvViewHolder convViewHolder, int position, @NonNull final Conv conv) {
+                    final String list_user_id = getRef(position).getKey();
 
-                        final String userName = dataSnapshot.child("name").getValue().toString();
-                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                    Query lastMessageQuery = mMessageDatabase.child(list_user_id).limitToLast(1);
 
-                        if(dataSnapshot.hasChild("online")) {
+                    lastMessageQuery.addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                            String userOnline = dataSnapshot.child("online").getValue().toString();
-                            convViewHolder.setUserOnline(userOnline);
+                            String data = dataSnapshot.child("message").getValue().toString();
+                            convViewHolder.setMessage(data, conv.isSeen());
 
                         }
 
-                        convViewHolder.setName(userName);
-                        convViewHolder.setUserImage(userThumb, getContext());
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                        convViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
 
 
-                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                chatIntent.putExtra("user_id", list_user_id);
-                                chatIntent.putExtra("user_name", userName);
-                                startActivity(chatIntent);
+                    mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                            final String userName = dataSnapshot.child("name").getValue().toString();
+                            String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+
+                            if (dataSnapshot.hasChild("online")) {
+
+                                String userOnline = dataSnapshot.child("online").getValue().toString();
+                                convViewHolder.setUserOnline(userOnline);
 
                             }
-                        });
+
+                            convViewHolder.setName(userName);
+                            convViewHolder.setUserImage(userThumb, getContext());
+
+                            convViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 
 
-                    }
+                                    Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                    chatIntent.putExtra("user_id", list_user_id);
+                                    chatIntent.putExtra("user_name", userName);
+                                    startActivity(chatIntent);
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
 
-                    }
-                });
 
-            }
-        };
+                        }
 
-        mConvList.setAdapter(firebaseConvAdapter);
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                }
+            };
+
+            mConvList.setAdapter(firebaseConvAdapter);
+        }
 
     }
 
@@ -273,6 +282,7 @@ public class ChatsFragment extends Fragment {
 
 
     }
+
 
 
 

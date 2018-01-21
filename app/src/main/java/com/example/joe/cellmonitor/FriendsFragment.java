@@ -70,13 +70,18 @@ public class FriendsFragment extends Fragment {
         mFriendsList = mMainView.findViewById(R.id.friends_list);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        String mCurrent_user_id = mAuth.getCurrentUser().getUid();
+        if (mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(getContext(),LoginActivity.class);
+            startActivity(intent);
+        }else {
+            String mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
-        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
-        mFriendsDatabase.keepSynced(true);
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        mUsersDatabase.keepSynced(true);
+            mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(mCurrent_user_id);
+            mFriendsDatabase.keepSynced(true);
+            mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
+            mUsersDatabase.keepSynced(true);
 
+        }
 
         mFriendsList.setHasFixedSize(true);
         mFriendsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -105,105 +110,105 @@ public class FriendsFragment extends Fragment {
             startActivity(intent);
 
 
-        }
+        } else {
 
-        FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
-                .setQuery(mFriendsDatabase,Friends.class)
-                .setLifecycleOwner(this)
-                .build();
+            FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
+                    .setQuery(mFriendsDatabase, Friends.class)
+                    .setLifecycleOwner(this)
+                    .build();
 
-        FirebaseRecyclerAdapter<Friends,FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
+            FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
 
-            @Override
-            public FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+                @Override
+                public FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
 
-                return new FriendsViewHolder(view);
-            }
+                    return new FriendsViewHolder(view);
+                }
 
-            @Override
-            protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
+                @Override
+                protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
 
 
+                    final String list_user_id = getRef(position).getKey();
 
-                final String list_user_id = getRef(position).getKey();
+                    mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                            final String userName = dataSnapshot.child("name").getValue().toString();
+                            String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                            String status = dataSnapshot.child("status").getValue().toString();
 
-                        final String userName = dataSnapshot.child("name").getValue().toString();
-                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
-                        String status = dataSnapshot.child("status").getValue().toString();
+                            if (dataSnapshot.hasChild("online")) {
 
-                        if(dataSnapshot.hasChild("online")) {
+                                String userOnline = dataSnapshot.child("online").getValue().toString();
+                                friendsViewHolder.setUserOnline(userOnline);
 
-                            String userOnline = dataSnapshot.child("online").getValue().toString();
-                            friendsViewHolder.setUserOnline(userOnline);
+                            }
+
+
+                            friendsViewHolder.setName(userName);
+                            friendsViewHolder.setStatus(status);
+                            friendsViewHolder.setUserImage(userThumb, getContext());
+
+                            friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
+
+                                    final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                    builder.setTitle("Select Options");
+                                    builder.setItems(options, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                                            //Click Event for each item.
+                                            if (i == 0) {
+
+                                                Intent profileIntent = new Intent(getContext(), UserProfileActivity.class);
+                                                profileIntent.putExtra("user_id", list_user_id);
+                                                startActivity(profileIntent);
+
+                                            }
+
+                                            if (i == 1) {
+
+                                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                                chatIntent.putExtra("user_id", list_user_id);
+                                                chatIntent.putExtra("user_name", userName);
+                                                startActivity(chatIntent);
+
+                                            }
+
+                                        }
+                                    });
+
+                                    builder.show();
+
+                                }
+                            });
+
 
                         }
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                        friendsViewHolder.setName(userName);
-                        friendsViewHolder.setStatus(status);
-                        friendsViewHolder.setUserImage(userThumb, getContext());
-
-                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
-
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-                                builder.setTitle("Select Options");
-                                builder.setItems(options, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        //Click Event for each item.
-                                        if(i == 0){
-
-                                            Intent profileIntent = new Intent(getContext(), UserProfileActivity.class);
-                                            profileIntent.putExtra("user_id", list_user_id);
-                                            startActivity(profileIntent);
-
-                                        }
-
-                                        if(i == 1){
-
-                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
-                                            chatIntent.putExtra("user_id", list_user_id);
-                                            chatIntent.putExtra("user_name", userName);
-                                            startActivity(chatIntent);
-
-                                        }
-
-                                    }
-                                });
-
-                                builder.show();
-
-                            }
-                        });
+                        }
+                    });
 
 
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                }
 
 
-            }
+            };
+            mFriendsList.setAdapter(friendsRecyclerViewAdapter);
 
 
-        };
-        mFriendsList.setAdapter(friendsRecyclerViewAdapter);
-
-
+        }
 
     }
 
