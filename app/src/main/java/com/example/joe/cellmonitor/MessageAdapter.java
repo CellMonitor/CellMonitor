@@ -1,5 +1,6 @@
 package com.example.joe.cellmonitor;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -9,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.joe.cellmonitor.models.Messages;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -167,14 +170,27 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                         //Click Event for each item.
                         if(i == 0){
+                            final ProgressDialog progressDialog = new ProgressDialog(ctx);
+                            progressDialog.setMessage("Deleting the message for both ..");
+                            progressDialog.show();
 
                             senderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                        messageSnapshot.getRef().removeValue();
+                                        messageSnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(ctx, "Message Deleted !", Toast.LENGTH_SHORT).show();
+                                                mMessageList.remove(getItemCount()-1);
+
+                                                progressDialog.dismiss();
+
+                                            }
+                                        });
 
                                     }
+                                    progressDialog.dismiss();
                                 }
 
                                 @Override
