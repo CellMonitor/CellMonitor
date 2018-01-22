@@ -3,6 +3,7 @@ package com.example.joe.cellmonitor;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SyncContext;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -148,7 +149,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public boolean onLongClick(View view) {
+            public boolean onLongClick(final View view) {
                 DatabaseReference senderRef = FirebaseDatabase.getInstance().getReference("messages")
                         .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(mChatUser);
 
@@ -177,20 +178,28 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                             senderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                        messageSnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Toast.makeText(ctx, "Message Deleted !", Toast.LENGTH_SHORT).show();
-                                                mMessageList.remove(getItemCount()-1);
 
-                                                progressDialog.dismiss();
+                                    if (dataSnapshot.hasChildren()) {
+                                        for (DataSnapshot messageSnapshot : dataSnapshot.getChildren()) {
+                                            messageSnapshot.getRef().removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Toast.makeText(ctx, "Message Deleted !", Toast.LENGTH_SHORT).show();
+                                                    int position = viewHolder.getAdapterPosition();
+                                                    mMessageList.remove(position);
+                                                    notifyItemRemoved(position);
+                                                    notifyItemRangeChanged(position,mMessageList.size());
+                                                    progressDialog.dismiss();
 
-                                            }
-                                        });
+                                                }
+                                            });
 
+                                        }
                                     }
-                                    progressDialog.dismiss();
+                                    else {
+                                        Toast.makeText(ctx, "Please Rejoin the chat room first", Toast.LENGTH_SHORT).show();
+                                        progressDialog.dismiss();
+                                    }
                                 }
 
                                 @Override
