@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -85,12 +86,25 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 String display_name = dataSnapshot.child("name").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
 
                 mProfileName.setText(display_name);
                 mProfileStatus.setText(status);
 
-                Picasso.with(UserProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mProfileImage);
+
+                Picasso.with(UserProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(mProfileImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        Picasso.with(UserProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mProfileImage);
+
+                    }
+                });
 
                 if(mCurrent_user.getUid().equals(user_id)){
 

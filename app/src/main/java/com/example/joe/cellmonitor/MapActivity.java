@@ -1,14 +1,20 @@
 package com.example.joe.cellmonitor;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -16,9 +22,12 @@ import android.os.Bundle;
 
 import android.Manifest;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -41,10 +50,12 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -53,9 +64,15 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 
 import org.json.JSONException;
@@ -70,6 +87,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener {
@@ -536,6 +555,75 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             init();
         }
+
+        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Friends")
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot friendsSnapShot : dataSnapshot.getChildren()){
+                            String usersID = friendsSnapShot.getKey();
+                            Toast.makeText(MapActivity.this, usersID, Toast.LENGTH_LONG).show();
+
+                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(usersID);
+                            usersRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String location = dataSnapshot.child("Location").getValue().toString();
+                                    String displayName = dataSnapshot.child("name").getValue().toString();
+                                    String image = dataSnapshot.child("image").getValue().toString();
+                                    long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                    String [] separated = location.split(",");
+                                    String latiPos = separated[0].trim();
+                                    String longiPos = separated[1].trim();
+
+                                    double latitude = Double.parseDouble(latiPos);
+                                    double longitude = Double.parseDouble(longiPos);
+
+                                    LatLng customMarkerLocation = new LatLng(latitude,longitude);
+                                    mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                            icon(BitmapDescriptorFactory.fromBitmap(
+                                                    createCustomMarker(MapActivity.this,image,displayName))));
+
+                                    //LatLngBound will cover all your marker on Google Maps
+
+                                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                    builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                    // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                    //LatLngBounds bounds = builder.build();
+                                    //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                    //mMap.moveCamera(cu);
+                                    //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+        });
+
+
     }
 
     private void hideSoftKeyboard() {
@@ -693,6 +781,42 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
 
     }
+
+
+    public  Bitmap createCustomMarker(Context context, final String uri, String _name) {
+
+        View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
+
+        final CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
+        Picasso.with(MapActivity.this).load(uri).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(markerImage, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError() {
+
+                Picasso.with(MapActivity.this).load(uri).placeholder(R.drawable.avatar).into(markerImage);
+
+            }
+        });
+        TextView txt_name = (TextView)marker.findViewById(R.id.name);
+        txt_name.setText(_name);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        marker.setLayoutParams(new ViewGroup.LayoutParams(52, ViewGroup.LayoutParams.WRAP_CONTENT));
+        marker.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.layout(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels);
+        marker.buildDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(marker.getMeasuredWidth(), marker.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        marker.draw(canvas);
+
+        return bitmap;
+    }
+
 
 
 

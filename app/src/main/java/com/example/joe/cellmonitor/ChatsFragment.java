@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -257,10 +259,22 @@ public class ChatsFragment extends Fragment {
 
         }
 
-        public void setUserImage(String thumb_image, Context ctx){
+        public void setUserImage(final String thumb_image, final Context ctx){
 
-            CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
-            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+            final CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
+            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+
+                }
+            });
 
         }
 

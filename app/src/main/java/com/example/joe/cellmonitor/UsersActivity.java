@@ -34,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
@@ -207,9 +208,22 @@ public class UsersActivity extends AppCompatActivity  {
             userStatusView.setText(status);
 
         }
-        void setUserImage(String thumb_image, Context ctx){
-            CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
-            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+        void setUserImage(final String thumb_image, final Context ctx){
+            final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
+
+            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+
+                }
+            });
         }
 
 

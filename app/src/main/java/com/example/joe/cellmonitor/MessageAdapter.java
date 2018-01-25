@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 
@@ -82,7 +84,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     @Override
     public void onBindViewHolder(final MessageViewHolder viewHolder, int i) {
 
-        Messages c = mMessageList.get(i);
+        final Messages c = mMessageList.get(i);
 
         String from_user = c.getFrom();
         String message_type = c.getType();
@@ -98,12 +100,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
 
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("thumb_image").getValue().toString();
+                final String image = dataSnapshot.child("thumb_image").getValue().toString();
 
                 viewHolder.displayName.setText(name);
 
-                Picasso.with(viewHolder.profileImage.getContext()).load(image)
-                        .placeholder(R.drawable.avatar).into(viewHolder.profileImage);
+                Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.profileImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+
+                        Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar).into(viewHolder.profileImage);
+
+                    }
+                });
 
             }
 
@@ -142,6 +155,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             viewHolder.messageText.setVisibility(View.INVISIBLE);
             Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage())
                     .placeholder(R.drawable.avatar).into(viewHolder.messageImage);
+            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.messageImage, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImage);
+
+                }
+            });
 
         }
 
