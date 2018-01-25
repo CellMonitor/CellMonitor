@@ -2,7 +2,12 @@ package com.example.joe.cellmonitor;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +19,10 @@ import android.widget.Toast;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -106,6 +115,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         } else if (id == R.id.action_logOut) {
 
+            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
             mAuth.signOut();
             LoginManager.getInstance().logOut();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
@@ -141,19 +151,70 @@ public class HomeActivity extends AppCompatActivity {
 
         } else {
             mUserRef.child("online").setValue(true);
+            DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            mUserRef.child("online").setValue(true);
+            Boolean mLocationPermissionGranted;
+            final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
+            final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
+            final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+
+
+            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION};
+
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                        COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                    //initMap();
+
+
+                    FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+                    try {
+                        if (mLocationPermissionGranted) {
+                            final Task location = mFusedLocationProviderClient.getLastLocation();
+
+
+                            location.addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful() && task.getResult() != null) {
+                                        Location currentLocation = (Location) task.getResult();
+                                        Double latitude = currentLocation.getLatitude();
+                                        Double longitude = currentLocation.getLongitude();
+                                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+                                        myRef.child("Location").setValue(latitude + "," + longitude);
+                                        myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
+
+
+
+                                    }
+                                }
+                            });
+                        }
+
+                    } catch (SecurityException e) {
+                        Toast.makeText(this, "getDeviceLocation: SecurityException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            permissions,
+                            LOCATION_PERMISSION_REQUEST_CODE);
+                }
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        permissions,
+                        LOCATION_PERMISSION_REQUEST_CODE);
+            }
 
         }
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
 
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
-        if (currentUser != null) {
-            mUserRef.child("online").setValue(ServerValue.TIMESTAMP);
-
-        }
-    }
 }
