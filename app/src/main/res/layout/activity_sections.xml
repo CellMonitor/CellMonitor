@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/secName"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
         >
 
         <android.support.design.widget.TextInputEditText
@@ -24,16 +26,30 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
+        android:id="@+id/searchEditText"
         android:layout_alignStart="@+id/secName"
         android:layout_below="@+id/secName"
         android:gravity="center"
         android:hint="Search in your friends list :"
      />
+
+    <ImageButton
+        android:id="@+id/search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/searchEditText"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/searchEditText"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/background_light"
+        android:src="@drawable/ic_search_icon" />
+
+
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/searchEditText"
         >
 
         <android.support.v7.widget.RecyclerView

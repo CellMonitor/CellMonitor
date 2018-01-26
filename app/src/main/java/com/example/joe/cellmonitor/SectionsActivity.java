@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -40,10 +42,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SectionsActivity extends AppCompatActivity {
 
     private RecyclerView mFriendsList;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUsersDatabase;
+    private ImageButton mSearchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,8 @@ public class SectionsActivity extends AppCompatActivity {
         });
 
 
-        EditText editText = findViewById(R.id.editText);
+        mSearchBtn = (ImageButton) findViewById(R.id.search_btn);
+        final EditText editText = findViewById(R.id.searchEditText);
 
         mFriendsList = findViewById(R.id.recyclerFriends);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -83,10 +86,119 @@ public class SectionsActivity extends AppCompatActivity {
         mFriendsList.setHasFixedSize(true);
         mFriendsList.setLayoutManager(new LinearLayoutManager(this));
 
+        mSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                 String searchText = editText.getText().toString();
+
+                firebaseUserSearch(searchText);
+
+            }
+        });
+
 
     }
 
+    private void firebaseUserSearch(String searchText) {
 
+        Query firebaseSearchQuery = mUsersDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+
+        FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
+                .setQuery(firebaseSearchQuery, Friends.class)
+                .setLifecycleOwner(this)
+                .build();
+
+        FirebaseRecyclerAdapter<Friends, FriendsViewHolder> friendsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Friends, FriendsViewHolder>(options) {
+
+            @Override
+            public FriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+
+                return new FriendsViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull final FriendsViewHolder friendsViewHolder, int position, @NonNull Friends friends) {
+
+
+                final String list_user_id = getRef(position).getKey();
+
+                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        final String userName = dataSnapshot.child("name").getValue().toString();
+                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                        String status = dataSnapshot.child("status").getValue().toString();
+
+                        if (dataSnapshot.hasChild("online")) {
+
+                            String userOnline = dataSnapshot.child("online").getValue().toString();
+                            friendsViewHolder.setUserOnline(userOnline);
+
+                        }
+
+
+                        friendsViewHolder.setName(userName);
+                        friendsViewHolder.setStatus(status);
+                        friendsViewHolder.setUserImage(userThumb, SectionsActivity.this);
+
+                        friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
+
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(SectionsActivity.this);
+
+                                builder.setTitle("Select Options");
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //Click Event for each item.
+                                        if (i == 0) {
+
+                                            Intent profileIntent = new Intent(SectionsActivity.this, UserProfileActivity.class);
+                                            profileIntent.putExtra("user_id", list_user_id);
+                                            startActivity(profileIntent);
+
+                                        }
+
+                                        if (i == 1) {
+
+                                            Intent chatIntent = new Intent(SectionsActivity.this, ChatActivity.class);
+                                            chatIntent.putExtra("user_id", list_user_id);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+
+                                        }
+
+                                    }
+                                });
+
+                                builder.show();
+
+                            }
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+
+        };
+        mFriendsList.setAdapter(friendsRecyclerViewAdapter);
+    }
 
 
     @Override
@@ -108,6 +220,9 @@ public class SectionsActivity extends AppCompatActivity {
 
 
         } else {
+
+            
+            //Query firebaseSearchQuery = mUsersDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
             FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
                     .setQuery(mFriendsDatabase, Friends.class)
