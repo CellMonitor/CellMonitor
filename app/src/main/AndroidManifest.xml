@@ -93,7 +93,11 @@
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RequestActivity" />
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".SectionsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

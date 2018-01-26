@@ -3,6 +3,7 @@ package com.example.joe.cellmonitor;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,8 +30,23 @@ public class SectionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mAuth = FirebaseAuth.getInstance();
+
+        View mMainView = inflater.inflate(R.layout.fragment_sections, container, false);
+
+        FloatingActionButton fab = mMainView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SectionsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_requests, container, false);
+        return mMainView;
     }
 
     @Override
