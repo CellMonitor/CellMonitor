@@ -146,8 +146,8 @@ public class SectionsFragment extends Fragment {
                             public void onClick(View view) {
 
                                 Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                chatIntent.putExtra("user_id", sectionKey);
-                                chatIntent.putExtra("user_name", sectionName);
+                                chatIntent.putExtra("section_key", sectionKey);
+                                chatIntent.putExtra("section_name", sectionName);
                                 startActivity(chatIntent);
 
                             }
