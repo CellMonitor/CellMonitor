@@ -65,8 +65,8 @@ public class SectionsFragment extends Fragment {
 
         View mMainView = inflater.inflate(R.layout.fragment_sections, container, false);
 
-
-        if (mAuth.getCurrentUser().getUid()!=null) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user!=null) {
             currentUserID = mAuth.getCurrentUser().getUid();
             mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
             mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
