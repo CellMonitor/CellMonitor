@@ -61,7 +61,7 @@ public class SectionsActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task task) {
                             if (task.isSuccessful()){
-                                userSectionRef.child(mAuth.getCurrentUser().getUid()).child(sectionKey).child("AddedTime").setValue(ServerValue.TIMESTAMP);
+                                userSectionRef.child(sectionKey).child(mAuth.getCurrentUser().getUid()).child("AddedTime").setValue(ServerValue.TIMESTAMP);
                                 Toast.makeText(SectionsActivity.this, "Section has been created :)", Toast.LENGTH_SHORT).show();
                                 finish();
 
