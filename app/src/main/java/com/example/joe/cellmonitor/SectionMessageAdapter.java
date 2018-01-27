@@ -177,12 +177,11 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
             @Override
             public boolean onLongClick(final View view) {
                 DatabaseReference senderRef = FirebaseDatabase.getInstance().getReference("messages")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(mSectionKey);
+                        .child(mSectionKey);
 
-                DatabaseReference receiverRef = FirebaseDatabase.getInstance().getReference("messages")
-                        .child(mSectionKey).child(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                final Query receiverQuery = receiverRef.orderByChild("time").equalTo(timestamp);
+
+
 
                 final Query senderQuery = senderRef.orderByChild("time").equalTo(timestamp);
 
@@ -234,20 +233,6 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
                                 }
                             });
 
-                            receiverQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
-                                        messageSnapshot.getRef().removeValue();
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
 
 
                         }

@@ -344,7 +344,7 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
     private void loadMoreMessages() {
 
-        DatabaseReference messageRef = mRootRef.child("Section_messages").child(mCurrentUserId).child(sectionKey);
+        DatabaseReference messageRef = mRootRef.child("Section_messages").child(sectionKey);
 
         Query messageQuery = messageRef.orderByKey().endAt(mLastKey).limitToLast(10);
 
@@ -409,7 +409,7 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
     private void loadMessages() {
 
-        DatabaseReference messageRef = mRootRef.child("Section_messages").child(mCurrentUserId).child(sectionKey);
+        DatabaseReference messageRef = mRootRef.child("Section_messages").child(sectionKey);
 
         Query messageQuery = messageRef.limitToLast(mCurrentPage * TOTAL_ITEMS_TO_LOAD);
 
@@ -470,11 +470,10 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
         if(!TextUtils.isEmpty(message)){
 
-            String current_user_ref = "Section_messages/" + mCurrentUserId + "/" + sectionKey;
-            String chat_user_ref = "Section_messages/" + sectionKey + "/" + mCurrentUserId;
+            String current_user_ref = "Section_messages/"  + sectionKey;
 
             DatabaseReference user_message_push = mRootRef.child("Section_messages")
-                    .child(mCurrentUserId).child(sectionKey).push();
+                    .child(sectionKey).push();
 
             String push_id = user_message_push.getKey();
 
@@ -487,15 +486,14 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
             Map messageUserMap = new HashMap();
             messageUserMap.put(current_user_ref + "/" + push_id, messageMap);
-            messageUserMap.put(chat_user_ref + "/" + push_id, messageMap);
+
 
             mChatMessageView.setText("");
 
-            mRootRef.child("Section_Chat").child(mCurrentUserId).child(sectionKey).child("seen").setValue(true);
-            mRootRef.child("Section_Chat").child(mCurrentUserId).child(sectionKey).child("timestamp").setValue(ServerValue.TIMESTAMP);
+            mRootRef.child("Section_Chat").child(sectionKey).child("seen").setValue(false);
+            mRootRef.child("Section_Chat").child(sectionKey).child("timestamp").setValue(ServerValue.TIMESTAMP);
 
-            mRootRef.child("Section_Chat").child(sectionKey).child(mCurrentUserId).child("seen").setValue(false);
-            mRootRef.child("Section_Chat").child(sectionKey).child(mCurrentUserId).child("timestamp").setValue(ServerValue.TIMESTAMP);
+
 
             mRootRef.updateChildren(messageUserMap, new DatabaseReference.CompletionListener() {
                 @Override
