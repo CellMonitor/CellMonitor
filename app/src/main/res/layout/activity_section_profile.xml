@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="com.example.joe.cellmonitor.ProfileActivity">
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="170dp"
         android:layout_height="170dp"
@@ -26,22 +25,44 @@
         android:text="Display Name"
         android:textColor="#000"
         android:textSize="30sp" />
+<RelativeLayout
+    android:id="@+id/Buttons"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/displayName"
+    android:layout_marginTop="18dp"
+    android:layout_centerHorizontal="true">
 
+    <Button
+        android:id="@+id/leave_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/settings_img_btn"
+        android:text="Leave Group"
+        />
 
     <Button
         android:id="@+id/settings_img_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/displayName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
         android:text="Change Image" />
+
+</RelativeLayout>
+
+    <TextView
+        android:id="@+id/members_label"
+        android:layout_below="@id/Buttons"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:text="Group Members :"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/membersList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/settings_img_btn"
+        android:layout_below="@+id/members_label"
         >
 
     </android.support.v7.widget.RecyclerView>

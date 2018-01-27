@@ -118,16 +118,16 @@ public class SectionChatRoomActivity extends AppCompatActivity {
         String sectionName = getIntent().getStringExtra("section_name");
 
 
-        /*
+
         mChatToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent profileIntent = new Intent(SectionChatRoomActivity.this,UserProfileActivity.class);
-                profileIntent.putExtra("user_id",mChatUser);
+                Intent profileIntent = new Intent(SectionChatRoomActivity.this,SectionProfileActivity.class);
+                profileIntent.putExtra("section_key",sectionKey);
                 startActivity(profileIntent);
             }
         });
-        */
+
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View action_bar_view = inflater.inflate(R.layout.section_chat_custon_bar, null);
