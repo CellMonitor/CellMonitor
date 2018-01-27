@@ -572,31 +572,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                             usersRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    String location = dataSnapshot.child("Location").getValue().toString();
-                                    String displayName = dataSnapshot.child("name").getValue().toString();
-                                    String image = dataSnapshot.child("image").getValue().toString();
-                                    long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
-                                    String [] separated = location.split(",");
-                                    String latiPos = separated[0].trim();
-                                    String longiPos = separated[1].trim();
+                                    if (dataSnapshot.hasChild("Location")) {
+                                        String location = dataSnapshot.child("Location").getValue().toString();
+                                        String displayName = dataSnapshot.child("name").getValue().toString();
+                                        String image = dataSnapshot.child("image").getValue().toString();
+                                        long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                        String[] separated = location.split(",");
+                                        String latiPos = separated[0].trim();
+                                        String longiPos = separated[1].trim();
 
-                                    double latitude = Double.parseDouble(latiPos);
-                                    double longitude = Double.parseDouble(longiPos);
+                                        double latitude = Double.parseDouble(latiPos);
+                                        double longitude = Double.parseDouble(longiPos);
 
-                                    LatLng customMarkerLocation = new LatLng(latitude,longitude);
-                                    mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
-                                            icon(BitmapDescriptorFactory.fromBitmap(
-                                                    createCustomMarker(MapActivity.this,image,displayName))));
+                                        LatLng customMarkerLocation = new LatLng(latitude, longitude);
+                                        mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                                icon(BitmapDescriptorFactory.fromBitmap(
+                                                        createCustomMarker(MapActivity.this, image, displayName))));
 
-                                    //LatLngBound will cover all your marker on Google Maps
+                                        //LatLngBound will cover all your marker on Google Maps
 
-                                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                                    builder.include(customMarkerLocation); //Taking Point A (First LatLng)
-                                    // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
-                                    //LatLngBounds bounds = builder.build();
-                                    //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
-                                    //mMap.moveCamera(cu);
-                                    //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                        builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                        // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                        //LatLngBounds bounds = builder.build();
+                                        //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                        //mMap.moveCamera(cu);
+                                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                    }
 
 
                                 }
