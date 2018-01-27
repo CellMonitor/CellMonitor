@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.joe.cellmonitor.ProfileActivity">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="170dp"
@@ -25,29 +27,29 @@
         android:text="Display Name"
         android:textColor="#000"
         android:textSize="30sp" />
-<RelativeLayout
-    android:id="@+id/Buttons"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/displayName"
-    android:layout_marginTop="18dp"
-    android:layout_centerHorizontal="true">
-
-    <Button
-        android:id="@+id/leave_btn"
+    <RelativeLayout
+        android:id="@+id/Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/settings_img_btn"
-        android:text="Leave Group"
-        />
+        android:layout_below="@+id/displayName"
+        android:layout_marginTop="18dp"
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:id="@+id/settings_img_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Change Image" />
+        <Button
+            android:id="@+id/leave_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/settings_img_btn"
+            android:text="Leave Group"
+            />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/settings_img_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Image" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/members_label"
@@ -68,5 +70,9 @@
     </android.support.v7.widget.RecyclerView>
 
 
-
 </RelativeLayout>
+
+
+
+
+</ScrollView>
