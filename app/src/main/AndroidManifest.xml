@@ -94,10 +94,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".RequestActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".SectionsActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+        <activity
+            android:name=".SectionsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SectionChatRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
