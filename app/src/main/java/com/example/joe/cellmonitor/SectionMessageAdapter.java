@@ -181,9 +181,7 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
 
 
 
-
-
-                final Query senderQuery = senderRef.orderByChild("time").equalTo(timestamp);
+                final Query senderQuery = senderRef.orderByChild("time").equalTo(message_time);
 
                 CharSequence options[] = new CharSequence[]{"Delete message"};
 
@@ -222,7 +220,7 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
                                         }
                                     }
                                     else {
-                                        Toast.makeText(ctx, "Please Rejoin the chat room first", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ctx, "Something went wrong . Please try again later !", Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                     }
                                 }
