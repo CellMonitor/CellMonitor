@@ -69,6 +69,8 @@ public class StatusActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             mProgress.dismiss();
+                            Toast.makeText(StatusActivity.this, "Status has changed :)", Toast.LENGTH_SHORT).show();
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "There was some error", Toast.LENGTH_SHORT).show();
                         }
