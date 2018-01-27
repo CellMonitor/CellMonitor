@@ -33,6 +33,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -130,13 +132,13 @@ public class SectionsFragment extends Fragment {
 
                         if (dataSnapshot != null) {
                             final String sectionName = dataSnapshot.child("name").getValue().toString();
-                            //String sectionImage = dataSnapshot.child("image").getValue().toString();
+                            String sectionImage = dataSnapshot.child("image").getValue().toString();
                             long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
                             sectionsViewHolder.setName(sectionName);
-                            //friendsViewHolder.setStatus(status);
-                            //sectionsViewHolder.setSectionImage(sectionImage, getContext());
+                            sectionsViewHolder.setTimeStamp(sectionCreationDate);
+                            sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
                         /*
                         friendsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
@@ -223,9 +225,12 @@ public class SectionsFragment extends Fragment {
 
         }
 
-        public void setStatus(String status) {
+        public void setTimeStamp(long timeStamp) {
+
+            SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'\n'hh:mm a");
+            String time = sfd.format(new Date(timeStamp));
             TextView userStatusView = mView.findViewById(R.id.user_single_status);
-            userStatusView.setText(status);
+            userStatusView.setText(time);
 
         }
 
@@ -249,21 +254,7 @@ public class SectionsFragment extends Fragment {
 
         }
 
-        void setUserOnline(String online_status) {
 
-            ImageView userOnlineView = mView.findViewById(R.id.user_single_online_icon);
-
-            if (online_status.equals("true")) {
-
-                userOnlineView.setVisibility(View.VISIBLE);
-
-            } else {
-
-                userOnlineView.setVisibility(View.INVISIBLE);
-
-            }
-
-        }
 
     }
 }
