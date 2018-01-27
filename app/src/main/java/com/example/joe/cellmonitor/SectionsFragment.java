@@ -66,21 +66,31 @@ public class SectionsFragment extends Fragment {
         View mMainView = inflater.inflate(R.layout.fragment_sections, container, false);
 
 
-        currentUserID = mAuth.getCurrentUser().getUid();
-        mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
-        mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
-        recyclerView = mMainView.findViewById(R.id.secList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        FloatingActionButton fab = mMainView.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SectionsActivity.class);
-                startActivity(intent);
+        if (mAuth.getCurrentUser().getUid()!=null) {
+            currentUserID = mAuth.getCurrentUser().getUid();
+            mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
+            mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
+            recyclerView = mMainView.findViewById(R.id.secList);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            FloatingActionButton fab = mMainView.findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), SectionsActivity.class);
+                    startActivity(intent);
 
-            }
-        });
+                }
+            });
+        } else {
+
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+
+        }
 
 
         // Inflate the layout for this fragment
