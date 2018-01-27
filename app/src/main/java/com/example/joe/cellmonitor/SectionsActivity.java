@@ -56,6 +56,7 @@ public class SectionsActivity extends AppCompatActivity {
                     final Map sectionMap = new HashMap();
                     sectionMap.put("name", sectionName);
                     sectionMap.put("CreationTime", ServerValue.TIMESTAMP);
+                    sectionMap.put("image", "default");
                     sectionReference.child(sectionKey).updateChildren(sectionMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
