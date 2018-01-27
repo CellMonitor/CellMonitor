@@ -113,73 +113,73 @@ public class SectionsFragment extends Fragment {
             startActivity(intent);
 
 
-        }
+        } else {
 
 
-        FirebaseRecyclerOptions<Sections> options = new FirebaseRecyclerOptions.Builder<Sections>()
-                .setQuery(mUserSectionDatabase, Sections.class)
-                .setLifecycleOwner(this)
-                .build();
+            FirebaseRecyclerOptions<Sections> options = new FirebaseRecyclerOptions.Builder<Sections>()
+                    .setQuery(mUserSectionDatabase, Sections.class)
+                    .setLifecycleOwner(this)
+                    .build();
 
-        FirebaseRecyclerAdapter<Sections, SectionsViewHolder> sectionsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Sections, SectionsViewHolder>(options) {
+            FirebaseRecyclerAdapter<Sections, SectionsViewHolder> sectionsRecyclerViewAdapter = new FirebaseRecyclerAdapter<Sections, SectionsViewHolder>(options) {
 
-            @Override
-            public SectionsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+                @Override
+                public SectionsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                    View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
 
-                return new SectionsViewHolder(view);
-            }
+                    return new SectionsViewHolder(view);
+                }
 
-            @Override
-            protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, int position, @NonNull Sections sections) {
+                @Override
+                protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, int position, @NonNull Sections sections) {
 
-                final String sectionKey = getRef(position).getKey();
+                    final String sectionKey = getRef(position).getKey();
 
-                mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+                    mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        if (dataSnapshot != null) {
-                            final String sectionName = dataSnapshot.child("name").getValue().toString();
-                            String sectionImage = dataSnapshot.child("image").getValue().toString();
-                            long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
-
-
-                            sectionsViewHolder.setName(sectionName);
-                            sectionsViewHolder.setTimeStamp(sectionCreationDate);
-                            sectionsViewHolder.setSectionImage(sectionImage, getContext());
+                            if (dataSnapshot != null) {
+                                final String sectionName = dataSnapshot.child("name").getValue().toString();
+                                String sectionImage = dataSnapshot.child("image").getValue().toString();
+                                long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
-                            sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
+                                sectionsViewHolder.setName(sectionName);
+                                sectionsViewHolder.setTimeStamp(sectionCreationDate);
+                                sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
-                                    Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                    chatIntent.putExtra("section_key", sectionKey);
-                                    chatIntent.putExtra("section_name", sectionName);
-                                    startActivity(chatIntent);
 
-                                }
-                            });
+                                sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
 
+                                        Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
+                                        chatIntent.putExtra("section_key", sectionKey);
+                                        chatIntent.putExtra("section_name", sectionName);
+                                        startActivity(chatIntent);
+
+                                    }
+                                });
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                    });
 
 
-            }
+                }
 
 
-        };
-        recyclerView.setAdapter(sectionsRecyclerViewAdapter);
+            };
+            recyclerView.setAdapter(sectionsRecyclerViewAdapter);
 
-
+        }
     }
 
     public static class SectionsViewHolder extends RecyclerView.ViewHolder {
