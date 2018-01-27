@@ -39,7 +39,8 @@
             android:id="@+id/section_leave_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/section_settings_img_btn"
+            android:layout_toRightOf="@+id/section_track_all"
+            android:textAllCaps="false"
             android:text="Leave Group"
             />
 
@@ -47,7 +48,17 @@
             android:id="@+id/section_settings_img_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAllCaps="false"
             android:text="Change Image" />
+
+        <Button
+            android:id="@+id/section_track_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAllCaps="false"
+            android:layout_toRightOf="@+id/section_settings_img_btn"
+            android:text="Track All"
+            />
 
     </RelativeLayout>
 
