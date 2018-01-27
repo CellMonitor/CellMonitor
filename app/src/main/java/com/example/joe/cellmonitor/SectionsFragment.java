@@ -48,9 +48,9 @@ public class SectionsFragment extends Fragment {
 
     private FirebaseAuth mAuth;
     private List<Sections> mSectionList;
-    private DatabaseReference mUserSectionDatabase,mSectionsDatabase ;
+    private DatabaseReference mUserSectionDatabase, mSectionsDatabase;
     private RecyclerView recyclerView;
-    String currentUserID ;
+    String currentUserID;
 
 
     public SectionsFragment() {
@@ -66,7 +66,7 @@ public class SectionsFragment extends Fragment {
         View mMainView = inflater.inflate(R.layout.fragment_sections, container, false);
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user!=null) {
+        if (user != null) {
             currentUserID = mAuth.getCurrentUser().getUid();
             mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
             mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
@@ -116,7 +116,6 @@ public class SectionsFragment extends Fragment {
         }
 
 
-
         FirebaseRecyclerOptions<Sections> options = new FirebaseRecyclerOptions.Builder<Sections>()
                 .setQuery(mUserSectionDatabase, Sections.class)
                 .setLifecycleOwner(this)
@@ -151,17 +150,17 @@ public class SectionsFragment extends Fragment {
                             sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
 
-                        sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                            sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 
-                                Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                chatIntent.putExtra("section_key", sectionKey);
-                                chatIntent.putExtra("section_name", sectionName);
-                                startActivity(chatIntent);
+                                    Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
+                                    chatIntent.putExtra("section_key", sectionKey);
+                                    chatIntent.putExtra("section_name", sectionName);
+                                    startActivity(chatIntent);
 
-                            }
-                        });
+                                }
+                            });
 
 
                         }
@@ -179,11 +178,6 @@ public class SectionsFragment extends Fragment {
 
         };
         recyclerView.setAdapter(sectionsRecyclerViewAdapter);
-
-
-
-
-
 
 
     }
@@ -235,7 +229,6 @@ public class SectionsFragment extends Fragment {
             });
 
         }
-
 
 
     }
