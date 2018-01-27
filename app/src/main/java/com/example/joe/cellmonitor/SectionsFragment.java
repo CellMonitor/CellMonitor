@@ -67,7 +67,7 @@ public class SectionsFragment extends Fragment {
 
 
         currentUserID = mAuth.getCurrentUser().getUid();
-        mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section").child(currentUserID);
+        mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
         mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
         recyclerView = mMainView.findViewById(R.id.secList);
         recyclerView.setHasFixedSize(true);
