@@ -11,40 +11,40 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="170dp"
         android:layout_height="170dp"
-        android:id="@+id/profile_pic"
+        android:id="@+id/section_profile_pic"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
         android:src="@drawable/avatar" />
 
     <TextView
-        android:id="@+id/displayName"
+        android:id="@+id/section_displayName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_pic"
+        android:layout_below="@+id/section_profile_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:text="Display Name"
         android:textColor="#000"
         android:textSize="30sp" />
     <RelativeLayout
-        android:id="@+id/Buttons"
+        android:id="@+id/section_Buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/displayName"
+        android:layout_below="@+id/section_displayName"
         android:layout_marginTop="18dp"
         android:layout_centerHorizontal="true">
 
         <Button
-            android:id="@+id/leave_btn"
+            android:id="@+id/section_leave_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/settings_img_btn"
+            android:layout_toRightOf="@+id/section_settings_img_btn"
             android:text="Leave Group"
             />
 
         <Button
-            android:id="@+id/settings_img_btn"
+            android:id="@+id/section_settings_img_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Change Image" />
@@ -52,8 +52,8 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/members_label"
-        android:layout_below="@id/Buttons"
+        android:id="@+id/section_members_label"
+        android:layout_below="@id/section_Buttons"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"
@@ -64,7 +64,7 @@
         android:id="@+id/membersList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/members_label"
+        android:layout_below="@+id/section_members_label"
         >
 
     </android.support.v7.widget.RecyclerView>
