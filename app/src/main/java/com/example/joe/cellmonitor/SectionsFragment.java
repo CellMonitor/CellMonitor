@@ -70,8 +70,10 @@ public class SectionsFragment extends Fragment {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             currentUserID = mAuth.getCurrentUser().getUid();
-            mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section");
+            mUserSectionDatabase = FirebaseDatabase.getInstance().getReference("User_Section").child(currentUserID);
+            mUserSectionDatabase.keepSynced(true);
             mSectionsDatabase = FirebaseDatabase.getInstance().getReference("Sections");
+            mSectionsDatabase.keepSynced(true);
             recyclerView = mMainView.findViewById(R.id.secList);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -133,51 +135,39 @@ public class SectionsFragment extends Fragment {
                 }
 
                 @Override
-                protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, final int position, @NonNull Sections sections) {
+                protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, final int position, @NonNull final Sections sections) {
 
                     final String sectionKey = getRef(position).getKey();
-                    mUserSectionDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
+                    Log.d("Section_Key : ", sectionKey);
+
+                    mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.d("DataSnapShot1 : ",dataSnapshot.toString());
-                            if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
-                                mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        Log.d("DataSnapShot2 : ", dataSnapshot.toString());
-                                        if (dataSnapshot != null) {
-                                            final String sectionName = dataSnapshot.child("name").getValue().toString();
-                                            String sectionImage = dataSnapshot.child("image").getValue().toString();
-                                            long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
+                            Log.d("DataSnapShot : " , dataSnapshot.toString());
+                            final String sectionName = dataSnapshot.child("name").getValue().toString();
+                            String sectionImage = dataSnapshot.child("image").getValue().toString();
+                            long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
-                                            sectionsViewHolder.setName(sectionName);
-                                            sectionsViewHolder.setTimeStamp(sectionCreationDate);
-                                            sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
 
-                                            sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View view) {
+                            sectionsViewHolder.setName(sectionName);
+                            sectionsViewHolder.setTimeStamp(sectionCreationDate);
+                            sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
-                                                    Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                                    chatIntent.putExtra("section_key", sectionKey);
-                                                    chatIntent.putExtra("section_name", sectionName);
-                                                    startActivity(chatIntent);
+                            sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 
-                                                }
-                                            });
+                                    Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
+                                    chatIntent.putExtra("section_key", sectionKey);
+                                    chatIntent.putExtra("section_name", sectionName);
+                                    startActivity(chatIntent);
+
+                                }
+                            });
 
 
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
-                            }
                         }
 
                         @Override
@@ -185,7 +175,6 @@ public class SectionsFragment extends Fragment {
 
                         }
                     });
-
 
 
 

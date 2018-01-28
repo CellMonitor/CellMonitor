@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,10 +134,12 @@ public class FriendsFragment extends Fragment {
 
 
                     final String list_user_id = getRef(position).getKey();
+                    Log.d("list_user_id : ", list_user_id);
 
                     mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d("DataSnapShot2 : " , dataSnapshot.toString());
 
                             final String userName = dataSnapshot.child("name").getValue().toString();
                             String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
