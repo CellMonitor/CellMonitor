@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,54 +133,49 @@ public class SectionsFragment extends Fragment {
                 }
 
                 @Override
-                protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, int position, @NonNull Sections sections) {
+                protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, final int position, @NonNull Sections sections) {
 
-                    mUserSectionDatabase.addValueEventListener(new ValueEventListener() {
+                    final String sectionKey = getRef(position).getKey();
+                    mUserSectionDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot ds : dataSnapshot.getChildren()){
-                                if (ds.hasChild(mAuth.getCurrentUser().getUid())){
-                                    final String key = ds.getKey();
+                            if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
+                                mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                    mSectionsDatabase.child(key).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                                            if (dataSnapshot != null) {
-                                                final String sectionName = dataSnapshot.child("name").getValue().toString();
-                                                String sectionImage = dataSnapshot.child("image").getValue().toString();
-                                                long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
+                                        if (dataSnapshot != null) {
+                                            final String sectionName = dataSnapshot.child("name").getValue().toString();
+                                            String sectionImage = dataSnapshot.child("image").getValue().toString();
+                                            long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
-                                                sectionsViewHolder.setName(sectionName);
-                                                sectionsViewHolder.setTimeStamp(sectionCreationDate);
-                                                sectionsViewHolder.setSectionImage(sectionImage, getContext());
+                                            sectionsViewHolder.setName(sectionName);
+                                            sectionsViewHolder.setTimeStamp(sectionCreationDate);
+                                            sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
 
-                                                sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View view) {
+                                            sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
 
-                                                        Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                                        chatIntent.putExtra("section_key", key);
-                                                        chatIntent.putExtra("section_name", sectionName);
-                                                        startActivity(chatIntent);
+                                                    Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
+                                                    chatIntent.putExtra("section_key", sectionKey);
+                                                    chatIntent.putExtra("section_name", sectionName);
+                                                    startActivity(chatIntent);
 
-                                                    }
-                                                });
+                                                }
+                                            });
 
-
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
 
                                         }
-                                    });
+                                    }
 
-                                }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
+                                    }
+                                });
                             }
                         }
 
@@ -188,6 +184,7 @@ public class SectionsFragment extends Fragment {
 
                         }
                     });
+                    //Log.e("String ", sectionKey);
 
 
 
@@ -217,6 +214,13 @@ public class SectionsFragment extends Fragment {
 
             TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
+
+        }
+
+        public void removeView(View view){
+
+            removeView(view);
+
 
         }
 
