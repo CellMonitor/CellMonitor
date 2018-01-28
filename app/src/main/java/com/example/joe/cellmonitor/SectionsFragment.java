@@ -217,12 +217,7 @@ public class SectionsFragment extends Fragment {
 
         }
 
-        public void removeView(View view){
 
-            removeView(view);
-
-
-        }
 
         public void setTimeStamp(long timeStamp) {
 
