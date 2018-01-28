@@ -184,7 +184,7 @@ public class SectionsFragment extends Fragment {
 
                         }
                     });
-                    //Log.e("String ", sectionKey);
+
 
 
 
