@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -133,35 +134,51 @@ public class SectionsFragment extends Fragment {
                 @Override
                 protected void onBindViewHolder(@NonNull final SectionsViewHolder sectionsViewHolder, int position, @NonNull Sections sections) {
 
-                    final String sectionKey = getRef(position).getKey();
-
-                    mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
+                    mUserSectionDatabase.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot ds : dataSnapshot.getChildren()){
+                                if (ds.hasChild(mAuth.getCurrentUser().getUid())){
+                                    final String key = ds.getKey();
 
-                            if (dataSnapshot != null) {
-                                final String sectionName = dataSnapshot.child("name").getValue().toString();
-                                String sectionImage = dataSnapshot.child("image").getValue().toString();
-                                long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
+                                    mSectionsDatabase.child(key).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                            if (dataSnapshot != null) {
+                                                final String sectionName = dataSnapshot.child("name").getValue().toString();
+                                                String sectionImage = dataSnapshot.child("image").getValue().toString();
+                                                long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
-                                sectionsViewHolder.setName(sectionName);
-                                sectionsViewHolder.setTimeStamp(sectionCreationDate);
-                                sectionsViewHolder.setSectionImage(sectionImage, getContext());
+                                                sectionsViewHolder.setName(sectionName);
+                                                sectionsViewHolder.setTimeStamp(sectionCreationDate);
+                                                sectionsViewHolder.setSectionImage(sectionImage, getContext());
 
 
-                                sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
+                                                sectionsViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
 
-                                        Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
-                                        chatIntent.putExtra("section_key", sectionKey);
-                                        chatIntent.putExtra("section_name", sectionName);
-                                        startActivity(chatIntent);
+                                                        Intent chatIntent = new Intent(getContext(), SectionChatRoomActivity.class);
+                                                        chatIntent.putExtra("section_key", key);
+                                                        chatIntent.putExtra("section_name", sectionName);
+                                                        startActivity(chatIntent);
 
-                                    }
-                                });
+                                                    }
+                                                });
 
+
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
+                                }
 
                             }
                         }
@@ -171,6 +188,8 @@ public class SectionsFragment extends Fragment {
 
                         }
                     });
+
+
 
 
                 }
