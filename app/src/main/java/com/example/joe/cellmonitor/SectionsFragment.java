@@ -139,11 +139,12 @@ public class SectionsFragment extends Fragment {
                     mUserSectionDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.d("DataSnapShot1 : ",dataSnapshot.toString());
                             if (dataSnapshot.hasChild(mAuth.getCurrentUser().getUid())){
                                 mSectionsDatabase.child(sectionKey).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-
+                                        Log.d("DataSnapShot2 : ", dataSnapshot.toString());
                                         if (dataSnapshot != null) {
                                             final String sectionName = dataSnapshot.child("name").getValue().toString();
                                             String sectionImage = dataSnapshot.child("image").getValue().toString();
