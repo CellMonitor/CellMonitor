@@ -106,6 +106,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40, -168), new LatLng(71, 136));
     private static final int PLACE_PICKER_REQUEST = 1;
+    private Intent intent;
 
     //widgets
     private AutoCompleteTextView mSearchText;
@@ -559,68 +560,134 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Friends")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot friendsSnapShot : dataSnapshot.getChildren()){
-                            String usersID = friendsSnapShot.getKey();
-                            Toast.makeText(MapActivity.this, usersID, Toast.LENGTH_LONG).show();
 
-                            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(usersID);
-                            usersRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.hasChild("Location")) {
-                                        String location = dataSnapshot.child("Location").getValue().toString();
-                                        String displayName = dataSnapshot.child("name").getValue().toString();
-                                        String image = dataSnapshot.child("image").getValue().toString();
-                                        long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
-                                        String[] separated = location.split(",");
-                                        String latiPos = separated[0].trim();
-                                        String longiPos = separated[1].trim();
 
-                                        double latitude = Double.parseDouble(latiPos);
-                                        double longitude = Double.parseDouble(longiPos);
+                intent = MapActivity.this.getIntent();
+                if (intent.getExtras().getString("sectionKey") == null) {
+                    final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Friends")
+                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot friendsSnapShot : dataSnapshot.getChildren()) {
+                                String usersID = friendsSnapShot.getKey();
 
-                                        LatLng customMarkerLocation = new LatLng(latitude, longitude);
-                                        mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
-                                                icon(BitmapDescriptorFactory.fromBitmap(
-                                                        createCustomMarker(MapActivity.this, image, displayName))));
 
-                                        //LatLngBound will cover all your marker on Google Maps
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(usersID);
+                                usersRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.hasChild("Location")) {
+                                            String location = dataSnapshot.child("Location").getValue().toString();
+                                            String displayName = dataSnapshot.child("name").getValue().toString();
+                                            String image = dataSnapshot.child("image").getValue().toString();
+                                            long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                            String[] separated = location.split(",");
+                                            String latiPos = separated[0].trim();
+                                            String longiPos = separated[1].trim();
 
-                                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                                        builder.include(customMarkerLocation); //Taking Point A (First LatLng)
-                                        // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
-                                        //LatLngBounds bounds = builder.build();
-                                        //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
-                                        //mMap.moveCamera(cu);
-                                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                            double latitude = Double.parseDouble(latiPos);
+                                            double longitude = Double.parseDouble(longiPos);
+
+                                            LatLng customMarkerLocation = new LatLng(latitude, longitude);
+                                            mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                                    icon(BitmapDescriptorFactory.fromBitmap(
+                                                            createCustomMarker(MapActivity.this, image, displayName))));
+
+                                            //LatLngBound will cover all your marker on Google Maps
+
+                                            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                            builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                            // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                            //LatLngBounds bounds = builder.build();
+                                            //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                            //mMap.moveCamera(cu);
+                                            //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                        }
+
+
                                     }
 
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
+                                    }
+                                });
 
 
+                            }
 
                         }
 
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                } else if (intent.getExtras().getString("sectionKey")!=null){
+                    String sectionKey = intent.getExtras().getString("sectionKey");
+                    Log.d("Section_Key12 : " , sectionKey);
+                    DatabaseReference mSectionRef = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
+                    mSectionRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot membersSnapshot  : dataSnapshot.getChildren()) {
+                                String user_ID = membersSnapshot.getKey();
 
-                    }
-                });
+                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(user_ID);
+                                usersRef.addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.hasChild("Location")) {
+                                            String location = dataSnapshot.child("Location").getValue().toString();
+                                            String displayName = dataSnapshot.child("name").getValue().toString();
+                                            String image = dataSnapshot.child("image").getValue().toString();
+                                            long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                            String[] separated = location.split(",");
+                                            String latiPos = separated[0].trim();
+                                            String longiPos = separated[1].trim();
 
+                                            double latitude = Double.parseDouble(latiPos);
+                                            double longitude = Double.parseDouble(longiPos);
+
+                                            LatLng customMarkerLocation = new LatLng(latitude, longitude);
+                                            mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                                    icon(BitmapDescriptorFactory.fromBitmap(
+                                                            createCustomMarker(MapActivity.this, image, displayName))));
+
+                                            //LatLngBound will cover all your marker on Google Maps
+
+                                            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                            builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                            // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                            //LatLngBounds bounds = builder.build();
+                                            //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                            //mMap.moveCamera(cu);
+                                            //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                        }
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
 
             }
         });
@@ -784,6 +851,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     }
 
+    @Override
+    protected void onStop() {
+        intent = null;
+        super.onStop();
+
+    }
 
     public  Bitmap createCustomMarker(Context context, final String uri, String _name) {
 

@@ -51,7 +51,7 @@ public class SectionProfileActivity extends AppCompatActivity {
     //layout
     private CircleImageView mDisplayImage;
     private TextView mName;
-    private Button mImageBtn;
+    private Button mImageBtn , mTrackBtn;
 
     private StorageReference mImageStorage;
 
@@ -67,6 +67,16 @@ public class SectionProfileActivity extends AppCompatActivity {
         mImageBtn = findViewById(R.id.section_settings_img_btn);
         mImageStorage = FirebaseStorage.getInstance().getReference();
         sectionKey = getIntent().getStringExtra("section_key");
+        mTrackBtn = findViewById(R.id.section_track_all);
+        mTrackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SectionProfileActivity.this,MapActivity.class);
+                intent.putExtra("sectionKey",sectionKey);
+                startActivity(intent);
+            }
+        });
+
 
 
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
