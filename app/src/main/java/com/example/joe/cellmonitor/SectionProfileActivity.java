@@ -179,7 +179,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                 Uri resultUri = result.getUri();
 
 
-                StorageReference filepath = mImageStorage.child("profile_images").child(sectionKey + ".jpg");
+                final StorageReference filepath = mImageStorage.child("profile_images").child(sectionKey + ".jpg");
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -192,15 +192,18 @@ public class SectionProfileActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
                                         Toast.makeText(SectionProfileActivity.this, "Success Uploading", Toast.LENGTH_SHORT).show();
+                                        finish();
                                         mProgressDialog.dismiss();
                                     } else {
                                         Toast.makeText(SectionProfileActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
+                                        finish();
                                         mProgressDialog.dismiss();
                                     }
                                 }
                             });
 
                         } else {
+                            finish();
                             Toast.makeText(SectionProfileActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
                             mProgressDialog.dismiss();
                         }
