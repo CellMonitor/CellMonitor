@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:textAllCaps="false"
             android:layout_toRightOf="@+id/section_settings_img_btn"
-            android:text="Track All"
+            android:text="Track Group"
             />
 
     </RelativeLayout>
