@@ -1,5 +1,6 @@
 package com.example.joe.cellmonitor;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -14,15 +15,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.joe.cellmonitor.models.Sections;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
@@ -30,6 +35,8 @@ import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,7 +44,7 @@ public class UserGroupsActivity extends AppCompatActivity {
 
     private Toolbar mGroupsToolbar;
     private RecyclerView recyclerView;
-    private DatabaseReference mUserSectionsDatabase,mSectionDatabase;
+    private DatabaseReference mUserSectionsDatabase,mSectionDatabase,mUserSectionsDatabase2;
     private FirebaseAuth mAuth;
     private String mFriendID;
     @Override
@@ -53,6 +60,7 @@ public class UserGroupsActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mSectionDatabase = FirebaseDatabase.getInstance().getReference("Sections");
+        mUserSectionsDatabase2 = FirebaseDatabase.getInstance().getReference("User_Section");
         mUserSectionsDatabase = FirebaseDatabase.getInstance().getReference("User_Section").child(mAuth.getCurrentUser().getUid());
 
 
@@ -111,6 +119,40 @@ public class UserGroupsActivity extends AppCompatActivity {
                         holder.mView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                final ProgressDialog progressDialog = new ProgressDialog(UserGroupsActivity.this);
+                                progressDialog.setMessage("Please wait while Adding your friend to the group ..");
+                                progressDialog.show();
+
+
+                                Log.d("JohnSectionKey :",sectionKeys);
+                                Log.d("JohnFriendID :" , mFriendID);
+                                Log.d("JohnCurrentUid :",mAuth.getCurrentUser().getUid());
+
+                                final Map userSectionMap = new HashMap();
+                                userSectionMap.put("AddedTime",ServerValue.TIMESTAMP);
+                                userSectionMap.put("AddedBy",mAuth.getCurrentUser().getUid());
+                                mUserSectionsDatabase2.child(sectionKeys).child(mFriendID).updateChildren(userSectionMap).addOnCompleteListener(new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+
+                                        if (task.isSuccessful()){
+
+                                            mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedTime").setValue(ServerValue.TIMESTAMP);
+                                            mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedBy").setValue(mAuth.getCurrentUser().getUid());
+
+                                            progressDialog.dismiss();
+                                            Toast.makeText(UserGroupsActivity.this, "Your friend has been added successfully !", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            progressDialog.dismiss();
+                                            Toast.makeText(UserGroupsActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
+
+                                        }
+
+                                    }
+                                });
+
+
 
 
 
