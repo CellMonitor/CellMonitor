@@ -1,6 +1,8 @@
 package com.example.joe.cellmonitor;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -8,13 +10,22 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.joe.cellmonitor.models.Users;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,7 +62,9 @@ public class SectionProfileActivity extends AppCompatActivity {
     //layout
     private CircleImageView mDisplayImage;
     private TextView mName;
-    private Button mImageBtn , mTrackBtn;
+    private Button mImageBtn, mTrackBtn;
+    private RecyclerView membersRecyclerView;
+    private DatabaseReference mSectuonsMembers, mUsersDatabase;
 
     private StorageReference mImageStorage;
 
@@ -62,6 +75,9 @@ public class SectionProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_profile);
 
+        membersRecyclerView = findViewById(R.id.membersList);
+        membersRecyclerView.setHasFixedSize(true);
+        membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDisplayImage = findViewById(R.id.section_profile_pic);
         mName = findViewById(R.id.section_displayName);
         mImageBtn = findViewById(R.id.section_settings_img_btn);
@@ -71,13 +87,15 @@ public class SectionProfileActivity extends AppCompatActivity {
         mTrackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SectionProfileActivity.this,MapActivity.class);
-                intent.putExtra("sectionKey",sectionKey);
+                Intent intent = new Intent(SectionProfileActivity.this, MapActivity.class);
+                intent.putExtra("sectionKey", sectionKey);
                 startActivity(intent);
             }
         });
 
 
+        mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        mSectuonsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
 
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
         mSectionDatabase.keepSynced(true);
@@ -160,12 +178,6 @@ public class SectionProfileActivity extends AppCompatActivity {
                 Uri resultUri = result.getUri();
 
 
-
-
-
-
-
-
                 StorageReference filepath = mImageStorage.child("profile_images").child(sectionKey + ".jpg");
                 filepath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -173,15 +185,14 @@ public class SectionProfileActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             final String download_url = task.getResult().getDownloadUrl().toString();
                             Map update_hashMap = new HashMap();
-                            update_hashMap.put("image",download_url);
+                            update_hashMap.put("image", download_url);
                             mSectionDatabase.updateChildren(update_hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(SectionProfileActivity.this,"Success Uploading", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SectionProfileActivity.this, "Success Uploading", Toast.LENGTH_SHORT).show();
                                         mProgressDialog.dismiss();
-                                    }
-                                    else {
+                                    } else {
                                         Toast.makeText(SectionProfileActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
                                         mProgressDialog.dismiss();
                                     }
@@ -202,9 +213,101 @@ public class SectionProfileActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
+
+
+        FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
+                .setQuery(mSectuonsMembers, Users.class)
+                .setLifecycleOwner(this)
+                .build();
+
+        FirebaseRecyclerAdapter<Users, membersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, membersViewHolder>(options) {
+
+            @Override
+            public membersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+
+                return new membersViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull final membersViewHolder holder, int position, @NonNull Users model) {
+
+
+                final String list_user_id = getRef(position).getKey();
+                Log.d("list_user_id : ", list_user_id);
+
+                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("DataSnapShot2 : ", dataSnapshot.toString());
+
+                        final String userName = dataSnapshot.child("name").getValue().toString();
+                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
+                        String status = dataSnapshot.child("status").getValue().toString();
+
+
+                        holder.setName(userName);
+                        holder.setStatus(status);
+                        holder.setUserImage(userThumb, SectionProfileActivity.this);
+
+                        holder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
+
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(SectionProfileActivity.this);
+
+                                builder.setTitle("Select Options");
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //Click Event for each item.
+                                        if (i == 0) {
+
+                                            Intent profileIntent = new Intent(SectionProfileActivity.this, UserProfileActivity.class);
+                                            profileIntent.putExtra("user_id", list_user_id);
+                                            startActivity(profileIntent);
+
+                                        }
+
+                                        if (i == 1) {
+
+                                            Intent chatIntent = new Intent(SectionProfileActivity.this, ChatActivity.class);
+                                            chatIntent.putExtra("user_id", list_user_id);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+
+                                        }
+
+                                    }
+                                });
+
+                                builder.show();
+
+                            }
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+            }
+
+
+        };
+        membersRecyclerView.setAdapter(firebaseRecyclerAdapter);
 
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -249,7 +352,6 @@ public class SectionProfileActivity extends AppCompatActivity {
                                         myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
 
 
-
                                     }
                                 }
                             });
@@ -275,7 +377,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
         } else {
 
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -284,13 +386,55 @@ public class SectionProfileActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    public static class membersViewHolder extends RecyclerView.ViewHolder {
+
+        View mView;
+
+        membersViewHolder(View itemView) {
+            super(itemView);
+
+            mView = itemView;
+
+        }
 
 
+        public void setName(String name) {
+
+            TextView userNameView = mView.findViewById(R.id.user_single_name);
+            userNameView.setText(name);
+
+        }
+
+        public void setStatus(String status) {
+            TextView userStatusView = mView.findViewById(R.id.user_single_status);
+            userStatusView.setText(status);
+
+        }
+
+        void setUserImage(final String thumb_image, final Context ctx) {
+
+            final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
+            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+
+                }
+            });
+
+        }
 
 
     }
-
-
 
 
 }
