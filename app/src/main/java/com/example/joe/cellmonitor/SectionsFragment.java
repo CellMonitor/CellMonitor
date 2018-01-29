@@ -49,7 +49,6 @@ public class SectionsFragment extends Fragment {
 
 
     private FirebaseAuth mAuth;
-    private List<Sections> mSectionList;
     private DatabaseReference mUserSectionDatabase, mSectionsDatabase;
     private RecyclerView recyclerView;
     String currentUserID;
