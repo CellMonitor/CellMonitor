@@ -101,8 +101,13 @@
             android:name=".SectionChatRoomActivity"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".SectionProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SectionProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".UserGroupsActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".HomeActivity"
+            android:noHistory="true"></activity>
     </application>
 
 </manifest>

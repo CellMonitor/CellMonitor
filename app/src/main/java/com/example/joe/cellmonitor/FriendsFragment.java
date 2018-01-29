@@ -161,7 +161,7 @@ public class FriendsFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
 
-                                    CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
+                                    CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message" , "Add to Group"};
 
                                     final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
@@ -185,6 +185,13 @@ public class FriendsFragment extends Fragment {
                                                 chatIntent.putExtra("user_id", list_user_id);
                                                 chatIntent.putExtra("user_name", userName);
                                                 startActivity(chatIntent);
+
+                                            }
+                                            if (i == 2) {
+
+                                                Intent groupsIntent = new Intent(getContext(),UserGroupsActivity.class);
+                                                groupsIntent.putExtra("user_id",list_user_id);
+                                                startActivity(groupsIntent);
 
                                             }
 
