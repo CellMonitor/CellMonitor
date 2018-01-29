@@ -99,6 +99,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SectionChatRoomActivity"
+            android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SectionProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>

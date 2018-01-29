@@ -95,8 +95,9 @@ public class SectionProfileActivity extends AppCompatActivity {
 
 
         mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        mUsersDatabase.keepSynced(true);
         mSectuonsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
-
+        mSectuonsMembers.keepSynced(true);
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
         mSectionDatabase.keepSynced(true);
 
@@ -272,7 +273,9 @@ public class SectionProfileActivity extends AppCompatActivity {
 
                                             Intent profileIntent = new Intent(SectionProfileActivity.this, UserProfileActivity.class);
                                             profileIntent.putExtra("user_id", list_user_id);
+                                            profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(profileIntent);
+                                            finish();
 
                                         }
 
