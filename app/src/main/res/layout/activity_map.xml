@@ -75,7 +75,7 @@
         android:layout_height="40dp"
         android:id="@+id/place_picker"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:layout_below="@+id/relLayout1"
         android:src="@drawable/ic_map"/>
@@ -85,7 +85,7 @@
         android:layout_height="40dp"
         android:layout_below="@+id/place_picker"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:id="@+id/place_info"
         android:src="@drawable/ic_info"/>
