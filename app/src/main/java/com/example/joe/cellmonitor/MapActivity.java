@@ -19,6 +19,7 @@ import android.os.Bundle;
 
 import android.Manifest;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -642,7 +643,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                             LatLng customMarkerLocation = new LatLng(latitude, longitude);
                                             mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
                                                     icon(BitmapDescriptorFactory.fromBitmap(
-                                                            createCustomMarker(MapActivity.this, image, displayName))));
+                                                            createCustomMarker(MapActivity.this, image, displayName,locationTime))));
 
                                             //LatLngBound will cover all your marker on Google Maps
 
@@ -703,7 +704,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                             LatLng customMarkerLocation = new LatLng(latitude, longitude);
                                             mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
                                                     icon(BitmapDescriptorFactory.fromBitmap(
-                                                            createCustomMarker(MapActivity.this, image, displayName))));
+                                                            createCustomMarker(MapActivity.this, image, displayName,locationTime))));
 
                                             //LatLngBound will cover all your marker on Google Maps
 
@@ -908,11 +909,18 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     }
 
-    public  Bitmap createCustomMarker(Context context, final String uri, String _name) {
+    public  Bitmap createCustomMarker(Context context, final String uri, String _name , long timestamp) {
 
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
-        final CircleImageView markerImage = (CircleImageView) marker.findViewById(R.id.user_dp);
+        TextView mLastSeenText = marker.findViewById(R.id.lastSeenText);
+        GetTimeAgo getTimeAgo = new GetTimeAgo();
+        Log.d("LocationTime :", String.valueOf(timestamp));
+        String lastSeenTime = getTimeAgo.getTimeAgo(timestamp, MapActivity.this);
+        Log.d("lastSeenTime : ", lastSeenTime);
+        mLastSeenText.setText(lastSeenTime);
+
+        final CircleImageView markerImage =  marker.findViewById(R.id.user_dp);
         Picasso.with(MapActivity.this).load(uri).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(markerImage, new Callback() {
             @Override
             public void onSuccess() {
@@ -926,7 +934,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
             }
         });
-        TextView txt_name = (TextView)marker.findViewById(R.id.name);
+        TextView txt_name = marker.findViewById(R.id.name);
         txt_name.setText(_name);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
