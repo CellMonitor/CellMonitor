@@ -60,7 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("Notifications");
+        mNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("notifications");
         mNotificationDatabase.keepSynced(true);
         mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
         mProfileImage = findViewById(R.id.profile_image);
@@ -196,7 +196,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                 if (mCurrent_state.equals("not_friends")) {
 
-                    DatabaseReference newNotificiationref = mRootRef.child("Notifications").child(user_id).push();
+                    DatabaseReference newNotificiationref = mRootRef.child("notifications").child(user_id).push();
                     String newNotificationId = newNotificiationref.getKey();
 
                     HashMap<String, String> notificationData = new HashMap<>();
@@ -206,7 +206,7 @@ public class UserProfileActivity extends AppCompatActivity {
                     Map requestMap = new HashMap();
                     requestMap.put("Friend_req/" + mCurrent_user.getUid() + "/" + user_id + "/request_type", "sent");
                     requestMap.put("Friend_req/" + user_id + "/" + mCurrent_user.getUid() + "/request_type", "received");
-                    requestMap.put("Notifications/" + user_id + "/" + newNotificationId, notificationData);
+                    requestMap.put("notifications/" + user_id + "/" + newNotificationId, notificationData);
                     mRootRef.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
                         @Override
                         public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
