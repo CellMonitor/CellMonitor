@@ -27,7 +27,7 @@
     <item
         android:id="@+id/action_map"
         android:orderInCategory="100"
-        android:title="Map"
+        android:icon="@drawable/ic_map"
         app:showAsAction="always"
-        />
+        android:title="Map" />
 </menu>
