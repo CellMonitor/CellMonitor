@@ -61,6 +61,7 @@ public class UserProfileActivity extends AppCompatActivity {
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mRootRef = FirebaseDatabase.getInstance().getReference();
         mNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("Notifications");
+        mNotificationDatabase.keepSynced(true);
         mCurrent_user = FirebaseAuth.getInstance().getCurrentUser();
         mProfileImage = findViewById(R.id.profile_image);
         mProfileName = findViewById(R.id.profile_display_name);
