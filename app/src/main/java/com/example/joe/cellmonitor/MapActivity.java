@@ -110,7 +110,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mPlacePicker;
+    private ImageView mGps, mInfo, mPlacePicker , mDirection;
 
 
     //vars
@@ -120,6 +120,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     private GoogleApiClient mGoogleApiClient;
     private PlaceInfo mPlace;
     private Marker mMarker;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     //Directions
 
@@ -132,12 +133,11 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
         mPlacePicker = findViewById(R.id.place_picker);
+        mDirection = findViewById(R.id.track_them);
 
         //Direction between two points on map
 
-        String url = getRequestUrl(new LatLng(29.985327, 30.940379), new LatLng(29.972629, 30.944205));
-        TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-        taskRequestDirections.execute(url);
+
         getLocationPermission();
 
 
@@ -344,6 +344,60 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 }
             }
         });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                final LatLng position = marker.getPosition();
+                mDirection.setVisibility(View.VISIBLE);
+                mDirection.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+
+                        try {
+                            if (mLocationPermissionGranted) {
+                                final Task location = mFusedLocationProviderClient.getLastLocation();
+
+
+                                location.addOnCompleteListener(new OnCompleteListener() {
+                                    @Override
+                                    public void onComplete(@NonNull Task task) {
+                                        if (task.isSuccessful() && task.getResult() != null) {
+                                            Log.d(TAG, "onComplete: found location!");
+                                            Location currentLocation = (Location) task.getResult();
+
+                                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
+
+                                            String url = getRequestUrl(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())
+                                                    , new LatLng(position.latitude,position.longitude));
+                                            TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+                                            taskRequestDirections.execute(url);
+
+
+                                        } else {
+                                            Log.d(TAG, "onComplete: current location is null");
+                                            Toast.makeText(MapActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            }
+
+                        } catch (SecurityException e) {
+                            Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage());
+
+                        }
+
+                        mDirection.setVisibility(View.GONE);
+
+
+                    }
+                });
+
+
+                return false;
+            }
+        });
 
         hideSoftKeyboard();
 
@@ -389,7 +443,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
 
-        FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         try {
             if (mLocationPermissionGranted) {
