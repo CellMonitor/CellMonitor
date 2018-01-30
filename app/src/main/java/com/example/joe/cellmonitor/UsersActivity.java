@@ -13,8 +13,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +32,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -44,7 +49,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersActivity extends AppCompatActivity  {
 
-    public DatabaseReference databaseReference;
+    private DatabaseReference databaseReference,mUserDatabase;
+    private FirebaseAuth mAuth;
 
     ProgressDialog progressDialog;
 
@@ -55,8 +61,10 @@ public class UsersActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_users);
 
+        mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         databaseReference.keepSynced(true);
+        mUserDatabase = FirebaseDatabase.getInstance().getReference("Friends").child(mAuth.getCurrentUser().getUid());
 
         recyclerView =  findViewById(R.id.users_list);
 
@@ -82,9 +90,8 @@ public class UsersActivity extends AppCompatActivity  {
         progressDialog.show();
 
 
-        Query firebaseSearchQuery = databaseReference.orderByChild("name");
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
-                .setQuery(firebaseSearchQuery,Users.class)
+                .setQuery(databaseReference,Users.class)
                 .setLifecycleOwner(this)
                 .build();
         FirebaseRecyclerAdapter<Users,ViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, ViewHolder>(options) {
@@ -96,22 +103,66 @@ public class UsersActivity extends AppCompatActivity  {
                 return new ViewHolder(view);
             }
             @Override
-            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Users model) {
+            protected void onBindViewHolder(@NonNull final ViewHolder holder, int position, @NonNull final Users model) {
 
-                holder.setDisplayName(model.getName());
-                holder.setUserStatus(model.getStatus());
-                holder.setUserImage(model.getThumb_image(),getApplicationContext());
-                progressDialog.dismiss();
                 final String user_id = getRef(position).getKey();
+                if (!(user_id.equals(mAuth.getCurrentUser().getUid()))) {
+                    mUserDatabase.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!(dataSnapshot.hasChild(user_id))){
+                                databaseReference.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String usersID = dataSnapshot.getKey();
 
-                holder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(UsersActivity.this,UserProfileActivity.class);
-                        intent.putExtra("user_id",user_id);
-                        startActivity(intent);
-                    }
-                });
+                                        final String name = dataSnapshot.child("name").getValue().toString();
+                                        String status = dataSnapshot.child("status").getValue().toString();
+                                        String userImage = dataSnapshot.child("thumb_image").getValue().toString();
+
+
+                                        holder.setDisplayName(name);
+                                        holder.setUserStatus(status);
+                                        holder.setUserImage(userImage, getApplicationContext());
+                                        progressDialog.dismiss();
+
+
+                                        holder.mView.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                Intent intent = new Intent(UsersActivity.this, UserProfileActivity.class);
+                                                intent.putExtra("user_id", user_id);
+                                                startActivity(intent);
+                                            }
+                                        });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            } else {
+                                holder.removeViewsinCard();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+                } else {
+
+                    holder.removeViewsinCard();
+
+
+
+
+                }
 
             }
 
@@ -196,6 +247,14 @@ public class UsersActivity extends AppCompatActivity  {
             mView = itemView;
 
 
+        }
+
+        void removeViewsinCard(){
+            CardView cardView = mView.findViewById(R.id.cardView);
+            cardView.removeAllViewsInLayout();
+            cardView.setMinimumHeight(0);
+            cardView.setMinimumWidth(0);
+            cardView.setVisibility(View.GONE);
         }
 
         void setDisplayName(String name){
