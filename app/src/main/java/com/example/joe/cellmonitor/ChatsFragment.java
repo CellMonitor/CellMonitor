@@ -2,13 +2,11 @@ package com.example.joe.cellmonitor;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,10 +46,6 @@ public class ChatsFragment extends Fragment {
 
     private FirebaseAuth mAuth;
 
-    private String mCurrent_user_id;
-
-    private View mMainView;
-
 
     public ChatsFragment() {
         // Required empty public constructor
@@ -62,16 +56,16 @@ public class ChatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mMainView = inflater.inflate(R.layout.fragment_chats, container, false);
+        View mMainView = inflater.inflate(R.layout.fragment_chats, container, false);
 
-        mConvList = (RecyclerView) mMainView.findViewById(R.id.conv_list);
+        mConvList = mMainView.findViewById(R.id.conv_list);
         mAuth = FirebaseAuth.getInstance();
 
         if (mAuth.getCurrentUser() == null){
             Intent intent = new Intent(getContext(),LoginActivity.class);
             startActivity(intent);
         }else{
-            mCurrent_user_id = mAuth.getCurrentUser().getUid();
+            String mCurrent_user_id = mAuth.getCurrentUser().getUid();
 
             mConvDatabase = FirebaseDatabase.getInstance().getReference().child("Chat").child(mCurrent_user_id);
 
@@ -222,7 +216,7 @@ public class ChatsFragment extends Fragment {
 
         View mView;
 
-        public ConvViewHolder(View itemView) {
+        ConvViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
@@ -254,14 +248,14 @@ public class ChatsFragment extends Fragment {
 
         public void setName(String name){
 
-            TextView userNameView = (TextView) mView.findViewById(R.id.user_single_name);
+            TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
 
         }
 
-        public void setUserImage(final String thumb_image, final Context ctx){
+        void setUserImage(final String thumb_image, final Context ctx){
 
-            final CircleImageView userImageView = (CircleImageView) mView.findViewById(R.id.user_single_image);
+            final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
             Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
                 @Override
                 public void onSuccess() {
@@ -278,9 +272,9 @@ public class ChatsFragment extends Fragment {
 
         }
 
-        public void setUserOnline(String online_status) {
+        void setUserOnline(String online_status) {
 
-            ImageView userOnlineView = (ImageView) mView.findViewById(R.id.user_single_online_icon);
+            ImageView userOnlineView = mView.findViewById(R.id.user_single_online_icon);
 
             if(online_status.equals("true")){
 

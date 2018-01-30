@@ -1,19 +1,17 @@
 package com.example.joe.cellmonitor;
 
-/**
- * Created by Dell on 1/16/2018.
- */
+
 
 public class Conv {
 
-    public boolean seen;
+    private boolean seen;
     public long timestamp;
 
     public Conv(){
 
     }
 
-    public boolean isSeen() {
+    boolean isSeen() {
         return seen;
     }
 

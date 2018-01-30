@@ -3,7 +3,6 @@ package com.example.joe.cellmonitor;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.ViewGroup;
 
 
 
@@ -44,7 +43,7 @@ class SectionsPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position){
         switch (position){
             case 0:
-                return "SECTIONS";
+                return "GROUPS";
 
             case 1:
                 return "CHATS";

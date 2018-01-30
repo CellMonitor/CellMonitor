@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -58,8 +59,6 @@ public class ProfileActivity extends AppCompatActivity {
     private CircleImageView mDisplayImage;
     private TextView mName;
     private TextView mStatus;
-    private Button mStatusBtn;
-    private Button mImageBtn;
 
     private StorageReference mImageStorage;
 
@@ -74,8 +73,8 @@ public class ProfileActivity extends AppCompatActivity {
         mDisplayImage = findViewById(R.id.profile_pic);
         mName = findViewById(R.id.displayName);
         mStatus = findViewById(R.id.status);
-        mStatusBtn = findViewById(R.id.settings_status_btn);
-        mImageBtn = findViewById(R.id.settings_img_btn);
+        Button mStatusBtn = findViewById(R.id.settings_status_btn);
+        Button mImageBtn = findViewById(R.id.settings_img_btn);
         mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         mImageStorage = FirebaseStorage.getInstance().getReference();
 
@@ -90,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String name = dataSnapshot.child("name").getValue().toString();
                 final String image = dataSnapshot.child("image").getValue().toString();
                 String status = dataSnapshot.child("status").getValue().toString();
-                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
+
 
                 mName.setText(name);
                 mStatus.setText(status);
@@ -239,6 +238,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                Log.e("upload image error :", error.toString());
             }
         }
     }

@@ -1,12 +1,9 @@
 package com.example.joe.cellmonitor;
 
-import android.*;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,10 +49,8 @@ public class RequestActivity extends AppCompatActivity {
 
     private RecyclerView myRequestList;
     private DatabaseReference friendRequestRef;
-    private FirebaseAuth mAuth;
     String online_user_id;
     private DatabaseReference usersRef;
-    private DatabaseReference friendsDatabaseRef;
     private DatabaseReference friendsReqDatabaseRef;
     private DatabaseReference allDatabase;
 
@@ -67,11 +61,10 @@ public class RequestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_request);
 
         myRequestList = findViewById(R.id.request_list);
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         online_user_id = mAuth.getCurrentUser().getUid();
         friendRequestRef = FirebaseDatabase.getInstance().getReference().child("Friend_req").child(online_user_id);
         usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        friendsDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Friends");
         friendsReqDatabaseRef = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         allDatabase = FirebaseDatabase.getInstance().getReference();
         myRequestList.setHasFixedSize(true);
@@ -367,21 +360,21 @@ public class RequestActivity extends AppCompatActivity {
         View mView;
         
 
-        public RequestViewHolder(View itemView) {
+        RequestViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
 
         }
 
-        public void setUserName(String userName) {
+        void setUserName(String userName) {
 
             TextView userDisplayName = mView.findViewById(R.id.request_profile_name);
             userDisplayName.setText(userName);
 
         }
 
-        public void setThumb_image(final String userThumb , final Context ctx) {
+        void setThumb_image(final String userThumb, final Context ctx) {
 
             final CircleImageView thumb_image = mView.findViewById(R.id.request_profile_image);
             Picasso.with(ctx).load(userThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(thumb_image, new Callback() {
@@ -400,7 +393,7 @@ public class RequestActivity extends AppCompatActivity {
 
         }
 
-        public void setUserStatus(String status) {
+        void setUserStatus(String status) {
 
             TextView userDisplayStatus = mView.findViewById(R.id.request_profile_status);
             userDisplayStatus.setText(status);

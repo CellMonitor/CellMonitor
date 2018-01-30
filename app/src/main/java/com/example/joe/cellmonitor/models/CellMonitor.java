@@ -12,14 +12,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
-/**
- * Created by Dell on 1/13/2018.
- */
+
 
 public class CellMonitor extends Application {
 
     private DatabaseReference mUserDatabase;
-    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate() {
@@ -36,7 +33,7 @@ public class CellMonitor extends Application {
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
 
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null) {
 

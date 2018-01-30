@@ -1,6 +1,5 @@
 package com.example.joe.cellmonitor;
 
-import android.*;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,10 +28,8 @@ import com.google.firebase.database.ServerValue;
 public class StatusActivity extends AppCompatActivity {
 
     private TextInputLayout mStatus;
-    private Button mSavebtn;
 
     private DatabaseReference myRef;
-    private FirebaseUser mCurrentUser;
 
     private ProgressDialog mProgress;
 
@@ -48,11 +45,11 @@ public class StatusActivity extends AppCompatActivity {
         mProgress = new ProgressDialog(StatusActivity.this);
 
 
-        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseUser mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = mCurrentUser.getUid();
         myRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
         mStatus = findViewById(R.id.status_input);
-        mSavebtn = findViewById(R.id.saveBtn);
+        Button mSavebtn = findViewById(R.id.saveBtn);
 
         mStatus.getEditText().setText(status_value);
 

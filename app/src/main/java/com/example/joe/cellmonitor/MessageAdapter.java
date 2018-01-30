@@ -3,7 +3,6 @@ package com.example.joe.cellmonitor;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SyncContext;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,11 +38,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
 
     private List<Messages> mMessageList;
-    private DatabaseReference mUserDatabase;
     private String mChatUser;
     private Context ctx;
 
-    public MessageAdapter(List<Messages> mMessageList , String mChatUser , Context ctx) {
+    MessageAdapter(List<Messages> mMessageList, String mChatUser, Context ctx) {
 
         this.mMessageList = mMessageList;
         this.mChatUser = mChatUser;
@@ -61,22 +59,22 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
-    public class MessageViewHolder extends RecyclerView.ViewHolder {
+    class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText;
-        public CircleImageView profileImage;
-        public TextView displayName;
-        public ImageView messageImage;
-        public TextView messageTime;
+        TextView messageText;
+        CircleImageView profileImage;
+        TextView displayName;
+        ImageView messageImage;
+        TextView messageTime;
 
-        public MessageViewHolder(View view) {
+        MessageViewHolder(View view) {
             super(view);
 
-            messageTime = (TextView) view.findViewById(R.id.time_text_layout);
-            messageText = (TextView) view.findViewById(R.id.message_text_layout);
-            profileImage = (CircleImageView) view.findViewById(R.id.message_profile_layout);
-            displayName = (TextView) view.findViewById(R.id.name_text_layout);
-            messageImage = (ImageView) view.findViewById(R.id.message_image_layout);
+            messageTime = view.findViewById(R.id.time_text_layout);
+            messageText = view.findViewById(R.id.message_text_layout);
+            profileImage = view.findViewById(R.id.message_profile_layout);
+            displayName = view.findViewById(R.id.name_text_layout);
+            messageImage = view.findViewById(R.id.message_image_layout);
 
         }
     }
@@ -92,7 +90,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         final long timestamp = c.getTime();
 
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
+        DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override

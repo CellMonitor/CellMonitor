@@ -2,9 +2,7 @@ package com.example.joe.cellmonitor;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -43,7 +41,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserGroupsActivity extends AppCompatActivity {
 
-    private Toolbar mGroupsToolbar;
     private RecyclerView recyclerView;
     private DatabaseReference mUserSectionsDatabase,mSectionDatabase,mUserSectionsDatabase2;
     private FirebaseAuth mAuth;
@@ -52,7 +49,7 @@ public class UserGroupsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_groups);
-        mGroupsToolbar = findViewById(R.id.app_bar_layout);
+        Toolbar mGroupsToolbar = findViewById(R.id.app_bar_layout);
         setSupportActionBar(mGroupsToolbar);
 
         getSupportActionBar().setTitle("Select Group ..");
@@ -225,7 +222,7 @@ public class UserGroupsActivity extends AppCompatActivity {
 
 
 
-        public void setTimeStamp(long timeStamp) {
+        void setTimeStamp(long timeStamp) {
 
             SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd'\n'hh:mm a");
             String time = sfd.format(new Date(timeStamp));

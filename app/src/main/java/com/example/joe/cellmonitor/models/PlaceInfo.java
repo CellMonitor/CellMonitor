@@ -4,9 +4,7 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
-/**
- * Created by Dell on 12/29/2017.
- */
+
 
 public class PlaceInfo {
 

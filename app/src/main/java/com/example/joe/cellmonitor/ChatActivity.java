@@ -1,10 +1,7 @@
 package com.example.joe.cellmonitor;
 
-import android.*;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncContext;
-import android.content.SyncRequest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -59,18 +56,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatActivity extends AppCompatActivity {
 
     private String mChatUser;
-    private Toolbar mChatToolbar;
 
     private DatabaseReference mRootRef;
 
-    private TextView mTitleView;
     private TextView mLastSeenView;
     private CircleImageView mProfileImage;
-    private FirebaseAuth mAuth;
     private String mCurrentUserId;
 
-    private ImageButton mChatAddBtn;
-    private ImageButton mChatSendBtn;
     private EditText mChatMessageView;
 
     private RecyclerView mMessagesList;
@@ -101,7 +93,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        mChatToolbar = findViewById(R.id.chat_app_bar);
+        Toolbar mChatToolbar = findViewById(R.id.chat_app_bar);
         setSupportActionBar(mChatToolbar);
 
 
@@ -112,7 +104,7 @@ public class ChatActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mCurrentUserId = mAuth.getCurrentUser().getUid();
 
         mChatUser = getIntent().getStringExtra("user_id");
@@ -134,12 +126,12 @@ public class ChatActivity extends AppCompatActivity {
 
         // ---- Custom Action bar Items ----
 
-        mTitleView = findViewById(R.id.custom_bar_title);
+        TextView mTitleView = findViewById(R.id.custom_bar_title);
         mLastSeenView = findViewById(R.id.custom_bar_seen);
         mProfileImage = findViewById(R.id.custom_bar_image);
 
-        mChatAddBtn = findViewById(R.id.chat_add_btn);
-        mChatSendBtn = findViewById(R.id.chat_send_btn);
+        ImageButton mChatAddBtn = findViewById(R.id.chat_add_btn);
+        ImageButton mChatSendBtn = findViewById(R.id.chat_send_btn);
         mChatMessageView = findViewById(R.id.chat_message_view);
 
         mAdapter = new MessageAdapter(messagesList, mChatUser, ChatActivity.this);

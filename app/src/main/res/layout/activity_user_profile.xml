@@ -43,14 +43,7 @@
         android:layout_marginBottom="20dp"
         android:text="Send Frined Request" />
 
-    <TextView
-        android:id="@+id/profile_totalFriends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/profile_send_req_btn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="19dp"
-        android:text="Mutual Friends" />
+
 
     <Button
         android:id="@+id/profile_decline_btn"

@@ -63,7 +63,6 @@ public class SectionProfileActivity extends AppCompatActivity {
     //layout
     private CircleImageView mDisplayImage;
     private TextView mName;
-    private Button mImageBtn, mTrackBtn , mLeaveGroup;
     private RecyclerView membersRecyclerView;
     private FirebaseAuth mAuth;
     private DatabaseReference mSectionsMembers, mUsersDatabase , removeUserRef;
@@ -84,10 +83,10 @@ public class SectionProfileActivity extends AppCompatActivity {
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDisplayImage = findViewById(R.id.section_profile_pic);
         mName = findViewById(R.id.section_displayName);
-        mImageBtn = findViewById(R.id.section_settings_img_btn);
+        Button mImageBtn = findViewById(R.id.section_settings_img_btn);
         mImageStorage = FirebaseStorage.getInstance().getReference();
         sectionKey = getIntent().getStringExtra("section_key");
-        mTrackBtn = findViewById(R.id.section_track_all);
+        Button mTrackBtn = findViewById(R.id.section_track_all);
         mTrackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +97,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-        mLeaveGroup = findViewById(R.id.section_leave_btn);
+        Button mLeaveGroup = findViewById(R.id.section_leave_btn);
         mLeaveGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

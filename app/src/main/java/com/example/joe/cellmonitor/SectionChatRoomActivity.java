@@ -1,10 +1,7 @@
 package com.example.joe.cellmonitor;
 
-import android.*;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SyncContext;
-import android.content.SyncRequest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -59,17 +56,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SectionChatRoomActivity extends AppCompatActivity {
 
     private String sectionKey;
-    private Toolbar mChatToolbar;
 
     private DatabaseReference mRootRef;
 
-    private TextView mTitleView;
     private CircleImageView mProfileImage;
-    private FirebaseAuth mAuth;
     private String mCurrentUserId;
 
-    private ImageButton mChatAddBtn;
-    private ImageButton mChatSendBtn;
     private EditText mChatMessageView;
 
     private RecyclerView mMessagesList;
@@ -100,7 +92,7 @@ public class SectionChatRoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_chat_room);
 
-        mChatToolbar = findViewById(R.id.section_chat_app_bar);
+        Toolbar mChatToolbar = findViewById(R.id.section_chat_app_bar);
         setSupportActionBar(mChatToolbar);
 
 
@@ -111,7 +103,7 @@ public class SectionChatRoomActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
 
         mRootRef = FirebaseDatabase.getInstance().getReference();
-        mAuth = FirebaseAuth.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mCurrentUserId = mAuth.getCurrentUser().getUid();
 
         sectionKey = getIntent().getStringExtra("section_key");
@@ -136,11 +128,11 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
         // ---- Custom Action bar Items ----
 
-        mTitleView = findViewById(R.id.section_custom_bar_title);
+        TextView mTitleView = findViewById(R.id.section_custom_bar_title);
         mProfileImage = findViewById(R.id.section_custom_bar_image);
 
-        mChatAddBtn = findViewById(R.id.section_chat_add_btn);
-        mChatSendBtn = findViewById(R.id.section_chat_send_btn);
+        ImageButton mChatAddBtn = findViewById(R.id.section_chat_add_btn);
+        ImageButton mChatSendBtn = findViewById(R.id.section_chat_send_btn);
         mChatMessageView = findViewById(R.id.section_chat_message_view);
 
         mAdapter = new SectionMessageAdapter(messagesList, sectionKey, SectionChatRoomActivity.this);

@@ -1,7 +1,6 @@
 package com.example.joe.cellmonitor;
 
 
-import android.*;
 import android.app.ProgressDialog;
 
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +34,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
@@ -114,7 +111,7 @@ public class UsersActivity extends AppCompatActivity  {
                                 databaseReference.child(user_id).addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        String usersID = dataSnapshot.getKey();
+
 
                                         final String name = dataSnapshot.child("name").getValue().toString();
                                         String status = dataSnapshot.child("status").getValue().toString();

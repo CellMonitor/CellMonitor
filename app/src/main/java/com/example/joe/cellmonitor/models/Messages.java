@@ -1,8 +1,6 @@
 package com.example.joe.cellmonitor.models;
 
-/**
- * Created by Dell on 1/16/2018.
- */
+
 
 public class Messages {
 

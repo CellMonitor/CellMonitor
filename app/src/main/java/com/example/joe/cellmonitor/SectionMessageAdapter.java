@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.example.joe.cellmonitor.models.Messages;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,19 +30,16 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by Dell on 1/27/2018.
- */
+
 
 public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAdapter.MessageViewHolder>{
 
 
     private List<Messages> mMessageList;
-    private DatabaseReference mUserDatabase;
     private String mSectionKey;
     private Context ctx;
 
-    public SectionMessageAdapter(List<Messages> mMessageList , String mSectionKey , Context ctx) {
+    SectionMessageAdapter(List<Messages> mMessageList, String mSectionKey, Context ctx) {
 
         this.mMessageList = mMessageList;
         this.mSectionKey = mSectionKey;
@@ -61,22 +57,22 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
 
     }
 
-    public class MessageViewHolder extends RecyclerView.ViewHolder {
+    class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText;
-        public CircleImageView profileImage;
-        public TextView displayName;
-        public ImageView messageImage;
-        public TextView messageTime;
+        TextView messageText;
+        CircleImageView profileImage;
+        TextView displayName;
+        ImageView messageImage;
+        TextView messageTime;
 
-        public MessageViewHolder(View view) {
+        MessageViewHolder(View view) {
             super(view);
 
-            messageTime = (TextView) view.findViewById(R.id.time_text_layout);
-            messageText = (TextView) view.findViewById(R.id.message_text_layout);
-            profileImage = (CircleImageView) view.findViewById(R.id.message_profile_layout);
-            displayName = (TextView) view.findViewById(R.id.name_text_layout);
-            messageImage = (ImageView) view.findViewById(R.id.message_image_layout);
+            messageTime = view.findViewById(R.id.time_text_layout);
+            messageText = view.findViewById(R.id.message_text_layout);
+            profileImage = view.findViewById(R.id.message_profile_layout);
+            displayName = view.findViewById(R.id.name_text_layout);
+            messageImage = view.findViewById(R.id.message_image_layout);
 
         }
     }
@@ -89,10 +85,10 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
         String from_user = c.getFrom();
         String message_type = c.getType();
         final long message_time = c.getTime();
-        final long timestamp = c.getTime();
 
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
+
+        DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
 
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override

@@ -1,6 +1,5 @@
 package com.example.joe.cellmonitor;
 
-import android.*;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -41,10 +40,14 @@ import java.util.Map;
 public class UserProfileActivity extends AppCompatActivity {
 
     private ImageView mProfileImage;
-    private TextView mProfileName, mProfileStatus, mProfileFriendsCount;
+    private TextView mProfileName;
+    private TextView mProfileStatus;
     private Button mProfileSendReqBtn, mDeclineBtn;
 
-    private DatabaseReference mUsersDatabase, mFriendReqDatabase, mFriendDatabase, mNotificationDatabase , mRootRef;
+    private DatabaseReference mFriendReqDatabase;
+    private DatabaseReference mFriendDatabase;
+    private DatabaseReference mNotificationDatabase;
+    private DatabaseReference mRootRef;
     private FirebaseUser mCurrent_user;
 
     private ProgressDialog mProgressDialog;
@@ -56,7 +59,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
         final String user_id = getIntent().getStringExtra("user_id");
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+        DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
         mRootRef = FirebaseDatabase.getInstance().getReference();
@@ -66,7 +69,6 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileImage = findViewById(R.id.profile_image);
         mProfileName = findViewById(R.id.profile_display_name);
         mProfileStatus = findViewById(R.id.profile_status);
-        mProfileFriendsCount = findViewById(R.id.profile_totalFriends);
         mProfileSendReqBtn = findViewById(R.id.profile_send_req_btn);
         mDeclineBtn = findViewById(R.id.profile_decline_btn);
 

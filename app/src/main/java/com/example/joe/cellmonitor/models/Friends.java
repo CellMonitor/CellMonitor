@@ -1,11 +1,9 @@
 package com.example.joe.cellmonitor.models;
 
-/**
- * Created by Dell on 1/16/2018.
- */
+
 
 public class Friends {
-    public String date;
+    private String date;
 
     public Friends(){
 
