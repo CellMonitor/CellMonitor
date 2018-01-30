@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -101,65 +102,80 @@ public class UserGroupsActivity extends AppCompatActivity {
                 Log.d("Sections_Keys :" , sectionKeys);
 
 
-                mSectionDatabase.child(sectionKeys).addValueEventListener(new ValueEventListener() {
+                mUserSectionsDatabase2.child(sectionKeys).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("DataSnapShot : " , dataSnapshot.toString());
-                        final String sectionName = dataSnapshot.child("name").getValue().toString();
-                        String sectionImage = dataSnapshot.child("image").getValue().toString();
-                        long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
+                        if (!(dataSnapshot.hasChild(mFriendID))){
+                            mSectionDatabase.child(sectionKeys).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Log.d("DataSnapShot : " , dataSnapshot.toString());
+                                    final String sectionName = dataSnapshot.child("name").getValue().toString();
+                                    String sectionImage = dataSnapshot.child("image").getValue().toString();
+                                    long sectionCreationDate = (long) dataSnapshot.child("CreationTime").getValue();
 
 
 
 
-                        holder.setName(sectionName);
-                        holder.setTimeStamp(sectionCreationDate);
-                        holder.setSectionImage(sectionImage,UserGroupsActivity.this);
+                                    holder.setName(sectionName);
+                                    holder.setTimeStamp(sectionCreationDate);
+                                    holder.setSectionImage(sectionImage,UserGroupsActivity.this);
 
-                        holder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                final ProgressDialog progressDialog = new ProgressDialog(UserGroupsActivity.this);
-                                progressDialog.setMessage("Please wait while Adding your friend to the group ..");
-                                progressDialog.show();
+                                    holder.mView.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            final ProgressDialog progressDialog = new ProgressDialog(UserGroupsActivity.this);
+                                            progressDialog.setMessage("Please wait while Adding your friend to the group ..");
+                                            progressDialog.show();
 
 
-                                Log.d("JohnSectionKey :",sectionKeys);
-                                Log.d("JohnFriendID :" , mFriendID);
-                                Log.d("JohnCurrentUid :",mAuth.getCurrentUser().getUid());
+                                            Log.d("JohnSectionKey :",sectionKeys);
+                                            Log.d("JohnFriendID :" , mFriendID);
+                                            Log.d("JohnCurrentUid :",mAuth.getCurrentUser().getUid());
 
-                                final Map userSectionMap = new HashMap();
-                                userSectionMap.put("AddedTime",ServerValue.TIMESTAMP);
-                                userSectionMap.put("AddedBy",mAuth.getCurrentUser().getUid());
-                                mUserSectionsDatabase2.child(sectionKeys).child(mFriendID).updateChildren(userSectionMap).addOnCompleteListener(new OnCompleteListener() {
-                                    @Override
-                                    public void onComplete(@NonNull Task task) {
+                                            final Map userSectionMap = new HashMap();
+                                            userSectionMap.put("AddedTime",ServerValue.TIMESTAMP);
+                                            userSectionMap.put("AddedBy",mAuth.getCurrentUser().getUid());
+                                            mUserSectionsDatabase2.child(sectionKeys).child(mFriendID).updateChildren(userSectionMap).addOnCompleteListener(new OnCompleteListener() {
+                                                @Override
+                                                public void onComplete(@NonNull Task task) {
 
-                                        if (task.isSuccessful()){
+                                                    if (task.isSuccessful()){
 
-                                            mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedTime").setValue(ServerValue.TIMESTAMP);
-                                            mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedBy").setValue(mAuth.getCurrentUser().getUid());
+                                                        mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedTime").setValue(ServerValue.TIMESTAMP);
+                                                        mUserSectionsDatabase2.child(mFriendID).child(sectionKeys).child("AddedBy").setValue(mAuth.getCurrentUser().getUid());
 
-                                            progressDialog.dismiss();
-                                            Toast.makeText(UserGroupsActivity.this, "Your friend has been added successfully !", Toast.LENGTH_SHORT).show();
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(UserGroupsActivity.this, "Your friend has been added successfully !", Toast.LENGTH_SHORT).show();
 
-                                        } else {
-                                            progressDialog.dismiss();
-                                            Toast.makeText(UserGroupsActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
+                                                    } else {
+                                                        progressDialog.dismiss();
+                                                        Toast.makeText(UserGroupsActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
+
+                                                    }
+
+                                                }
+                                            });
+
+
+
+
 
                                         }
-
-                                    }
-                                });
+                                    });
 
 
+                                }
 
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
 
+                                }
+                            });
 
-                            }
-                        });
-
-
+                        } else {
+                            holder.removeViewsinCard();
+                        }
                     }
 
                     @Override
@@ -167,6 +183,7 @@ public class UserGroupsActivity extends AppCompatActivity {
 
                     }
                 });
+
 
 
 
@@ -197,6 +214,13 @@ public class UserGroupsActivity extends AppCompatActivity {
             TextView userNameView = mView.findViewById(R.id.user_single_name);
             userNameView.setText(name);
 
+        }
+        void removeViewsinCard(){
+            CardView cardView = mView.findViewById(R.id.cardView);
+            cardView.removeAllViewsInLayout();
+            cardView.setMinimumHeight(0);
+            cardView.setMinimumWidth(0);
+            cardView.setVisibility(View.GONE);
         }
 
 
