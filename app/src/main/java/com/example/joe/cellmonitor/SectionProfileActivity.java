@@ -29,6 +29,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,9 +63,10 @@ public class SectionProfileActivity extends AppCompatActivity {
     //layout
     private CircleImageView mDisplayImage;
     private TextView mName;
-    private Button mImageBtn, mTrackBtn;
+    private Button mImageBtn, mTrackBtn , mLeaveGroup;
     private RecyclerView membersRecyclerView;
-    private DatabaseReference mSectuonsMembers, mUsersDatabase;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mSectionsMembers, mUsersDatabase , removeUserRef;
 
     private StorageReference mImageStorage;
 
@@ -75,6 +77,8 @@ public class SectionProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_profile);
 
+        mAuth = FirebaseAuth.getInstance();
+        removeUserRef = FirebaseDatabase.getInstance().getReference("User_Section");
         membersRecyclerView = findViewById(R.id.membersList);
         membersRecyclerView.setHasFixedSize(true);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,15 +93,61 @@ public class SectionProfileActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SectionProfileActivity.this, MapActivity.class);
                 intent.putExtra("sectionKey", sectionKey);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
+            }
+        });
+        mLeaveGroup = findViewById(R.id.section_leave_btn);
+        mLeaveGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CharSequence options[] = new CharSequence[]{"Yes.", "No."};
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SectionProfileActivity.this);
+
+                builder.setTitle("Are you sure that you want to leave the group ?");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        //Click Event for each item.
+                        if (i == 0) {
+
+                            removeUserRef.child(sectionKey).child(mAuth.getCurrentUser().getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    removeUserRef.child(mAuth.getCurrentUser().getUid()).child(sectionKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Intent HomeActivityIntent = new Intent(SectionProfileActivity.this, HomeActivity.class);
+                                            HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            HomeActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                            startActivity(HomeActivityIntent);
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+
+
+
+                    }
+                });
+
+                builder.show();
+
+
             }
         });
 
 
         mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
         mUsersDatabase.keepSynced(true);
-        mSectuonsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
-        mSectuonsMembers.keepSynced(true);
+        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
+        mSectionsMembers.keepSynced(true);
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
         mSectionDatabase.keepSynced(true);
 
@@ -144,8 +194,9 @@ public class SectionProfileActivity extends AppCompatActivity {
                 Intent galleryIntent = new Intent();
                 galleryIntent.setType("image/*");
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-
+                galleryIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), GALLERY_PICK);
+                finish();
 
             }
         });
@@ -224,7 +275,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
 
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
-                .setQuery(mSectuonsMembers, Users.class)
+                .setQuery(mSectionsMembers, Users.class)
                 .setLifecycleOwner(this)
                 .build();
 
