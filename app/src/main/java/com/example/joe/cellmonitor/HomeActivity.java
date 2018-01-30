@@ -124,8 +124,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent requestIntent = new Intent(HomeActivity.this,RequestActivity.class);
             startActivity(requestIntent);
 
-        } else if (id == R.id.action_sections) {
-            return true;
         }
 
 
