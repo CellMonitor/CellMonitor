@@ -144,6 +144,7 @@ public class UsersActivity extends AppCompatActivity  {
                                 });
                             } else {
                                 holder.removeViewsinCard();
+                                progressDialog.dismiss();
                             }
                         }
 
@@ -158,6 +159,7 @@ public class UsersActivity extends AppCompatActivity  {
                 } else {
 
                     holder.removeViewsinCard();
+                    progressDialog.dismiss();
 
 
 
