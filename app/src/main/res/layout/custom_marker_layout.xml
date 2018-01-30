@@ -11,7 +11,12 @@
         android:layout_height="wrap_content"
         android:hint="last seen :"
         android:textColor="#000"
-        android:textSize="7sp"/>
+        android:gravity="center"
+        android:textSize="7sp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/blur_circle"
+        android:alpha="0.8"
+        android:layout_centerHorizontal="true"/>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_dp"
