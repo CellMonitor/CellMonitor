@@ -90,6 +90,21 @@
         android:id="@+id/place_info"
         android:src="@drawable/ic_info"/>
 
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/track_them"
+        android:layout_below="@id/ic_gps"
+        android:scaleType="centerCrop"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_track"
+        android:visibility="invisible"
+        />
+
+
+
 
 </RelativeLayout>
 
