@@ -45,6 +45,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         mAuth = FirebaseAuth.getInstance();
 
+        getSupportActionBar().setTitle("WeApp ❤");
+
 
         ViewPager mViewPager = findViewById(R.id.main_tabPager);
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
