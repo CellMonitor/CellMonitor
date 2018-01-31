@@ -109,6 +109,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
     //widgets
     private AutoCompleteTextView mSearchText;
     private ImageView mGps, mInfo, mPlacePicker , mDirection;
+    private TextView mNormal,mHybrid,mSatellite,mTerrain;
 
 
     //vars
@@ -133,6 +134,36 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         mPlacePicker = findViewById(R.id.place_picker);
         mDirection = findViewById(R.id.track_them);
 
+        mNormal = findViewById(R.id.normal);
+        mHybrid = findViewById(R.id.hybrid);
+        mSatellite = findViewById(R.id.satellite);
+        mTerrain = findViewById(R.id.terrain);
+
+
+        mNormal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            }
+        });
+        mHybrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            }
+        });
+        mSatellite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+            }
+        });
+        mTerrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+            }
+        });
         //Direction between two points on map
 
 

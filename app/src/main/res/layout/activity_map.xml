@@ -103,6 +103,79 @@
         android:visibility="gone"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        >
+
+
+        <TextView
+            android:id="@+id/normal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Normal"
+            android:gravity="center"
+            android:textStyle="italic"
+            android:textSize="17sp"
+            android:textColor="@color/white"
+            android:background="@drawable/back_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:stateListAnimator="@animator/lift_on_touch"
+            />
+
+        <TextView
+            android:id="@+id/satellite"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Satellite"
+            android:textStyle="italic"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/back_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:stateListAnimator="@animator/lift_on_touch"/>
+        <TextView
+            android:id="@+id/terrain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Terrain"
+            android:textStyle="italic"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/back_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:stateListAnimator="@animator/lift_on_touch"/>
+        <TextView
+            android:id="@+id/hybrid"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Hybrid"
+            android:textStyle="italic"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/back_border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:stateListAnimator="@animator/lift_on_touch"/>
+
+    </LinearLayout>
+
 
 
 
