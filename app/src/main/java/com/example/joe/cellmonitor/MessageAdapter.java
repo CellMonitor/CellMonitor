@@ -150,22 +150,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         } else {
 
+            SimpleDateFormat sfd = new SimpleDateFormat("hh:mm a");
+            String time = sfd.format(new Date(message_time));
+            viewHolder.messageTime.setText(time);
+
             viewHolder.messageText.setVisibility(View.INVISIBLE);
-            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage())
-                    .placeholder(R.drawable.avatar).into(viewHolder.messageImage);
-            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.messageImage, new Callback() {
-                @Override
-                public void onSuccess() {
+            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).into(viewHolder.messageImage);
 
-                }
-
-                @Override
-                public void onError() {
-
-                    Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).placeholder(R.drawable.avatar).into(viewHolder.messageImage);
-
-                }
-            });
 
         }
 
