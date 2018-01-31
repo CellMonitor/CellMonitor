@@ -77,6 +77,7 @@
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:id="@+id/editText2"
+        android:singleLine="true"
         android:layout_below="@+id/editText"
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText"

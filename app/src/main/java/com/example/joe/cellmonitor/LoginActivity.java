@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         //Remove title bar
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        //To remove notification bar
+        //To remove action bar
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -247,7 +247,7 @@ public class LoginActivity extends AppCompatActivity {
                     DatabaseReference usersData = users.child(uid);
                     HashMap<String, String> userMap = new HashMap<>();
                     userMap.put("name", current_user.getDisplayName());
-                    userMap.put("status", "Hey there ! .. I am using Cell Monitor");
+                    userMap.put("status", "Hey there ! .. I am using WeApp Tracking App.");
                     userMap.put("image", current_user.getPhotoUrl().toString());
                     userMap.put("thumb_image", "default");
                     userMap.put("device_token", deviceToken);
