@@ -78,7 +78,9 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".UsersActivity" />
+        <activity android:name=".UsersActivity"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar">

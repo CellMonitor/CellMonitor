@@ -37,7 +37,7 @@
         android:background="@drawable/marker_image">
 
         <TextView
-            android:text="janet John"
+            android:text="Display Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
