@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ServerValue;
 public class FirstActivity extends AppCompatActivity {
 
 
+    private static int SPLASH_TIME_OUT = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +35,21 @@ public class FirstActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_first);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent homeIntent = new Intent(FirstActivity.this,HomeActivity.class);
+                startActivity(homeIntent);
+                finish();
+
+            }
+        },SPLASH_TIME_OUT);
+
 
     }
 
-    public void buttonClicked(View view) {
 
-        Intent intent = new Intent(FirstActivity.this, HomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-
-    }
 
     @Override
     protected void onStart() {

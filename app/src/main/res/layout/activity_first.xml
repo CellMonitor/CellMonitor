@@ -8,30 +8,7 @@
     android:background="@drawable/abc"
     tools:context="com.example.joe.cellmonitor.FirstActivity">
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="235dp"
-            android:layout_weight="1"
-            android:text="Parent"
-            android:textAllCaps="false"
-            android:onClick="buttonClicked"
-            />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="235dp"
-            android:layout_weight="1"
-            android:text="Child"
-            android:textAllCaps="false"
-            />
 
 
 </LinearLayout>
