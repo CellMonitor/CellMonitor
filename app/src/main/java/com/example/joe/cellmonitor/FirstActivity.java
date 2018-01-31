@@ -92,7 +92,7 @@ public class FirstActivity extends AppCompatActivity {
                                         Location currentLocation = (Location) task.getResult();
                                         Double latitude = currentLocation.getLatitude();
                                         Double longitude = currentLocation.getLongitude();
-                                        Toast.makeText(FirstActivity.this, "Latitude : "+latitude + " Longitude : "+longitude, Toast.LENGTH_LONG).show();
+                                        //Toast.makeText(FirstActivity.this, "Latitude : "+latitude + " Longitude : "+longitude, Toast.LENGTH_LONG).show();
                                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
                                         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
                                         myRef.child("Location").setValue(latitude + "," + longitude);
@@ -100,8 +100,6 @@ public class FirstActivity extends AppCompatActivity {
 
 
 
-                                    } else {
-                                        Toast.makeText(FirstActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });

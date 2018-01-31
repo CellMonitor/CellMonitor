@@ -7,11 +7,13 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +51,7 @@ public class RequestActivity extends AppCompatActivity {
 
     private RecyclerView myRequestList;
     private DatabaseReference friendRequestRef;
-    String online_user_id;
+    private String online_user_id;
     private DatabaseReference usersRef;
     private DatabaseReference friendsReqDatabaseRef;
     private DatabaseReference allDatabase;
@@ -59,6 +61,14 @@ public class RequestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
+
+        Toolbar mRequestsToolbar = findViewById(R.id.request_app_bar);
+        setSupportActionBar(mRequestsToolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Requests ❤");
+
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         myRequestList = findViewById(R.id.request_list);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();

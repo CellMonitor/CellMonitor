@@ -95,7 +95,8 @@
             android:name=".ChatActivity"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".RequestActivity" />
+        <activity android:name=".RequestActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".RegisterActivity" />
         <activity
             android:name=".SectionsActivity"

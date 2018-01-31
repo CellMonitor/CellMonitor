@@ -5,9 +5,16 @@
     android:layout_height="match_parent"
     tools:context="com.example.joe.cellmonitor.RequestActivity">
 
+
+    <include
+        android:id="@+id/request_app_bar"
+        layout="@layout/app_bar_layout"
+        />
+
 <android.support.v7.widget.RecyclerView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_below="@+id/request_app_bar"
     android:id="@+id/request_list">
 
 
