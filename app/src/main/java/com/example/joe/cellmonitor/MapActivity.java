@@ -95,6 +95,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     }
 
+    private GetTimeAgo getTimeAgo = new GetTimeAgo();
     private static final String TAG = "MapActivity";
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -694,6 +695,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                             String displayName = dataSnapshot.child("name").getValue().toString();
                                             String image = dataSnapshot.child("image").getValue().toString();
                                             long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                            Log.d("Joe123 :", String.valueOf(locationTime));
                                             String[] separated = location.split(",");
                                             String latiPos = separated[0].trim();
                                             String longiPos = separated[1].trim();
@@ -914,12 +916,14 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
         TextView mLastSeenText = marker.findViewById(R.id.lastSeenText);
-        GetTimeAgo getTimeAgo = new GetTimeAgo();
         Log.d("LocationTime :", String.valueOf(timestamp));
         String lastSeenTime = getTimeAgo.getTimeAgo(timestamp, MapActivity.this);
-        Log.d("lastSeenTime : ", lastSeenTime);
-        mLastSeenText.setText(lastSeenTime);
-
+        if (lastSeenTime!=null) {
+            Log.d("lastSeenTime : ", lastSeenTime);
+            mLastSeenText.setText(lastSeenTime);
+        }else {
+            mLastSeenText.setText("");
+        }
         final CircleImageView markerImage =  marker.findViewById(R.id.user_dp);
         Picasso.with(MapActivity.this).load(uri).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(markerImage, new Callback() {
             @Override
