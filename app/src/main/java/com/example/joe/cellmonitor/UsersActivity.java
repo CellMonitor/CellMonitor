@@ -17,9 +17,14 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +41,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Callback;
@@ -51,9 +57,12 @@ public class UsersActivity extends AppCompatActivity  {
     private DatabaseReference databaseReference,mUserDatabase;
     private FirebaseAuth mAuth;
 
-    ProgressDialog progressDialog;
+    private EditText mSearchField;
+    private ImageButton mSearchBtn;
 
-    RecyclerView recyclerView;
+    private RecyclerView mResultList,recyclerView;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +74,24 @@ public class UsersActivity extends AppCompatActivity  {
         setSupportActionBar(mUsersToolbar);
 
 
+        mSearchField = findViewById(R.id.search_field);
+        mSearchBtn = findViewById(R.id.search_btn);
+
+        mResultList = findViewById(R.id.result_list);
+        mResultList.setHasFixedSize(true);
+        mResultList.setLayoutManager(new LinearLayoutManager(this));
+
+        mSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                hideSoftKeyboard();
+                String searchText = mSearchField.getText().toString();
+                if (!TextUtils.isEmpty(searchText)) {
+                    firebaseUserSearch(searchText);
+                }
+            }
+        });
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Add new Friends ..");
@@ -89,6 +116,51 @@ public class UsersActivity extends AppCompatActivity  {
 
 
 
+    }
+    private void hideSoftKeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    private void firebaseUserSearch(String searchText){
+
+        Query firebaseSearchQuery = databaseReference.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+        FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
+                .setQuery(firebaseSearchQuery,Users.class)
+                .setLifecycleOwner(this)
+                .build();
+
+        FirebaseRecyclerAdapter<Users,ViewHolder> mAdapter = new FirebaseRecyclerAdapter<Users, ViewHolder>(options) {
+            @Override
+            public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
+
+                return new ViewHolder(view);
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull Users model) {
+
+                final String user_id = getRef(position).getKey();
+                holder.setDetails(UsersActivity.this, model.getName(), model.getStatus(), model.getImage());
+
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(UsersActivity.this, UserProfileActivity.class);
+                        intent.putExtra("user_id", user_id);
+                        startActivity(intent);
+                    }
+                });
+            }
+
+
+        };
+        mResultList.setAdapter(mAdapter);
     }
 
     @Override
@@ -259,6 +331,32 @@ public class UsersActivity extends AppCompatActivity  {
             super(itemView);
 
             mView = itemView;
+
+
+        }
+        void setDetails(final Context ctx, String userName, String userStatus, final String userImage){
+
+            TextView user_name = mView.findViewById(R.id.user_single_name);
+            TextView user_status = mView.findViewById(R.id.user_single_status);
+            final ImageView user_image = mView.findViewById(R.id.user_single_image);
+
+
+            user_name.setText(userName);
+            user_status.setText(userStatus);
+
+            Picasso.with(ctx).load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(user_image, new Callback() {
+                @Override
+                public void onSuccess() {
+
+                }
+
+                @Override
+                public void onError() {
+
+                    Picasso.with(ctx).load(userImage).placeholder(R.drawable.avatar).into(user_image);
+
+                }
+            });
 
 
         }
