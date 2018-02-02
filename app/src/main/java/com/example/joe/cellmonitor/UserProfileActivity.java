@@ -1,6 +1,7 @@
 package com.example.joe.cellmonitor;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,10 +10,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +76,20 @@ public class UserProfileActivity extends AppCompatActivity {
         mProfileStatus = findViewById(R.id.profile_status);
         mProfileSendReqBtn = findViewById(R.id.profile_send_req_btn);
         mDeclineBtn = findViewById(R.id.profile_decline_btn);
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mProfileImage.getLayoutParams();
+        params.height = height/2;
+        // existing height is ok as is, no need to edit it
+        mProfileImage.setLayoutParams(params);
+
+
+
 
         mCurrent_state = "not_friends";
 
