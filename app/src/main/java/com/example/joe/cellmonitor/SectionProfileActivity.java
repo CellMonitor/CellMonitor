@@ -164,7 +164,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
 
                     Picasso.with(SectionProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
-                            .placeholder(R.drawable.avatar).into(mDisplayImage, new Callback() {
+                            .placeholder(R.drawable.group_avatar).into(mDisplayImage, new Callback() {
                         @Override
                         public void onSuccess() {
 
@@ -172,7 +172,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
                         @Override
                         public void onError() {
-                            Picasso.with(SectionProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
+                            Picasso.with(SectionProfileActivity.this).load(image).placeholder(R.drawable.group_avatar).into(mDisplayImage);
                         }
                     });
 

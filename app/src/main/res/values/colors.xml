@@ -3,8 +3,6 @@
     <color name="colorPrimary">#fe450001</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#f48b5f</color>
-    <color name="red_pressed">#DD4B39</color>
-    <color name="red_normal">#B64032</color>
     <color name="blue_pressed">#646464</color>
     <color name="blue_normal">#000000</color>
     <color name="white">#ffffff</color>
