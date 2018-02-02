@@ -234,8 +234,7 @@ public class UserGroupsActivity extends AppCompatActivity {
         void setSectionImage(final String thumb_image, final Context ctx) {
 
             final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
-            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
-            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
+            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.group_avatar).into(userImageView, new Callback() {
                 @Override
                 public void onSuccess() {
 
@@ -244,7 +243,7 @@ public class UserGroupsActivity extends AppCompatActivity {
                 @Override
                 public void onError() {
 
-                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
+                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.group_avatar).into(userImageView);
 
                 }
             });
