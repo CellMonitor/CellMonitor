@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity"
-    android:background="@drawable/abc">
+    android:background="@drawable/login_background">
 
     <View
         android:id="@+id/title"
@@ -63,6 +63,7 @@
         android:textSize="20sp"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
+        android:singleLine="true"
         android:id="@+id/register_email"
         android:layout_below="@+id/register_display_name"
         android:layout_alignLeft="@+id/register_display_name"
@@ -78,6 +79,7 @@
         android:hint="  Passwrod"
         android:drawableLeft="@drawable/ic_user_pw"
         android:textSize="20sp"
+        android:singleLine="true"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:id="@+id/reg_password"

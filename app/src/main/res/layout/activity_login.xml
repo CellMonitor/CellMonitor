@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoginActivity"
-    android:background="@drawable/abc">
+    android:background="@drawable/login_background">
 
     <View
         android:id="@+id/title"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/editText"
+        android:id="@+id/userName"
         android:drawableLeft="@drawable/ic_user_icon"
         android:hint="  Enter User Name"
         android:textColorHint="#999999"
@@ -76,13 +76,13 @@
         android:textSize="20sp"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:singleLine="true"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText" />
+        android:layout_below="@+id/userName"
+        android:layout_alignLeft="@+id/userName"
+        android:layout_alignStart="@+id/userName"
+        android:layout_alignRight="@+id/userName"
+        android:layout_alignEnd="@+id/userName" />
 
     <LinearLayout
         android:id="@+id/register_txt"
@@ -125,12 +125,12 @@
         android:text="SIGN IN"
         android:textSize="20sp"
         android:id="@+id/signinButton"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/password"
         android:layout_marginTop="6dp"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2" />
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password"
+        android:layout_alignRight="@+id/password"
+        android:layout_alignEnd="@+id/password" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"

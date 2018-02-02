@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -51,8 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
     private Intent HomeActivityIntent;
-    FirebaseUser current_user;
-    ProgressDialog mProgressDialog;
+    private FirebaseUser current_user;
+    private ProgressDialog mProgressDialog;
+    private ProgressDialog mLoginProgress;
 
 
     @Override
@@ -67,6 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
+
+        mLoginProgress = new ProgressDialog(this);
+
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading .. Please wait :)");
         mProgressDialog.setMessage("Please wait while logging in .");
@@ -74,6 +80,44 @@ public class LoginActivity extends AppCompatActivity {
 
         callbackManager = CallbackManager.Factory.create();
         mAuth = FirebaseAuth.getInstance();
+
+
+        final EditText mEmail = findViewById(R.id.userName);
+        final EditText mPassword = findViewById(R.id.password);
+        Button loginBtn = findViewById(R.id.signinButton);
+
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = mEmail.getText().toString();
+                String password = mPassword.getText().toString();
+
+                if(!TextUtils.isEmpty(email) || !TextUtils.isEmpty(password)) {
+
+                    mLoginProgress.setTitle("Logging In");
+                    mLoginProgress.setMessage("Please wait while we check your credentials.");
+                    mLoginProgress.setCanceledOnTouchOutside(false);
+                    mLoginProgress.show();
+
+                    mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+
+                            if (task.isSuccessful()){
+                                Intent mainIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(mainIntent);
+                                finish();
+                                mLoginProgress.dismiss();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Something went wrong .. Please try again !", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
 
 
         LoginButton loginButton = findViewById(R.id.login_button);
@@ -129,6 +173,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     private void handleFacebookAccessToken(final AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
