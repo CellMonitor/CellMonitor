@@ -33,7 +33,7 @@
         android:layout_width="50dp"
         android:layout_height="59dp"
         android:layout_centerHorizontal="true"
-        android:backgroundTint="#26c7db"
+        android:backgroundTint="@color/colorAccent"
         android:layout_below="@+id/lastSeenText"
         android:background="@drawable/marker_image">
 

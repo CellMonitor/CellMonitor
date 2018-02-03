@@ -138,9 +138,12 @@ public class ChatsFragment extends Fragment {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                            String data = dataSnapshot.child("message").getValue().toString();
-                            convViewHolder.setMessage(data, conv.isSeen());
-
+                            if (dataSnapshot.hasChild("message")) {
+                                String data = dataSnapshot.child("message").getValue().toString();
+                                convViewHolder.setMessage(data, conv.isSeen());
+                            } else {
+                                convViewHolder.setMessage("",conv.isSeen());
+                            }
                         }
 
                         @Override
