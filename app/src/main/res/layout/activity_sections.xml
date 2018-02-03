@@ -19,7 +19,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="153dp"
             android:gravity="center"
-            android:text="Enter The Section Name :" />
+            android:text="Enter The Group Name :" />
 
         <EditText
             android:id="@+id/secName"
