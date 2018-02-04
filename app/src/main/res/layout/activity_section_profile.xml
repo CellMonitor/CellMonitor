@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joe.cellmonitor.ProfileActivity">
+    tools:context="com.youssif.joe.cellmonitor.ProfileActivity">
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ScrollViewSize">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="170dp"
@@ -15,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:src="@drawable/avatar" />
+        android:src="@drawable/group_avatar" />
 
     <TextView
         android:id="@+id/section_displayName"
@@ -24,7 +25,7 @@
         android:layout_below="@+id/section_profile_pic"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="Display Name"
+        android:text="@string/display_name"
         android:textColor="#000"
         android:textSize="30sp" />
     <RelativeLayout
@@ -41,15 +42,15 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/section_track_all"
             android:textAllCaps="false"
-            android:text="Leave Group"
-            />
+            android:text="@string/leave_group"
+            tools:ignore="RtlHardcoded" />
 
         <Button
             android:id="@+id/section_settings_img_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="false"
-            android:text="Change Image" />
+            android:text="@string/change_image" />
 
         <Button
             android:id="@+id/section_track_all"
@@ -57,8 +58,8 @@
             android:layout_height="wrap_content"
             android:textAllCaps="false"
             android:layout_toRightOf="@+id/section_settings_img_btn"
-            android:text="Track Group"
-            />
+            android:text="@string/track_group"
+            tools:ignore="RtlHardcoded" />
 
     </RelativeLayout>
 
@@ -68,7 +69,7 @@
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_marginTop="5dp"
-        android:text="Group Members :"
+        android:text="@string/group_members"
         />
 
     <android.support.v7.widget.RecyclerView

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joe.cellmonitor.StatusActivity">
+    tools:context="com.youssif.joe.cellmonitor.StatusActivity">
 
 
     <include
@@ -19,7 +18,8 @@
         android:layout_alignEnd="@+id/status_input"
         android:layout_below="@+id/status_input"
         android:layout_marginTop="29dp"
-        android:text="Save Changes" />
+        android:textAllCaps="false"
+        android:text="@string/save_changes" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/status_input"
@@ -34,6 +34,6 @@
         <android.support.design.widget.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter your status :)" />
+            android:hint="@string/enter_your_status" />
     </android.support.design.widget.TextInputLayout>
 </RelativeLayout>

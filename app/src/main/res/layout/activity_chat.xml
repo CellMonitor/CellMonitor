@@ -57,7 +57,8 @@
             android:alpha="0.5"
             android:background="@android:color/white"
             android:padding="10dp"
-            app:srcCompat="@drawable/ic_add_emoji_icon" />
+            app:srcCompat="@drawable/ic_add_emoji_icon"
+            tools:ignore="ContentDescription" />
 
         <EditText
             android:id="@+id/chat_message_view"
@@ -66,7 +67,7 @@
             android:layout_weight="8"
             android:background="@android:color/white"
             android:ems="10"
-            android:hint="Enter Message..."
+            android:hint="@string/enter_message"
             android:inputType="textPersonName"
             android:paddingBottom="12dp"
             android:paddingLeft="10dp"
@@ -81,7 +82,8 @@
             android:alpha="0.5"
             android:background="@android:color/white"
             android:padding="10dp"
-            app:srcCompat="@drawable/ic_send_message_icon" />
+            app:srcCompat="@drawable/ic_send_message_icon"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 

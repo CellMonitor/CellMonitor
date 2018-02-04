@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/login_background"
-    tools:context="com.example.joe.cellmonitor.ProfileActivity">
+    tools:context="com.youssif.joe.cellmonitor.ProfileActivity">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -26,7 +25,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="35sp"
         android:layout_marginTop="34dp"
-        android:text="Display Name" />
+        android:text="@string/display_name" />
 
     <TextView
         android:id="@+id/status"
@@ -38,7 +37,7 @@
         android:textColor="#000000"
         android:textSize="15sp"
         android:background="@drawable/blur_circle"
-        android:text="Hey there ! .. I am using WeApp Tracking App" />
+        android:text="@string/hey_there_i_am_using_weapp_tracking_app" />
 
     <Button
         android:id="@+id/settings_img_btn"
@@ -50,7 +49,7 @@
         android:layout_above="@+id/settings_status_btn"
         android:layout_alignEnd="@+id/settings_status_btn"
         android:layout_alignStart="@+id/settings_status_btn"
-        android:text="Change Image" />
+        android:text="@string/change_image" />
 
     <Button
         android:layout_width="wrap_content"
@@ -59,7 +58,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/settings_status_btn"
         android:textSize="20sp"
-        android:text="Change Status"
+        android:text="@string/change_status"
         android:textAllCaps="false"
         android:layout_marginBottom="20dp"
 

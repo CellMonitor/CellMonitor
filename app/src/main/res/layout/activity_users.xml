@@ -3,11 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joe.cellmonitor.UsersActivity">
+    tools:context="com.youssif.joe.cellmonitor.UsersActivity">
 
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ScrollViewSize">
     <include
         android:id="@+id/users_app_bar"
         layout="@layout/app_bar_layout"
@@ -28,14 +29,15 @@
             android:layout_toStartOf="@+id/search_btn"
             android:background="@drawable/search_layout"
             android:ems="10"
-            android:hint="Search here"
+            android:hint="@string/search_here"
             android:inputType="textPersonName"
             android:paddingBottom="10dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
             android:textColor="#999999"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="RtlHardcoded" />
 
         <ImageButton
             android:id="@+id/search_btn"
@@ -47,7 +49,7 @@
             android:layout_marginRight="5dp"
             android:background="@android:color/background_light"
             android:src="@drawable/ic_search_btn"
-            />
+            tools:ignore="ContentDescription,RtlHardcoded" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/result_list"
@@ -65,7 +67,7 @@
             android:id="@+id/users_label"
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
-            android:text="App Users :"
+            android:text="@string/app_users"
             android:layout_below="@id/result_list"
             />
         <android.support.v7.widget.RecyclerView

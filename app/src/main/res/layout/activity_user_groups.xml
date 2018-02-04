@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joe.cellmonitor.UserGroupsActivity">
+    tools:context="com.youssif.joe.cellmonitor.UserGroupsActivity">
 
     <include
         android:id="@+id/app_bar_layout"

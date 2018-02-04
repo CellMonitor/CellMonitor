@@ -13,7 +13,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.joe.cellmonitor.MapActivity" />
+        tools:context="com.youssif.joe.cellmonitor.MapActivity" />
 
 
     <RelativeLayout
@@ -25,7 +25,7 @@
         android:elevation="10dp"
         android:background="@drawable/white_border"
         android:id="@+id/relLayout1"
-        >
+        tools:ignore="UnusedAttribute">
         
         <ImageView
             android:layout_width="15dp"
@@ -34,7 +34,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_magnify"
-            />
+            tools:ignore="ContentDescription,RtlHardcoded" />
 
         <AutoCompleteTextView
             android:layout_width="match_parent"
@@ -48,10 +48,10 @@
             android:singleLine="true"
             android:id="@+id/input_search"
             android:background="@null"
-            android:hint="Enter Address , City or Zip code"
+            android:hint="@string/enter_address_city_or_zip_code"
             android:textColorHint="#3e3e3e"
             android:imeOptions="actionSearch"
-            />
+            tools:ignore="RtlHardcoded" />
 
 
 
@@ -68,7 +68,7 @@
         android:scaleType="centerCrop"
         android:id="@+id/ic_gps"
         android:src="@drawable/ic_gps"
-        />
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
         android:layout_width="40dp"
@@ -78,7 +78,8 @@
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:layout_below="@+id/relLayout1"
-        android:src="@drawable/ic_places"/>
+        android:src="@drawable/ic_places"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
         android:layout_width="40dp"
@@ -88,7 +89,8 @@
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
         android:id="@+id/place_info"
-        android:src="@drawable/ic_info"/>
+        android:src="@drawable/ic_info"
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <ImageView
         android:layout_width="40dp"
@@ -101,7 +103,7 @@
         android:layout_marginTop="10dp"
         android:src="@drawable/ic_track"
         android:visibility="gone"
-        />
+        tools:ignore="ContentDescription,RtlHardcoded" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -116,7 +118,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Normal"
+            android:text="@string/normal"
             android:gravity="center"
             android:textStyle="italic"
             android:textSize="17sp"
@@ -126,14 +128,14 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:stateListAnimator="@animator/lift_on_touch"
-            />
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/satellite"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Satellite"
+            android:text="@string/satellite"
             android:textStyle="italic"
             android:textSize="17sp"
             android:gravity="center"
@@ -142,13 +144,14 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:stateListAnimator="@animator/lift_on_touch"/>
+            android:stateListAnimator="@animator/lift_on_touch"
+            tools:ignore="UnusedAttribute" />
         <TextView
             android:id="@+id/terrain"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Terrain"
+            android:text="@string/terrain"
             android:textStyle="italic"
             android:textSize="17sp"
             android:gravity="center"
@@ -157,13 +160,14 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:stateListAnimator="@animator/lift_on_touch"/>
+            android:stateListAnimator="@animator/lift_on_touch"
+            tools:ignore="UnusedAttribute" />
         <TextView
             android:id="@+id/hybrid"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="Hybrid"
+            android:text="@string/hybrid"
             android:textStyle="italic"
             android:textSize="17sp"
             android:gravity="center"
@@ -172,7 +176,8 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:stateListAnimator="@animator/lift_on_touch"/>
+            android:stateListAnimator="@animator/lift_on_touch"
+            tools:ignore="UnusedAttribute" />
 
     </LinearLayout>
 

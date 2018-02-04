@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Create"
+        android:text="@string/create"
         android:textSize="70sp"
         android:id="@+id/textView"
         android:textColor="#FFFFFF"
@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="New Account"
+        android:text="@string/new_account"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:id="@+id/textView3"
@@ -44,8 +44,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/register_display_name"
-        android:drawableLeft="@drawable/ic_user_icon"
-        android:hint="  Enter Display Name"
+        android:drawableStart="@drawable/ic_user_icon"
+        android:hint="@string/enter_display_name"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -58,8 +58,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="  Enter Your E-mail"
-        android:drawableLeft="@drawable/ic_user_mail"
+        android:hint="@string/enter_your_e_mail"
+        android:drawableStart="@drawable/ic_user_mail"
         android:textSize="20sp"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
@@ -69,15 +69,16 @@
         android:layout_alignLeft="@+id/register_display_name"
         android:layout_alignStart="@+id/register_display_name"
         android:layout_alignRight="@+id/register_display_name"
-        android:layout_alignEnd="@+id/register_display_name" />
+        android:layout_alignEnd="@+id/register_display_name"
+        tools:ignore="RtlHardcoded,TextFields" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
-        android:hint="  Passwrod"
-        android:drawableLeft="@drawable/ic_user_pw"
+        android:hint="@string/passwrod"
+        android:drawableStart="@drawable/ic_user_pw"
         android:textSize="20sp"
         android:singleLine="true"
         android:textColorHint="#999999"
@@ -87,7 +88,8 @@
         android:layout_alignLeft="@+id/register_display_name"
         android:layout_alignStart="@+id/register_display_name"
         android:layout_alignRight="@+id/register_display_name"
-        android:layout_alignEnd="@+id/register_display_name" />
+        android:layout_alignEnd="@+id/register_display_name"
+        tools:ignore="RtlHardcoded" />
 
 
     <Button
@@ -95,7 +97,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_drawable"
         android:textColor="@android:color/white"
-        android:text="SIGN UP"
+        android:text="@string/sign_up"
         android:textSize="20sp"
         android:id="@+id/reg_create_btn"
         android:layout_below="@+id/reg_password"
@@ -103,7 +105,8 @@
         android:layout_alignLeft="@+id/register_display_name"
         android:layout_alignStart="@+id/register_display_name"
         android:layout_alignRight="@+id/register_display_name"
-        android:layout_alignEnd="@+id/register_display_name" />
+        android:layout_alignEnd="@+id/register_display_name"
+        tools:ignore="RtlHardcoded" />
 
 
 

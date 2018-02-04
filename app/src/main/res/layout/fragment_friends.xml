@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.joe.cellmonitor.FriendsFragment">
+    tools:context="com.youssif.joe.cellmonitor.FriendsFragment">
 
 
 
@@ -10,7 +10,7 @@
         android:id="@+id/friends_label"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="match_parent"
-        android:text="Friends :"
+        android:text="@string/friends"
         />
 
     <android.support.design.widget.CoordinatorLayout

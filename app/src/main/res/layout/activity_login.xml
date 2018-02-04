@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoginActivity"
     android:background="@drawable/login_background">
 
@@ -19,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="LOGIN"
+        android:text="@string/login"
         android:textSize="70sp"
         android:id="@+id/textView"
         android:textColor="#FFFFFF"
@@ -31,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="TO"
+        android:text="@string/to"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:id="@+id/textView2"
@@ -43,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="YOUR ACCOUNT"
+        android:text="@string/your_account"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:id="@+id/textView3"
@@ -56,8 +55,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:id="@+id/userName"
-        android:drawableLeft="@drawable/ic_user_icon"
-        android:hint="  Enter Your E-mail"
+        android:drawableStart="@drawable/ic_user_icon"
+        android:hint="@string/enter_your_e_mail"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
@@ -69,10 +68,10 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:password="true"
+        android:inputType="textPassword"
         android:ems="10"
-        android:hint="  Passwrod"
-        android:drawableLeft="@drawable/ic_user_pw"
+        android:hint="@string/passwrod"
+        android:drawableStart="@drawable/ic_user_pw"
         android:textSize="20sp"
         android:textColorHint="#999999"
         android:textColor="#FFFFFF"
@@ -82,7 +81,8 @@
         android:layout_alignLeft="@+id/userName"
         android:layout_alignStart="@+id/userName"
         android:layout_alignRight="@+id/userName"
-        android:layout_alignEnd="@+id/userName" />
+        android:layout_alignEnd="@+id/userName"
+        tools:ignore="RtlHardcoded" />
 
     <LinearLayout
         android:id="@+id/register_txt"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="5dp"
             android:layout_margin="5dp"
-            android:text="Don't have account ?"
+            android:text="@string/don_t_have_account"
             android:textColor="#9e9fa1" />
 
         <TextView
@@ -108,7 +108,7 @@
             android:layout_margin="5dp"
             android:textSize="17sp"
             android:background="@color/colorPrimaryDark"
-            android:text="Sign up"
+            android:text="@string/sign_up"
             android:textColor="#810025"
             android:clickable="true"
             android:focusable="true"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/btn_drawable"
         android:textColor="@android:color/white"
-        android:text="SIGN IN"
+        android:text="@string/sign_in"
         android:textSize="20sp"
         android:id="@+id/signinButton"
         android:layout_below="@+id/password"
@@ -132,7 +132,8 @@
         android:layout_alignLeft="@+id/password"
         android:layout_alignStart="@+id/password"
         android:layout_alignRight="@+id/password"
-        android:layout_alignEnd="@+id/password" />
+        android:layout_alignEnd="@+id/password"
+        tools:ignore="RtlHardcoded" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
@@ -147,7 +148,7 @@
         android:layout_alignStart="@+id/signinButton"
         android:layout_alignRight="@+id/signinButton"
         android:layout_alignEnd="@+id/signinButton"
-        />
+        tools:ignore="RtlHardcoded" />
 
     <Button
         android:id="@+id/googleBtn"
@@ -164,6 +165,6 @@
         android:layout_alignStart="@+id/signinButton"
         android:layout_alignRight="@+id/signinButton"
         android:layout_alignEnd="@+id/signinButton"
-        />
+        tools:ignore="RtlHardcoded" />
 
 </RelativeLayout>

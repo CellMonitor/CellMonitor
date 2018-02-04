@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="52dp"
     android:layout_height="wrap_content">
 
@@ -8,14 +9,15 @@
         android:id="@+id/lastSeenText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="last seen :"
+        android:hint="@string/last_seen"
         android:textColor="#000"
         android:gravity="center"
         android:textSize="9sp"
         android:layout_marginLeft="10dp"
         android:background="@drawable/blur_circle"
         android:alpha="0.8"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        tools:ignore="RtlHardcoded,SmallSp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/user_dp"
@@ -35,10 +37,11 @@
         android:layout_centerHorizontal="true"
         android:backgroundTint="@color/colorAccent"
         android:layout_below="@+id/lastSeenText"
-        android:background="@drawable/marker_image">
+        android:background="@drawable/marker_image"
+        tools:ignore="UnusedAttribute">
 
         <TextView
-            android:text="Display Name"
+            android:text="@string/display_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -49,7 +52,8 @@
             android:background="@drawable/blur_circle"
             android:id="@+id/name"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            tools:ignore="RtlHardcoded,SmallSp" />
 
 
     </RelativeLayout>
