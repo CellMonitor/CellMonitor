@@ -168,7 +168,7 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
         }
 
         // ----------------- DELETE FEATURE --------------------
-
+/*
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(final View view) {
@@ -241,7 +241,7 @@ public class SectionMessageAdapter extends RecyclerView.Adapter<SectionMessageAd
                 return true;
             }
         });
-
+*/
     }
 
     @Override
