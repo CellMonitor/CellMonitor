@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.youssif.joe.cellmonitor.ProfileActivity">
+    tools:context="com.youssif.joe.weapp.ProfileActivity">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

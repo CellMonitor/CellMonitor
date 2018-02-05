@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:background="@drawable/welcome_screen"
-    tools:context="com.youssif.joe.cellmonitor.FirstActivity">
+    tools:context="com.youssif.joe.weapp.FirstActivity">
 
 
 

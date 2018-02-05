@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion "26.0.2"
     defaultConfig {
-        applicationId "com.example.joe.cellmonitor"
+        applicationId "com.youssif.joe.weapp"
         minSdkVersion 17
         targetSdkVersion 27
         versionCode 1

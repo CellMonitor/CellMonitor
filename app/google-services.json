@@ -8,25 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928005593643:android:073a4f6c344b3068",
+        "mobilesdk_app_id": "1:928005593643:android:d5d1249bd9628167",
         "android_client_info": {
-          "package_name": "com.example.joe.cellmonitor"
+          "package_name": "com.youssif.joe.weapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "928005593643-cb07n45dqc6tu7s0va43d1m2mgmf71ed.apps.googleusercontent.com",
+          "client_id": "928005593643-fn5tr7rbqs8i30f9qdipk9cg4itclloi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.joe.cellmonitor",
-            "certificate_hash": "b006afcb209469a34ef9868dc9df941273804acf"
-          }
-        },
-        {
-          "client_id": "928005593643-55qimbahglj3jtervtruiibas6224j5b.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.joe.cellmonitor",
+            "package_name": "com.youssif.joe.weapp",
             "certificate_hash": "ee09d6ec240afb2b83c25ebc1db1d77a469f5901"
           }
         },
@@ -37,51 +29,22 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBa6jXLG6K77z-lrI9URze3fNT447HGB1U"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:928005593643:android:d0f0234352416a7e",
-        "android_client_info": {
-          "package_name": "com.example.joe.recyclertest"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "928005593643-nd7jgu9t3bli76skic07s4g6f7hlddro.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.joe.recyclertest",
-            "certificate_hash": "ee09d6ec240afb2b83c25ebc1db1d77a469f5901"
-          }
+          "current_key": "AIzaSyDDkoXIgAySkqsOKB4vvtf2oouMyJv9Hok"
         },
         {
-          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
+          "current_key": "AIzaSyAn03iSq-4Yex3KoV8xdAsQD_DU1rptOTs"
+        },
+        {
+          "current_key": "AIzaSyDicEmKJgcTdSGIl1WPFRutONEtSuLWwFs"
+        },
+        {
+          "current_key": "AIzaSyAErmDLLGqJSwyuu_mNeg5lVrCuGyr32iY"
+        },
         {
           "current_key": "AIzaSyBa6jXLG6K77z-lrI9URze3fNT447HGB1U"
+        },
+        {
+          "current_key": "AIzaSyCyHi4qyTbnAZkdIZbmvNHGyyzEFKMTuaI"
         }
       ],
       "services": {
