@@ -280,7 +280,8 @@ public class LoginActivity extends AppCompatActivity {
         users.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChild(uid)){
+                Log.d("datasnapshot : ",dataSnapshot.toString());
+                if (dataSnapshot.child(uid).child("status").exists()){
 
                     String deviceToken = FirebaseInstanceId.getInstance().getToken();
                     users.child(uid).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
