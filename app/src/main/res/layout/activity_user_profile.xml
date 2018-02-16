@@ -7,6 +7,13 @@
     android:background="@drawable/login_background"
     tools:context="com.youssif.joe.weapp.UserProfileActivity">
 
+    <View
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:alpha="0.5"
+        android:layout_alignParentTop="true" />
 
     <ImageView
         android:id="@+id/profile_image"
@@ -23,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
-        android:textColor="#000"
+        android:textColor="@color/white"
         android:textSize="30sp"
         android:layout_marginTop="20dp"
         android:text="@string/display_name" />
@@ -35,8 +42,7 @@
         android:layout_below="@+id/profile_display_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:textColor="#542d00"
-        android:background="@drawable/blur_circle"
+        android:textColor="#8B8B8B"
         android:text="@string/current_user_status" />
 
     <Button
@@ -46,6 +52,8 @@
         android:layout_above="@+id/profile_decline_btn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
+        android:layout_alignStart="@+id/profile_decline_btn"
+        android:layout_alignEnd="@+id/profile_decline_btn"
         android:text="@string/send_frined_request" />
 
 
