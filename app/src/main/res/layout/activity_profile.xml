@@ -52,11 +52,22 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"
         android:textAllCaps="false"
-
+        android:layout_marginBottom="5dp"
+        android:textColor="#FFFFFF"
         android:layout_above="@+id/settings_status_btn"
         android:layout_alignEnd="@+id/settings_status_btn"
         android:layout_alignStart="@+id/settings_status_btn"
-        android:text="@string/change_image" />
+        android:text="@string/change_image"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@animator/lift_on_touch"
+        tools:ignore="UnusedAttribute" />
 
     <Button
         android:layout_width="wrap_content"
@@ -67,8 +78,17 @@
         android:textSize="20sp"
         android:text="@string/change_status"
         android:textAllCaps="false"
+        android:textColor="#FFFFFF"
         android:layout_marginBottom="20dp"
-
-        />
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:stateListAnimator="@animator/lift_on_touch"
+        tools:ignore="UnusedAttribute" />
 
 </RelativeLayout>

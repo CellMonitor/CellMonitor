@@ -1,6 +1,8 @@
 package com.youssif.joe.weapp.models;
 
-import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -14,7 +16,7 @@ import com.squareup.picasso.Picasso;
 
 
 
-public class CellMonitor extends Application {
+public class CellMonitor extends MultiDexApplication {
 
     private DatabaseReference mUserDatabase;
 
@@ -64,5 +66,9 @@ public class CellMonitor extends Application {
     }
 
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }

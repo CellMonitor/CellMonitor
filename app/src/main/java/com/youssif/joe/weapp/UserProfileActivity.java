@@ -81,7 +81,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mProfileImage.getLayoutParams();
-        params.height = height/2;
+        params.height = height/2-5;
         // existing height is ok as is, no need to edit it
         mProfileImage.setLayoutParams(params);
 
