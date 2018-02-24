@@ -85,7 +85,7 @@
             android:name="com.youssif.joe.weapp.UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-                <action android:name="com.example.joe.cellmonitor_TARGET_NOTIFICATION" />
+                <action android:name="com.youssif.joe.weapp_TARGET_NOTIFICATION" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
