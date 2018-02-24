@@ -1,5 +1,6 @@
 package com.youssif.joe.weapp;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -15,14 +16,20 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String click_action = remoteMessage.getNotification().getClickAction();
-        String notification_title = remoteMessage.getNotification().getTitle();
-        String notification_message = remoteMessage.getNotification().getBody();
+        String click_action = remoteMessage.getData().get("click_action");
+        String notification_title = remoteMessage.getData().get("title");
+        String notification_message = remoteMessage.getData().get("body");
         String from_user_id = remoteMessage.getData().get("from_user_id");
+
+
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
+                        .setAutoCancel(true)
+                        .setPriority(Notification.PRIORITY_MAX)
+                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                        .setDefaults(Notification.DEFAULT_SOUND)
                         .setContentTitle(notification_title)
                         .setContentText(notification_message);
 
