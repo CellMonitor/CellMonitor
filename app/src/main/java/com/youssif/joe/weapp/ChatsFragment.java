@@ -110,8 +110,7 @@ public class ChatsFragment extends Fragment {
         }
 
         else {
-
-            Query conversationQuery = mConvDatabase.orderByChild("timestamp");
+            Query conversationQuery = mConvDatabase.orderByChild("timestamp").startAt(1);
 
 
             FirebaseRecyclerOptions<Conv> options = new FirebaseRecyclerOptions.Builder<Conv>()
