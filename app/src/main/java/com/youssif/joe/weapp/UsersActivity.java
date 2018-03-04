@@ -222,7 +222,7 @@ public class UsersActivity extends AppCompatActivity  {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-
+                                        progressDialog.dismiss();
                                     }
                                 });
                             } else {
@@ -233,11 +233,11 @@ public class UsersActivity extends AppCompatActivity  {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
+                            progressDialog.dismiss();
                         }
                     });
 
-
+                progressDialog.dismiss();
 
                 } else {
 
@@ -248,7 +248,7 @@ public class UsersActivity extends AppCompatActivity  {
 
 
                 }
-
+                progressDialog.dismiss();
             }
 
 
