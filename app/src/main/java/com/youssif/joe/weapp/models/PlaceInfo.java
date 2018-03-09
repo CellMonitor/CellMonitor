@@ -59,7 +59,7 @@ public class PlaceInfo {
     public void setId(String id) {
         this.id = id;
     }
-
+/*
     public String getAttributions() {
         return attributions;
     }
@@ -67,7 +67,7 @@ public class PlaceInfo {
     public void setAttributions(String attributions) {
         this.attributions = attributions;
     }
-
+*/
     public Uri getWebsiteUri() {
         return websiteUri;
     }
@@ -76,10 +76,10 @@ public class PlaceInfo {
         this.websiteUri = websiteUri;
     }
 
-    public LatLng getLatlng() {
+  /*  public LatLng getLatlng() {
         return latlng;
     }
-
+*/
     public void setLatlng(LatLng latlng) {
         this.latlng = latlng;
     }
