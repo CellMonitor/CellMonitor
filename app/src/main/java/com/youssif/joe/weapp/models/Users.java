@@ -4,10 +4,18 @@ package com.youssif.joe.weapp.models;
 
 public class Users {
 
-    public String name, image, status , thumb_image;
+    public String name, image, status , thumb_image, uid;
 
     public Users(){
 
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {

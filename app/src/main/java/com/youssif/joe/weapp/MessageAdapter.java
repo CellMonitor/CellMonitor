@@ -3,6 +3,7 @@ package com.youssif.joe.weapp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -49,8 +50,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
     }
 
+    @NonNull
     @Override
-    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_single_layout ,parent, false);
@@ -80,7 +82,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
     @Override
-    public void onBindViewHolder(final MessageViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final MessageViewHolder viewHolder, int i) {
 
         final Messages c = mMessageList.get(i);
 
@@ -228,7 +230,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot messageSnapshot: dataSnapshot.getChildren()) {
                                         messageSnapshot.getRef().removeValue();
-
                                     }
                                 }
 
