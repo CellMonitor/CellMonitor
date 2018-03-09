@@ -189,7 +189,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                         //Click Event for each item.
                         if(i == 0){
                             final ProgressDialog progressDialog = new ProgressDialog(ctx);
-                            progressDialog.setMessage("Deleting the message for both ..");
+                            progressDialog.setMessage("Deleting the message for me ..");
                             progressDialog.show();
 
                             senderQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,7 +224,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                                 }
                             });
-
+/*
                             receiverQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -238,7 +238,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                                 }
                             });
-
+*/
 
                         }
 
