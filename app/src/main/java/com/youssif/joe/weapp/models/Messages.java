@@ -1,18 +1,14 @@
 package com.youssif.joe.weapp.models;
 
-
-
 public class Messages {
 
-    private String message;
-    private String type;
+    private String message, type;
     private long  time;
-  //  private boolean seen;
+    private boolean seen;
 
     private String from;
 
-    public Messages(String type, String from) {
-        this.type = type;
+    public Messages(String from) {
         this.from = from;
     }
 
@@ -23,14 +19,14 @@ public class Messages {
     public void setFrom(String from) {
         this.from = from;
     }
-/*
+
     public Messages(String message, String type, long time, boolean seen) {
         this.message = message;
         this.type = type;
         this.time = time;
         this.seen = seen;
     }
-*/
+
     public String getMessage() {
         return message;
     }
@@ -42,11 +38,11 @@ public class Messages {
     public String getType() {
         return type;
     }
-/*
+
     public void setType(String type) {
         this.type = type;
     }
-*/
+
     public long getTime() {
         return time;
     }
@@ -54,7 +50,7 @@ public class Messages {
     public void setTime(long time) {
         this.time = time;
     }
-/*
+
     public boolean isSeen() {
         return seen;
     }
@@ -63,10 +59,7 @@ public class Messages {
         this.seen = seen;
     }
 
-
     public Messages(){
 
-
     }
-    */
 }
