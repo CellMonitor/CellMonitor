@@ -269,8 +269,8 @@ public class SectionProfileActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
 
 
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
@@ -288,11 +288,11 @@ public class SectionProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull final membersViewHolder holder, int position, @NonNull Users model) {
+            protected void onBindViewHolder( final membersViewHolder holder, int position,  Users model) {
 
 
                 final String list_user_id = getRef(position).getKey();
-                Log.d("list_user_id : ", list_user_id);
+                Log.d("Jooooo", list_user_id);
 
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
