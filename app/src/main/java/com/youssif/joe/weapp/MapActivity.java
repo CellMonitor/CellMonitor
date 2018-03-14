@@ -291,7 +291,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                 if (polylineOptions != null) {
                     mMap.addPolyline(polylineOptions);
                 } else {
-                    Toast.makeText(getApplicationContext(), "Direction not found!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Direction not found! .. Please try again", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -955,19 +955,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
             mLastSeenText.setText("");
         }
         final CircleImageView markerImage =  marker.findViewById(R.id.user_dp);
-        Picasso.with(MapActivity.this).load(uri).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(markerImage, new Callback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError() {
-
-                Picasso.with(MapActivity.this).load(uri).placeholder(R.drawable.avatar).into(markerImage);
-
-            }
-        });
+        Picasso.get().load(uri).placeholder(R.drawable.avatar).into(markerImage);
         TextView txt_name = marker.findViewById(R.id.name);
         txt_name.setText(_name);
 

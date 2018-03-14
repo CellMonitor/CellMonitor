@@ -310,19 +310,7 @@ public class UsersActivity extends AppCompatActivity {
             user_name.setText(userName);
             user_status.setText(userStatus);
 
-            Picasso.with(ctx).load(userImage).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(user_image, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError() {
-
-                    Picasso.with(ctx).load(userImage).placeholder(R.drawable.avatar).into(user_image);
-
-                }
-            });
+            Picasso.get().load(userImage).placeholder(R.drawable.avatar).into(user_image);
 
 
         }

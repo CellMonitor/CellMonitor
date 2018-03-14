@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.OkHttpDownloader;
+
 import com.squareup.picasso.Picasso;
 
 
@@ -27,14 +27,14 @@ public class CellMonitor extends MultiDexApplication {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         /* Picasso */
-
+/*
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttpDownloader(this, Integer.MAX_VALUE));
         Picasso built = builder.build();
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
         Picasso.setSingletonInstance(built);
-
+*/
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null) {

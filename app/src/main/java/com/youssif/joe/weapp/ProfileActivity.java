@@ -97,18 +97,8 @@ public class ProfileActivity extends AppCompatActivity {
                 if (!image.equals("default")) {
 
                     //Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
-                    Picasso.with(ProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
-                            .placeholder(R.drawable.avatar).into(mDisplayImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            Picasso.with(ProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mDisplayImage);
-                        }
-                    });
+                    Picasso.get().load(image)
+                            .placeholder(R.drawable.avatar).into(mDisplayImage);
 
                 }
 

@@ -69,13 +69,14 @@ public class SectionProfileActivity extends AppCompatActivity {
 
     private StorageReference mImageStorage;
 
-    private ProgressDialog mProgressDialog;
+    private ProgressDialog mProgressDialog,mProgressDialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_profile);
-
+        sectionKey = getIntent().getStringExtra("section_key");
+        Log.d("SECTIONKEY",sectionKey);
         mAuth = FirebaseAuth.getInstance();
         removeUserRef = FirebaseDatabase.getInstance().getReference("User_Section");
         membersRecyclerView = findViewById(R.id.membersList);
@@ -85,7 +86,7 @@ public class SectionProfileActivity extends AppCompatActivity {
         mName = findViewById(R.id.section_displayName);
         Button mImageBtn = findViewById(R.id.section_settings_img_btn);
         mImageStorage = FirebaseStorage.getInstance().getReference();
-        sectionKey = getIntent().getStringExtra("section_key");
+
         Button mTrackBtn = findViewById(R.id.section_track_all);
         mTrackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,8 +146,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
         mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
         mUsersDatabase.keepSynced(true);
-        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
-        mSectionsMembers.keepSynced(true);
+
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
         mSectionDatabase.keepSynced(true);
 
@@ -163,18 +163,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                 if (!image.equals("default")) {
 
 
-                    Picasso.with(SectionProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
-                            .placeholder(R.drawable.group_avatar).into(mDisplayImage, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            Picasso.with(SectionProfileActivity.this).load(image).placeholder(R.drawable.group_avatar).into(mDisplayImage);
-                        }
-                    });
+                    Picasso.get().load(image).placeholder(R.drawable.group_avatar).into(mDisplayImage);
 
                 }
 
@@ -269,9 +258,15 @@ public class SectionProfileActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
+        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
+        mSectionsMembers.keepSynced(true);
+
+        mProgressDialog2 = new ProgressDialog(SectionProfileActivity.this);
+        mProgressDialog2.setMessage("Please wait while loading data :)");
+        mProgressDialog2.show();
 
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
                 .setQuery(mSectionsMembers, Users.class)
@@ -288,7 +283,7 @@ public class SectionProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder( final membersViewHolder holder, int position,  Users model) {
+            protected void onBindViewHolder(@NonNull final membersViewHolder holder, int position, @NonNull Users model) {
 
 
                 final String list_user_id = getRef(position).getKey();
@@ -304,6 +299,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                         String status = dataSnapshot.child("status").getValue().toString();
 
 
+                        mProgressDialog2.dismiss();
                         holder.setName(userName);
                         holder.setStatus(status);
                         holder.setUserImage(userThumb, SectionProfileActivity.this);
@@ -472,20 +468,7 @@ public class SectionProfileActivity extends AppCompatActivity {
         void setUserImage(final String thumb_image, final Context ctx) {
 
             final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
-            Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
-            Picasso.with(ctx).load(thumb_image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(userImageView, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError() {
-
-                    Picasso.with(ctx).load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
-
-                }
-            });
+            Picasso.get().load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
 
         }
 

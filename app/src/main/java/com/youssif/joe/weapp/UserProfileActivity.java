@@ -111,19 +111,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 mProfileStatus.setText(status);
 
 
-                Picasso.with(UserProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(mProfileImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                        Picasso.with(UserProfileActivity.this).load(image).placeholder(R.drawable.avatar).into(mProfileImage);
-
-                    }
-                });
+                Picasso.get().load(image).placeholder(R.drawable.avatar).into(mProfileImage);
 
                 if(mCurrent_user.getUid().equals(user_id)){
 

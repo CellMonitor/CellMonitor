@@ -387,19 +387,7 @@ public class RequestActivity extends AppCompatActivity {
         void setThumb_image(final String userThumb, final Context ctx) {
 
             final CircleImageView thumb_image = mView.findViewById(R.id.request_profile_image);
-            Picasso.with(ctx).load(userThumb).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(thumb_image, new Callback() {
-                @Override
-                public void onSuccess() {
-
-                }
-
-                @Override
-                public void onError() {
-
-                    Picasso.with(ctx).load(userThumb).placeholder(R.drawable.avatar).into(thumb_image);
-
-                }
-            });
+            Picasso.get().load(userThumb).placeholder(R.drawable.avatar).into(thumb_image);
 
         }
 

@@ -104,19 +104,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
                 viewHolder.displayName.setText(name);
 
-                Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.profileImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                        Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar).into(viewHolder.profileImage);
-
-                    }
-                });
+                Picasso.get().load(image).placeholder(R.drawable.avatar).into(viewHolder.profileImage);
 
             }
 
@@ -157,7 +145,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             viewHolder.messageTime.setText(time);
 
             viewHolder.messageText.setVisibility(View.INVISIBLE);
-            Picasso.with(viewHolder.profileImage.getContext()).load(c.getMessage()).into(viewHolder.messageImage);
+            Picasso.get().load(c.getMessage()).into(viewHolder.messageImage);
 
 
         }

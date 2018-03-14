@@ -91,19 +91,7 @@ public class UsersActivityAdapter extends RecyclerView.Adapter<UsersActivityAdap
                 viewHolder.displayName.setText(name);
                 viewHolder.status.setText(status);
 
-                Picasso.with(viewHolder.profileImage.getContext()).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.avatar).into(viewHolder.profileImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                        Picasso.with(viewHolder.profileImage.getContext()).load(image).placeholder(R.drawable.avatar).into(viewHolder.profileImage);
-
-                    }
-                });
+                Picasso.get().load(image).placeholder(R.drawable.avatar).into(viewHolder.profileImage);
 
                 viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

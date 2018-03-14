@@ -162,19 +162,7 @@ public class SectionChatRoomActivity extends AppCompatActivity {
 
 
                 final String image = dataSnapshot.child("image").getValue().toString();
-                Picasso.with(SectionChatRoomActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.group_avatar).into(mProfileImage, new Callback() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-
-                    @Override
-                    public void onError() {
-
-                        Picasso.with(SectionChatRoomActivity.this).load(image).placeholder(R.drawable.group_avatar).into(mProfileImage);
-
-                    }
-                });
+                Picasso.get().load(image).placeholder(R.drawable.group_avatar).into(mProfileImage);
 
 
             }
