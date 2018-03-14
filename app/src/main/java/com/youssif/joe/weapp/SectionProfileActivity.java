@@ -41,8 +41,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -76,12 +74,11 @@ public class SectionProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_section_profile);
         sectionKey = getIntent().getStringExtra("section_key");
-        Log.d("SECTIONKEY",sectionKey);
-        mAuth = FirebaseAuth.getInstance();
-        removeUserRef = FirebaseDatabase.getInstance().getReference("User_Section");
         membersRecyclerView = findViewById(R.id.membersList);
         membersRecyclerView.setHasFixedSize(true);
         membersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAuth = FirebaseAuth.getInstance();
+        removeUserRef = FirebaseDatabase.getInstance().getReference("User_Section");
         mDisplayImage = findViewById(R.id.section_profile_pic);
         mName = findViewById(R.id.section_displayName);
         Button mImageBtn = findViewById(R.id.section_settings_img_btn);
@@ -144,6 +141,8 @@ public class SectionProfileActivity extends AppCompatActivity {
         });
 
 
+        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
+        mSectionsMembers.keepSynced(true);
         mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
         mUsersDatabase.keepSynced(true);
 
@@ -261,13 +260,6 @@ public class SectionProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
-        mSectionsMembers.keepSynced(true);
-
-        mProgressDialog2 = new ProgressDialog(SectionProfileActivity.this);
-        mProgressDialog2.setMessage("Please wait while loading data :)");
-        mProgressDialog2.show();
-
         FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
                 .setQuery(mSectionsMembers, Users.class)
                 .setLifecycleOwner(this)
@@ -299,7 +291,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                         String status = dataSnapshot.child("status").getValue().toString();
 
 
-                        mProgressDialog2.dismiss();
+
                         holder.setName(userName);
                         holder.setStatus(status);
                         holder.setUserImage(userThumb, SectionProfileActivity.this);
@@ -360,7 +352,7 @@ public class SectionProfileActivity extends AppCompatActivity {
 
         };
         membersRecyclerView.setAdapter(firebaseRecyclerAdapter);
-
+/*
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
@@ -436,7 +428,7 @@ public class SectionProfileActivity extends AppCompatActivity {
             startActivity(intent);
 
         }
-
+*/
 
     }
 
