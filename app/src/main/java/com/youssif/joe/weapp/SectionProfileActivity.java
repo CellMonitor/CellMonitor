@@ -1,27 +1,28 @@
 package com.youssif.joe.weapp;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.youssif.joe.weapp.models.Users;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.ServerValue;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -38,7 +39,9 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -48,6 +51,8 @@ public class SectionProfileActivity extends AppCompatActivity {
     private DatabaseReference mSectionDatabase;
     private String sectionKey;
 
+    private SectionProfileActivityAdapter mAdapter;
+    private final List<String> peaple = new ArrayList<>();
 
     private static final int GALLERY_PICK = 1;
 
@@ -56,7 +61,7 @@ public class SectionProfileActivity extends AppCompatActivity {
     private TextView mName;
     private RecyclerView membersRecyclerView;
     private FirebaseAuth mAuth;
-    private DatabaseReference mSectionsMembers, mUsersDatabase , removeUserRef;
+    private DatabaseReference removeUserRef;
 
     private StorageReference mImageStorage;
 
@@ -76,6 +81,41 @@ public class SectionProfileActivity extends AppCompatActivity {
         mName = findViewById(R.id.section_displayName);
         Button mImageBtn = findViewById(R.id.section_settings_img_btn);
         mImageStorage = FirebaseStorage.getInstance().getReference();
+
+        mAdapter = new SectionProfileActivityAdapter(peaple,SectionProfileActivity.this);
+
+        DatabaseReference mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
+        mSectionsMembers.keepSynced(true);
+
+
+        mSectionsMembers.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                peaple.add(dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         Button mTrackBtn = findViewById(R.id.section_track_all);
         mTrackBtn.setOnClickListener(new View.OnClickListener() {
@@ -134,9 +174,7 @@ public class SectionProfileActivity extends AppCompatActivity {
         });
 
 
-        mSectionsMembers = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
-        mSectionsMembers.keepSynced(true);
-        mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
+        DatabaseReference mUsersDatabase = FirebaseDatabase.getInstance().getReference("Users");
         mUsersDatabase.keepSynced(true);
 
         mSectionDatabase = FirebaseDatabase.getInstance().getReference().child("Sections").child(sectionKey);
@@ -253,99 +291,12 @@ public class SectionProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseRecyclerOptions<Users> options = new FirebaseRecyclerOptions.Builder<Users>()
-                .setQuery(mSectionsMembers, Users.class)
-                .setLifecycleOwner(this)
-                .build();
-
-        FirebaseRecyclerAdapter<Users, membersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, membersViewHolder>(options) {
-
-            @Override
-            public membersViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_single_layout, parent, false);
-
-                return new membersViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull final membersViewHolder holder, int position, @NonNull Users model) {
-
-
-                final String list_user_id = getRef(position).getKey();
-                Log.d("Jooooo", list_user_id);
-
-                mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("DataSnapShot2 : ", dataSnapshot.toString());
-
-                        final String userName = dataSnapshot.child("name").getValue().toString();
-                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
-                        String status = dataSnapshot.child("status").getValue().toString();
 
 
 
-                        holder.setName(userName);
-                        holder.setStatus(status);
-                        holder.setUserImage(userThumb, SectionProfileActivity.this);
 
-                        holder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+        membersRecyclerView.setAdapter(mAdapter);
 
-                                CharSequence options[] = new CharSequence[]{userName + "'s Profile", "Send message"};
-
-                                final AlertDialog.Builder builder = new AlertDialog.Builder(SectionProfileActivity.this);
-
-                                builder.setTitle("Select Options");
-                                builder.setItems(options, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                                        //Click Event for each item.
-                                        if (i == 0) {
-
-                                            Intent profileIntent = new Intent(SectionProfileActivity.this, UserProfileActivity.class);
-                                            profileIntent.putExtra("user_id", list_user_id);
-                                            profileIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(profileIntent);
-                                            finish();
-
-                                        }
-
-                                        if (i == 1) {
-
-                                            Intent chatIntent = new Intent(SectionProfileActivity.this, ChatActivity.class);
-                                            chatIntent.putExtra("user_id", list_user_id);
-                                            chatIntent.putExtra("user_name", userName);
-                                            startActivity(chatIntent);
-
-                                        }
-
-                                    }
-                                });
-
-                                builder.show();
-
-                            }
-                        });
-
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-
-
-            }
-
-
-        };
-        membersRecyclerView.setAdapter(firebaseRecyclerAdapter);
-/*
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
@@ -421,44 +372,10 @@ public class SectionProfileActivity extends AppCompatActivity {
             startActivity(intent);
 
         }
-*/
-
-    }
-
-    public static class membersViewHolder extends RecyclerView.ViewHolder {
-
-        View mView;
-
-        membersViewHolder(View itemView) {
-            super(itemView);
-
-            mView = itemView;
-
-        }
-
-
-        public void setName(String name) {
-
-            TextView userNameView = mView.findViewById(R.id.user_single_name);
-            userNameView.setText(name);
-
-        }
-
-        public void setStatus(String status) {
-            TextView userStatusView = mView.findViewById(R.id.user_single_status);
-            userStatusView.setText(status);
-
-        }
-
-        void setUserImage(final String thumb_image, final Context ctx) {
-
-            final CircleImageView userImageView = mView.findViewById(R.id.user_single_image);
-            Picasso.get().load(thumb_image).placeholder(R.drawable.avatar).into(userImageView);
-
-        }
 
 
     }
+
 
 
 }
