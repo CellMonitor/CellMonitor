@@ -149,7 +149,8 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
-        } else {
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() == null)  {
+
             mUserRef.child("online").setValue(true);
             DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
             mUserRef.child("online").setValue(true);
@@ -212,6 +213,17 @@ public class HomeActivity extends AppCompatActivity {
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
+
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() != null)  {
+
+            Intent childIntent = new Intent(HomeActivity.this, ChildHomeActivity.class);
+            childIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            childIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            childIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(childIntent);
+            finish();
+
+
 
         }
     }

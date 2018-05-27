@@ -23,7 +23,7 @@
         android:textSize="70sp"
         android:id="@+id/textView"
         android:textColor="#FFFFFF"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="25dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -43,6 +43,22 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:id="@+id/register_display_name"
+        android:drawableStart="@drawable/ic_user_icon"
+        android:hint="  Enter Display Name"
+        android:textColorHint="#999999"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:id="@+id/editTextPhone"
         android:inputType="phone"
         android:drawableStart="@drawable/ic_phone"
@@ -51,9 +67,8 @@
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:singleLine="true"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
+        android:layout_below="@+id/register_display_name"
+        android:layout_centerHorizontal="true" />
 
 
 
@@ -74,6 +89,8 @@
         android:layout_alignRight="@+id/editTextPhone"
         android:layout_alignEnd="@+id/editTextPhone"
         tools:ignore="RtlHardcoded" />
+
+
 
 
 

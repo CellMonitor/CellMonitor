@@ -221,67 +221,69 @@ public class UsersActivity extends AppCompatActivity {
         });
 
 
-        DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        mUserRef.child("online").setValue(true);
-        Boolean mLocationPermissionGranted;
-        final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
-        final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
-        final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() == null) {
+
+            DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            mUserRef.child("online").setValue(true);
+            Boolean mLocationPermissionGranted;
+            final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
+            final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
+            final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
 
-        String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION};
+            String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION};
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mLocationPermissionGranted = true;
-                //initMap();
+                    FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                        COURSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    mLocationPermissionGranted = true;
+                    //initMap();
 
 
-                FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                    FusedLocationProviderClient mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-                try {
-                    if (mLocationPermissionGranted) {
-                        final Task location = mFusedLocationProviderClient.getLastLocation();
-
-
-                        location.addOnCompleteListener(new OnCompleteListener() {
-                            @Override
-                            public void onComplete(@NonNull Task task) {
-                                if (task.isSuccessful() && task.getResult() != null) {
-                                    Location currentLocation = (Location) task.getResult();
-                                    Double latitude = currentLocation.getLatitude();
-                                    Double longitude = currentLocation.getLongitude();
-                                    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                                    DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
-                                    myRef.child("Location").setValue(latitude + "," + longitude);
-                                    myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
+                    try {
+                        if (mLocationPermissionGranted) {
+                            final Task location = mFusedLocationProviderClient.getLastLocation();
 
 
+                            location.addOnCompleteListener(new OnCompleteListener() {
+                                @Override
+                                public void onComplete(@NonNull Task task) {
+                                    if (task.isSuccessful() && task.getResult() != null) {
+                                        Location currentLocation = (Location) task.getResult();
+                                        Double latitude = currentLocation.getLatitude();
+                                        Double longitude = currentLocation.getLongitude();
+                                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getCurrentUser().getUid());
+                                        myRef.child("Location").setValue(latitude + "," + longitude);
+                                        myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
+
+
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+
+                    } catch (SecurityException e) {
+                        Toast.makeText(this, "getDeviceLocation: SecurityException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
 
-                } catch (SecurityException e) {
-                    Toast.makeText(this, "getDeviceLocation: SecurityException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
+                } else {
+                    ActivityCompat.requestPermissions(this,
+                            permissions,
+                            LOCATION_PERMISSION_REQUEST_CODE);
                 }
-
-
             } else {
                 ActivityCompat.requestPermissions(this,
                         permissions,
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    LOCATION_PERMISSION_REQUEST_CODE);
         }
-
 
     }
 

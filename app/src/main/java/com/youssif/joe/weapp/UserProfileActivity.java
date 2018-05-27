@@ -339,7 +339,7 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onStart();
 
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() == null) {
 
 
             DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());

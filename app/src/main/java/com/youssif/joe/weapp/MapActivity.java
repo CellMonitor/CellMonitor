@@ -849,7 +849,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
         super.onStart();
 
 
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() == null) {
 
 
             DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
