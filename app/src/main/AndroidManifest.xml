@@ -121,7 +121,8 @@
         <activity
             android:name=".ChildLoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChildHomeActivity"></activity>
+        <activity android:name=".ChildHomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -37,7 +37,7 @@ public class CellMonitor extends MultiDexApplication {
 */
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-        if(mAuth.getCurrentUser() != null) {
+        if(mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getPhoneNumber() ==null) {
 
             mUserDatabase = FirebaseDatabase.getInstance()
                     .getReference().child("Users").child(mAuth.getCurrentUser().getUid());

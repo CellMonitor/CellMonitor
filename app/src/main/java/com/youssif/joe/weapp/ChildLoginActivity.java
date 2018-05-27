@@ -104,6 +104,8 @@ public class ChildLoginActivity extends AppCompatActivity {
                             userMap.put("name", display_name);
                             userMap.put("child_code", childCode);
                             userMap.put("phone_number", editTextPhone.getText().toString());
+                            userMap.put("image", "default");
+                            userMap.put("thumb_image", "default");
 
 
                             myRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
