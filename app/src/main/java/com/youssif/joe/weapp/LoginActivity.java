@@ -44,10 +44,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.text.DateFormat;
-import java.util.Date;
+
 import java.util.HashMap;
-import java.util.Map;
+
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -240,29 +239,18 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void childLoginClicked(View view){
 
-        CharSequence options[] = new CharSequence[]{"Ok, Dismiss"};
-        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle("Notice : if you signed in as a child you can not logout the account till you reinstall the application !");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-                //Click Event for each item.
-                if(i == 0){
-
-
-                    Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
-                    startActivity(intent);
-
-
-                }
-
-
-
-            }
-        });
-
-        builder.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Notice if you signed in as a child you can not logout from the account till you reinstall the application !")
+                .setCancelable(false)
+                .setPositiveButton("Ok, dismiss", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //do things
+                        Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
+                        startActivity(intent);
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
 
 
 

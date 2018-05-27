@@ -25,6 +25,8 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static android.widget.Toast.*;
+
 public class ChildLoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -48,6 +50,8 @@ public class ChildLoginActivity extends AppCompatActivity {
         findViewById(R.id.buttonGetVerificationCode).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                makeText(getApplicationContext(),
+                        "Please wait a moment !", LENGTH_LONG).show();
                 sendVerificationCode();
             }
         });
@@ -129,12 +133,12 @@ public class ChildLoginActivity extends AppCompatActivity {
 
 
 
-                            Toast.makeText(getApplicationContext(),
-                                    "Login Successfull", Toast.LENGTH_LONG).show();
+                            makeText(getApplicationContext(),
+                                    "Login Successfull", LENGTH_LONG).show();
                         } else {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                Toast.makeText(getApplicationContext(),
-                                        "Incorrect Verification Code ", Toast.LENGTH_LONG).show();
+                                makeText(getApplicationContext(),
+                                        "Incorrect Verification Code ", LENGTH_LONG).show();
                             }
                         }
                     }
