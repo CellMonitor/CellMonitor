@@ -1,8 +1,10 @@
 package com.youssif.joe.weapp;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,7 +44,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -235,8 +240,31 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void childLoginClicked(View view){
 
-        Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
-        startActivity(intent);
+        CharSequence options[] = new CharSequence[]{"Ok, Dismiss"};
+        final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("Notice : if you signed in as a child you can not logout the account till you reinstall the application !");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                //Click Event for each item.
+                if(i == 0){
+
+
+                    Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
+                    startActivity(intent);
+
+
+                }
+
+
+
+            }
+        });
+
+        builder.show();
+
+
 
     }
     public void signUpClicked(View view){
