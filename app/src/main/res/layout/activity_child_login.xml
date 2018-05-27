@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChildLoginActivity"
+    android:background="@drawable/login_background">
+
+    <View
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:alpha="0.5"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/create"
+        android:textSize="70sp"
+        android:id="@+id/textView"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/new_account"
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/editTextPhone"
+        android:inputType="phone"
+        android:drawableStart="@drawable/ic_phone"
+        android:hint="  Enter Phone Number"
+        android:textColorHint="#999999"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
+
+
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_drawable"
+        android:textColor="@android:color/white"
+        android:text="Get Verification Code"
+        android:textSize="20sp"
+        android:id="@+id/buttonGetVerificationCode"
+        android:layout_below="@+id/editTextPhone"
+        android:textAllCaps="false"
+        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/editTextPhone"
+        android:layout_alignStart="@+id/editTextPhone"
+        android:layout_alignRight="@+id/editTextPhone"
+        android:layout_alignEnd="@+id/editTextPhone"
+        tools:ignore="RtlHardcoded" />
+
+
+
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:id="@+id/editTextCode"
+        android:inputType="phone"
+        android:drawableStart="@drawable/ic_code"
+        android:hint="  Enter Verification Code"
+        android:textColorHint="#999999"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:singleLine="true"
+        android:layout_below="@+id/buttonGetVerificationCode"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
+
+
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_drawable"
+        android:textColor="@android:color/white"
+        android:text="Sign In"
+        android:textSize="20sp"
+        android:id="@+id/buttonSignIn"
+        android:layout_below="@+id/editTextCode"
+        android:layout_marginTop="15dp"
+        android:layout_alignLeft="@+id/editTextCode"
+        android:layout_alignStart="@+id/editTextCode"
+        android:layout_alignRight="@+id/editTextCode"
+        android:layout_alignEnd="@+id/editTextCode"
+        tools:ignore="RtlHardcoded" />
+
+
+
+</RelativeLayout>

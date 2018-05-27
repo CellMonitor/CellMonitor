@@ -233,6 +233,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
     }
+    public void childLoginClicked(View view){
+
+        Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
+        startActivity(intent);
+
+    }
     public void signUpClicked(View view){
 
         Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);

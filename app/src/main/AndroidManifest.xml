@@ -10,20 +10,21 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.youssif.joe.weapp.models.CellMonitor"
+        android:name=".models.CellMonitor"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name="com.youssif.joe.weapp.FirebaseMessagingService">
+        <service android:name=".FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <activity
-            android:name="com.youssif.joe.weapp.FirstActivity"
+            android:name=".FirstActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -33,7 +34,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.youssif.joe.weapp.LoginActivity"
+            android:name=".LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:exported="true"
             android:label="@string/app_name"
@@ -52,7 +53,7 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.youssif.joe.weapp.HomeActivity" />
+        <activity android:name=".HomeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -66,23 +67,24 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name="com.youssif.joe.weapp.MapActivity"
+            android:name=".MapActivity"
             android:label="@string/title_activity_map" />
         <activity
-            android:name="com.youssif.joe.weapp.ProfileActivity"
+            android:name=".ProfileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.youssif.joe.weapp.StatusActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.youssif.joe.weapp.ProfileActivity" />
+            android:name=".StatusActivity"
+            android:parentActivityName=".ProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name="com.youssif.joe.weapp.UsersActivity"
-            android:parentActivityName="com.youssif.joe.weapp.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name="com.youssif.joe.weapp.UserProfileActivity"
+            android:name=".UsersActivity"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserProfileActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="com.youssif.joe.weapp_TARGET_NOTIFICATION" />
@@ -91,28 +93,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.youssif.joe.weapp.ChatActivity"
-            android:parentActivityName="com.youssif.joe.weapp.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.youssif.joe.weapp.RequestActivity"
-            android:parentActivityName="com.youssif.joe.weapp.HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.youssif.joe.weapp.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
-            android:name="com.youssif.joe.weapp.SectionsActivity"
+            android:name=".ChatActivity"
+            android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.youssif.joe.weapp.SectionChatRoomActivity"
-            android:parentActivityName="com.youssif.joe.weapp.HomeActivity"
+            android:name=".RequestActivity"
+            android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.youssif.joe.weapp.SectionProfileActivity"
+            android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.youssif.joe.weapp.UserGroupsActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName="com.youssif.joe.weapp.HomeActivity"
-            android:noHistory="true"/>
+        <activity
+            android:name=".SectionsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SectionChatRoomActivity"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SectionProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UserGroupsActivity"
+            android:noHistory="true"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ChildLoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

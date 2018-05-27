@@ -10,7 +10,7 @@
     <string name="enter_your_e_mail">Enter Your E-mail</string>
     <string name="passwrod">Passwrod</string>
     <string name="don_t_have_account">Don\'t have account ?</string>
-    <string name="sign_up">Sign up</string>
+    <string name="sign_up"> Sign up </string>
     <string name="sign_in">SIGN IN</string>
     <string name="enter_address_city_or_zip_code">Enter Address , City or Zip code</string>
     <string name="normal">Normal</string>
@@ -21,8 +21,8 @@
     <string name="hey_there_i_am_using_weapp_tracking_app">Hey there ! .. I am using WeApp Tracking App</string>
     <string name="change_image">Change Image</string>
     <string name="change_status">Change Status</string>
-    <string name="create">Create</string>
-    <string name="new_account">New Account</string>
+    <string name="create">LOGIN</string>
+    <string name="new_account">Using Phone Number</string>
     <string name="enter_display_name">Enter Display Name</string>
     <string name="track_group">Track Group</string>
     <string name="leave_group">Leave Group</string>
