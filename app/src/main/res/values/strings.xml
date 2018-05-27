@@ -47,6 +47,8 @@
     <string name="requests">Requests</string>
     <string name="log_out">Log out</string>
     <string name="to_add_this_profile_please_search_for_this_code_in_child_search_page">To add this Profile please search for this code in Child Search Page :</string>
+    <string name="title_activity_children">ChildrenActivity</string>
+    <string name="children">Children</string>
 
 
 </resources>

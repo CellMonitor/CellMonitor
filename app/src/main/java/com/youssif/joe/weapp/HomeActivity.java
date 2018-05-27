@@ -121,7 +121,12 @@ public class HomeActivity extends AppCompatActivity {
             mAuth.signOut();
             LoginManager.getInstance().logOut();
             startActivity(new Intent(HomeActivity.this, LoginActivity.class));
-        } else if (id == R.id.action_requests) {
+        } else if (id == R.id.action_children) {
+
+            Intent childIntent = new Intent(HomeActivity.this,ChildrenActivity.class);
+            startActivity(childIntent);
+
+        }else if (id == R.id.action_requests) {
 
             Intent requestIntent = new Intent(HomeActivity.this,RequestActivity.class);
             startActivity(requestIntent);
@@ -214,7 +219,7 @@ public class HomeActivity extends AppCompatActivity {
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
 
-        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() != null)  {
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getProviderId().equals("Phone"))  {
 
             Intent childIntent = new Intent(HomeActivity.this, ChildHomeActivity.class);
             childIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
