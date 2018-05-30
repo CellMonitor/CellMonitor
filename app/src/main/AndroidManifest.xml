@@ -129,7 +129,9 @@
             android:label="@string/title_activity_children"
             android:parentActivityName=".HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ChildrenSearch"></activity>
+        <activity android:name=".ChildrenSearch"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".ChildrenActivity"/>
     </application>
 
 </manifest>

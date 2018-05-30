@@ -7,6 +7,9 @@
     tools:context=".ChildrenSearch">
 
 
+    <include
+        android:id="@+id/children2_app_bar"
+        layout="@layout/app_bar_layout" />
 
     <TextView
         android:id="@+id/heading_label"
@@ -14,9 +17,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_marginTop="30dp"
-        android:text="Firebase Search"
+        android:text="Please write the code of your Child in the search bar :"
         android:textColor="#555555"
         android:textSize="24sp" />
 
@@ -57,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/search_field"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="15dp">
 
     </android.support.v7.widget.RecyclerView>
 
