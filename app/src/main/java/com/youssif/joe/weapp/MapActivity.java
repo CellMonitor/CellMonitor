@@ -105,8 +105,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mPlacePicker , mDirection;
-    private TextView mNormal,mHybrid,mSatellite,mTerrain;
+    private ImageView mGps, mInfo, mPlacePicker, mDirection;
+    private TextView mNormal, mHybrid, mSatellite, mTerrain;
 
 
     //vars
@@ -396,7 +396,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
 
                                             String url = getRequestUrl(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude())
-                                                    , new LatLng(position.latitude,position.longitude));
+                                                    , new LatLng(position.latitude, position.longitude));
                                             TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
                                             taskRequestDirections.execute(url);
 
@@ -644,74 +644,125 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                 intent = MapActivity.this.getIntent();
                 if (intent.getExtras().getString("sectionKey") == null) {
-                    final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Friends")
-                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot friendsSnapShot : dataSnapshot.getChildren()) {
-                                String usersID = friendsSnapShot.getKey();
+                    if (intent.getExtras().getString("Child_ID") == null) {
+                        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Friends")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot friendsSnapShot : dataSnapshot.getChildren()) {
+                                    String usersID = friendsSnapShot.getKey();
 
 
-                                DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(usersID);
-                                usersRef.addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.hasChild("Location")) {
-                                            String location = dataSnapshot.child("Location").getValue().toString();
-                                            String displayName = dataSnapshot.child("name").getValue().toString();
-                                            String image = dataSnapshot.child("image").getValue().toString();
-                                            long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
-                                            String[] separated = location.split(",");
-                                            String latiPos = separated[0].trim();
-                                            String longiPos = separated[1].trim();
+                                    DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(usersID);
+                                    usersRef.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.hasChild("Location")) {
+                                                String location = dataSnapshot.child("Location").getValue().toString();
+                                                String displayName = dataSnapshot.child("name").getValue().toString();
+                                                String image = dataSnapshot.child("image").getValue().toString();
+                                                long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                                String[] separated = location.split(",");
+                                                String latiPos = separated[0].trim();
+                                                String longiPos = separated[1].trim();
 
-                                            double latitude = Double.parseDouble(latiPos);
-                                            double longitude = Double.parseDouble(longiPos);
+                                                double latitude = Double.parseDouble(latiPos);
+                                                double longitude = Double.parseDouble(longiPos);
 
-                                            LatLng customMarkerLocation = new LatLng(latitude, longitude);
-                                            mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
-                                                    icon(BitmapDescriptorFactory.fromBitmap(
-                                                            createCustomMarker(MapActivity.this, image, displayName,locationTime))));
+                                                LatLng customMarkerLocation = new LatLng(latitude, longitude);
+                                                mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                                        icon(BitmapDescriptorFactory.fromBitmap(
+                                                                createCustomMarker(MapActivity.this, image, displayName, locationTime))));
 
-                                            //LatLngBound will cover all your marker on Google Maps
+                                                //LatLngBound will cover all your marker on Google Maps
 
-                                            LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                                            builder.include(customMarkerLocation); //Taking Point A (First LatLng)
-                                            // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
-                                            //LatLngBounds bounds = builder.build();
-                                            //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
-                                            //mMap.moveCamera(cu);
-                                            //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                                builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                                // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                                //LatLngBounds bounds = builder.build();
+                                                //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                                //mMap.moveCamera(cu);
+                                                //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                            }
+
+
                                         }
 
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    }
+                                        }
+                                    });
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    } else {
+
+                        String child_id = intent.getExtras().getString("Child_ID");
+                        Log.d("child_id : ", child_id);
+                        DatabaseReference mChildRef = FirebaseDatabase.getInstance().getReference("Children").child(child_id);
+                        mChildRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                if (dataSnapshot.hasChild("Location")) {
+                                    String location = dataSnapshot.child("Location").getValue().toString();
+                                    String displayName = dataSnapshot.child("name").getValue().toString();
+                                    String image = dataSnapshot.child("image").getValue().toString();
+                                    long locationTime = (long) dataSnapshot.child("Location_Time").getValue();
+                                    Log.d("Joe123 :", String.valueOf(locationTime));
+                                    String[] separated = location.split(",");
+                                    String latiPos = separated[0].trim();
+                                    String longiPos = separated[1].trim();
+
+                                    double latitude = Double.parseDouble(latiPos);
+                                    double longitude = Double.parseDouble(longiPos);
+
+                                    LatLng customMarkerLocation = new LatLng(latitude, longitude);
+                                    mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
+                                            icon(BitmapDescriptorFactory.fromBitmap(
+                                                    createCustomMarker(MapActivity.this, image, displayName, locationTime))));
+
+
+                                    //LatLngBound will cover all your marker on Google Maps
+
+                                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                    builder.include(customMarkerLocation); //Taking Point A (First LatLng)
+                                    // builder.include(customMarkerLocationThree); //Taking Point B (Second LatLng)
+                                    //LatLngBounds bounds = builder.build();
+                                    //CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+                                    //mMap.moveCamera(cu);
+                                    //mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+                                }
 
 
                             }
 
-                        }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                            }
+                        });
 
-                        }
-                    });
-                } else if (intent.getExtras().getString("sectionKey")!=null){
+
+                    }
+                } else if (intent.getExtras().getString("sectionKey") != null) {
                     String sectionKey = intent.getExtras().getString("sectionKey");
-                    Log.d("Section_Key12 : " , sectionKey);
+                    Log.d("Section_Key12 : ", sectionKey);
                     DatabaseReference mSectionRef = FirebaseDatabase.getInstance().getReference("User_Section").child(sectionKey);
                     mSectionRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot membersSnapshot  : dataSnapshot.getChildren()) {
+                            for (DataSnapshot membersSnapshot : dataSnapshot.getChildren()) {
                                 String user_ID = membersSnapshot.getKey();
 
                                 DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users").child(user_ID);
@@ -734,7 +785,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                             LatLng customMarkerLocation = new LatLng(latitude, longitude);
                                             mMap.addMarker(new MarkerOptions().position(customMarkerLocation).
                                                     icon(BitmapDescriptorFactory.fromBitmap(
-                                                            createCustomMarker(MapActivity.this, image, displayName,locationTime))));
+                                                            createCustomMarker(MapActivity.this, image, displayName, locationTime))));
 
                                             //LatLngBound will cover all your marker on Google Maps
 
@@ -755,9 +806,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
                                     }
                                 });
-
-
-
 
 
                             }
@@ -891,7 +939,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
                                         myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
 
 
-
                                     }
                                 }
                             });
@@ -917,17 +964,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         } else {
 
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
 
         }
-
-
-
-
 
 
     }
@@ -939,20 +982,20 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
     }
 
-    public  Bitmap createCustomMarker(Context context, final String uri, String _name , long timestamp) {
+    public Bitmap createCustomMarker(Context context, final String uri, String _name, long timestamp) {
 
         View marker = ((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.custom_marker_layout, null);
 
         TextView mLastSeenText = marker.findViewById(R.id.lastSeenText);
         Log.d("LocationTime :", String.valueOf(timestamp));
         String lastSeenTime = getTimeAgo.getTimeAgo(timestamp, MapActivity.this);
-        if (lastSeenTime!=null) {
+        if (lastSeenTime != null) {
             Log.d("lastSeenTime : ", lastSeenTime);
             mLastSeenText.setText(lastSeenTime);
-        }else {
+        } else {
             mLastSeenText.setText("");
         }
-        final CircleImageView markerImage =  marker.findViewById(R.id.user_dp);
+        final CircleImageView markerImage = marker.findViewById(R.id.user_dp);
         Picasso.get().load(uri).placeholder(R.drawable.avatar).into(markerImage);
         TextView txt_name = marker.findViewById(R.id.name);
         txt_name.setText(_name);
@@ -969,8 +1012,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback,
 
         return bitmap;
     }
-
-
 
 
 }

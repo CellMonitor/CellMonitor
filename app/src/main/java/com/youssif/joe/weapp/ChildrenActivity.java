@@ -175,7 +175,7 @@ public class ChildrenActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
 
-                                CharSequence options[] = new CharSequence[]{"Track " + userName + " On Map!"};
+                                CharSequence options[] = new CharSequence[]{"Show " + userName + " On Map!"};
 
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(ChildrenActivity.this);
 
@@ -187,6 +187,11 @@ public class ChildrenActivity extends AppCompatActivity {
                                         //Click Event for each item.
                                         if (i == 0) {
 
+                                            Intent intent = new Intent(ChildrenActivity.this, MapActivity.class);
+                                            intent.putExtra("Child_ID", list_user_id);
+                                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                            finish();
 
 
                                         }
