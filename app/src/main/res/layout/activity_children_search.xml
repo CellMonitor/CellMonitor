@@ -17,10 +17,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
-        android:text="Please write the code of your Child in the search bar :"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="65dp"
+        android:text="Please Enter your Child code :"
         android:textColor="#555555"
         android:textSize="24sp" />
 
