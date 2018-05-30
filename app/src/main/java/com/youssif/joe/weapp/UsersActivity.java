@@ -71,10 +71,10 @@ public class UsersActivity extends AppCompatActivity {
         setSupportActionBar(mUsersToolbar);
 
 
-        mSearchField = findViewById(R.id.search_field);
-        ImageButton mSearchBtn = findViewById(R.id.search_btn);
+        mSearchField = findViewById(R.id.search_fieldd);
+        ImageButton mSearchBtn = findViewById(R.id.search_btnn);
 
-        mResultList = findViewById(R.id.result_list);
+        mResultList = findViewById(R.id.result_listt);
         mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
 

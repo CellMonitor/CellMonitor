@@ -17,13 +17,13 @@
         android:layout_below="@id/users_app_bar">
 
         <EditText
-            android:id="@+id/search_field"
+            android:id="@+id/search_fieldd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="20dp"
-            android:layout_toStartOf="@+id/search_btn"
+            android:layout_toStartOf="@+id/search_btnn"
             android:background="@drawable/search_layout"
             android:ems="10"
             android:hint="@string/search_here"
@@ -37,22 +37,22 @@
             tools:ignore="RtlHardcoded" />
 
         <ImageButton
-            android:id="@+id/search_btn"
+            android:id="@+id/search_btnn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/search_field"
+            android:layout_alignBottom="@+id/search_fieldd"
             android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/search_field"
+            android:layout_alignTop="@+id/search_fieldd"
             android:layout_marginRight="5dp"
             android:background="@android:color/background_light"
             android:src="@drawable/ic_search_btn"
             tools:ignore="ContentDescription,RtlHardcoded" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/result_list"
+            android:id="@+id/result_listt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/search_field"
+            android:layout_below="@id/search_fieldd"
             >
 
         </android.support.v7.widget.RecyclerView>
@@ -65,7 +65,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:text="@string/app_users"
-            android:layout_below="@id/result_list"
+            android:layout_below="@id/result_listt"
             />
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"

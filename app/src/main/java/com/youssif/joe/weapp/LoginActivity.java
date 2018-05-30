@@ -241,7 +241,7 @@ public class LoginActivity extends AppCompatActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Notice if you signed in as a child you can not logout from the account till you reinstall the application !")
-                .setCancelable(false)
+                .setCancelable(true)
                 .setPositiveButton("Ok, dismiss", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         //do things

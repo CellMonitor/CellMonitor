@@ -29,6 +29,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
+import java.util.UUID;
+
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -154,7 +156,7 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
-        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() == null)  {
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().getProviders().contains("phone") )  {
 
             mUserRef.child("online").setValue(true);
             DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -219,7 +221,7 @@ public class HomeActivity extends AppCompatActivity {
                         LOCATION_PERMISSION_REQUEST_CODE);
             }
 
-        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getProviderId().equals("Phone"))  {
+        } else if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getProviders().contains("phone"))  {
 
             Intent childIntent = new Intent(HomeActivity.this, ChildHomeActivity.class);
             childIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

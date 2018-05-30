@@ -67,7 +67,7 @@ public class ChildHomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_home);
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mChildRef = FirebaseDatabase.getInstance().getReference().child("Childs").child(mAuth.getCurrentUser().getUid());
+        mChildRef = FirebaseDatabase.getInstance().getReference().child("Children").child(mAuth.getCurrentUser().getUid());
         mChildRef.keepSynced(true);
 
         mDisplayImage = findViewById(R.id.profile_pic);
@@ -345,7 +345,7 @@ public class ChildHomeActivity extends AppCompatActivity {
                                         Double latitude = currentLocation.getLatitude();
                                         Double longitude = currentLocation.getLongitude();
                                         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Childs").child(mAuth.getCurrentUser().getUid());
+                                        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference("Children").child(mAuth.getCurrentUser().getUid());
                                         myRef.child("Location").setValue(latitude + "," + longitude);
                                         myRef.child("Location_Time").setValue(ServerValue.TIMESTAMP);
 

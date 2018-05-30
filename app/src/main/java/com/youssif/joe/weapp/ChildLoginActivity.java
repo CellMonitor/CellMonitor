@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import static android.widget.Toast.*;
@@ -89,17 +90,10 @@ public class ChildLoginActivity extends AppCompatActivity {
                             FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
                             String uid = current_user.getUid();
 
-                            myRef = FirebaseDatabase.getInstance().getReference().child("Childs").child(uid);
+                            myRef = FirebaseDatabase.getInstance().getReference().child("Children").child(uid);
 
-                            Random generator = new Random();
-                            StringBuilder randomStringBuilder = new StringBuilder();
-                            int randomLength = generator.nextInt(10);
-                            char tempChar;
-                            for (int i = 0; i < randomLength; i++){
-                                tempChar = (char) (generator.nextInt(96) + 32);
-                                randomStringBuilder.append(tempChar);
-                            }
-                            String childCode = randomStringBuilder.toString();
+
+                            String childCode = UUID.randomUUID().toString().substring(0,10);
                             String display_name = editTextName.getText().toString();
 
 
