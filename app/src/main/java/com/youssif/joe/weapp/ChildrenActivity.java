@@ -1,15 +1,19 @@
 package com.youssif.joe.weapp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -46,7 +50,7 @@ public class ChildrenActivity extends AppCompatActivity {
 
     private RecyclerView mChildrenList;
     private FirebaseAuth mAuth;
-    private DatabaseReference mFamilyDatabase , mChildrenDatabase;
+    private DatabaseReference mFamilyDatabase, mChildrenDatabase;
     private List<Address> addresses;
 
     @Override
@@ -77,21 +81,11 @@ public class ChildrenActivity extends AppCompatActivity {
         mChildrenList.setLayoutManager(new LinearLayoutManager(this));
 
 
-
-
-
-
-
-
-
-
-
-
-        FloatingActionButton fab =  findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChildrenActivity.this,ChildrenSearch.class);
+                Intent intent = new Intent(ChildrenActivity.this, ChildrenSearch.class);
                 startActivity(intent);
             }
         });
@@ -101,8 +95,6 @@ public class ChildrenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-
 
 
         FirebaseRecyclerOptions<Friends> options = new FirebaseRecyclerOptions.Builder<Friends>()
@@ -129,9 +121,10 @@ public class ChildrenActivity extends AppCompatActivity {
                 mChildrenDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d("DataSnapShot2 : " , dataSnapshot.toString());
+                        Log.d("DataSnapShot2 : ", dataSnapshot.toString());
 
                         final String userName = dataSnapshot.child("name").getValue().toString();
+                        final String userNumber = dataSnapshot.child("phone_number").getValue().toString();
                         String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
                         if (dataSnapshot.hasChild("Location")) {
                             String location = dataSnapshot.child("Location").getValue().toString();
@@ -163,7 +156,7 @@ public class ChildrenActivity extends AppCompatActivity {
                             //String postalCode = addresses.get(0).getPostalCode();
                             //String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
 
-                            String lastSeenTime = getTimeAgo(locationTime,ChildrenActivity.this);
+                            String lastSeenTime = getTimeAgo(locationTime, ChildrenActivity.this);
 
                             myChildrenViewHolder.setStatus(address + "\n" + lastSeenTime);
                         }
@@ -175,7 +168,7 @@ public class ChildrenActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view) {
 
-                                CharSequence options[] = new CharSequence[]{"Show " + userName + " On Map!"};
+                                CharSequence options[] = new CharSequence[]{"Show " + userName + " On Map!", "Call " + userName};
 
                                 final AlertDialog.Builder builder = new AlertDialog.Builder(ChildrenActivity.this);
 
@@ -192,6 +185,30 @@ public class ChildrenActivity extends AppCompatActivity {
                                             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                             startActivity(intent);
                                             finish();
+
+
+                                        }
+                                        if (i == 1) {
+
+
+                                            String[] permissions = {Manifest.permission.CALL_PHONE};
+
+                                            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + userNumber));
+                                            if (ActivityCompat.checkSelfPermission(ChildrenActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                                // TODO: Consider calling
+                                                //    ActivityCompat#requestPermissions
+                                                // here to request the missing permissions, and then overriding
+                                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                                //                                          int[] grantResults)
+                                                // to handle the case where the user grants the permission. See the documentation
+                                                // for ActivityCompat#requestPermissions for more details.
+                                                ActivityCompat.requestPermissions(ChildrenActivity.this,permissions,1234);
+
+                                                if (ActivityCompat.checkSelfPermission(ChildrenActivity.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                                                    return;
+                                                }
+                                            }
+                                            startActivity(intent);
 
 
                                         }
