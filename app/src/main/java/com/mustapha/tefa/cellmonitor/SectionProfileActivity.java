@@ -214,7 +214,7 @@ public class SectionProfileActivity extends AppCompatActivity {
                 galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
                 galleryIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivityForResult(Intent.createChooser(galleryIntent, "Select Image"), GALLERY_PICK);
-                finish();
+                //finish();
 
             }
         });
