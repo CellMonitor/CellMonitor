@@ -158,9 +158,7 @@ public class HomeActivity extends AppCompatActivity {
 
         } else if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().getProviders().contains("phone") )  {
 
-            mUserRef.child("online").setValue(true);
-            DatabaseReference mUserRef = FirebaseDatabase.getInstance().getReference("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-            mUserRef.child("online").setValue(true);
+
             Boolean mLocationPermissionGranted;
             final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
             final String COURSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
