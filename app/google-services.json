@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "928005593643-k2degnvkbl571bdsb9pmhdtle58n22m7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mustapha.tefa.cellmonitor",
+            "certificate_hash": "fd9cf5aa1f2eebc1a311d27b57ffda68d52e1183"
+          }
+        },
+        {
           "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
           "client_type": 3
         },
@@ -33,28 +41,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCmkpL1UMXlC3qeyuwkh03v0RgTJ0vWgyw"
-        },
-        {
-          "current_key": "AIzaSyDUTZSh2q0eYL5KsQF8M4V5KIUbswSxVas"
-        },
-        {
-          "current_key": "AIzaSyDDkoXIgAySkqsOKB4vvtf2oouMyJv9Hok"
-        },
-        {
-          "current_key": "AIzaSyAn03iSq-4Yex3KoV8xdAsQD_DU1rptOTs"
-        },
-        {
-          "current_key": "AIzaSyDicEmKJgcTdSGIl1WPFRutONEtSuLWwFs"
-        },
-        {
-          "current_key": "AIzaSyAErmDLLGqJSwyuu_mNeg5lVrCuGyr32iY"
-        },
-        {
-          "current_key": "AIzaSyBa6jXLG6K77z-lrI9URze3fNT447HGB1U"
-        },
-        {
-          "current_key": "AIzaSyCyHi4qyTbnAZkdIZbmvNHGyyzEFKMTuaI"
+          "current_key": "AIzaSyBw7MJEw3JbAsqlbepvR4E9PQ82rYw6TyE"
         }
       ],
       "services": {
@@ -84,6 +71,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "928005593643-la36b9jdjq5p8b50p25ci4d6e33lon4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.youssif.joe.weapp",
+            "certificate_hash": "c6f59bf9204068c8e0b5f2cdb05cf8d9dce98ead"
+          }
+        },
+        {
+          "client_id": "928005593643-ue1hmvbs39il3n02uqj8tsjihmt1r4jf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.youssif.joe.weapp",
+            "certificate_hash": "fd9cf5aa1f2eebc1a311d27b57ffda68d52e1183"
+          }
+        },
+        {
           "client_id": "928005593643-19ffgmln7rl0l7kh51e1r38d8bm8dor6.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -100,16 +103,16 @@
           }
         },
         {
-          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "928005593643-ue1hmvbs39il3n02uqj8tsjihmt1r4jf.apps.googleusercontent.com",
+          "client_id": "928005593643-cb07n45dqc6tu7s0va43d1m2mgmf71ed.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.youssif.joe.weapp",
-            "certificate_hash": "fd9cf5aa1f2eebc1a311d27b57ffda68d52e1183"
+            "certificate_hash": "b006afcb209469a34ef9868dc9df941273804acf"
           }
+        },
+        {
+          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
+          "client_type": 3
         },
         {
           "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
@@ -118,28 +121,7 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCmkpL1UMXlC3qeyuwkh03v0RgTJ0vWgyw"
-        },
-        {
-          "current_key": "AIzaSyDUTZSh2q0eYL5KsQF8M4V5KIUbswSxVas"
-        },
-        {
-          "current_key": "AIzaSyDDkoXIgAySkqsOKB4vvtf2oouMyJv9Hok"
-        },
-        {
-          "current_key": "AIzaSyAn03iSq-4Yex3KoV8xdAsQD_DU1rptOTs"
-        },
-        {
-          "current_key": "AIzaSyDicEmKJgcTdSGIl1WPFRutONEtSuLWwFs"
-        },
-        {
-          "current_key": "AIzaSyAErmDLLGqJSwyuu_mNeg5lVrCuGyr32iY"
-        },
-        {
-          "current_key": "AIzaSyBa6jXLG6K77z-lrI9URze3fNT447HGB1U"
-        },
-        {
-          "current_key": "AIzaSyCyHi4qyTbnAZkdIZbmvNHGyyzEFKMTuaI"
+          "current_key": "AIzaSyBw7MJEw3JbAsqlbepvR4E9PQ82rYw6TyE"
         }
       ],
       "services": {
