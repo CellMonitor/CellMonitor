@@ -309,6 +309,15 @@ public class ChildHomeActivity extends AppCompatActivity {
     }
 
 
+    public void logoutButton(View view){
+
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(ChildHomeActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
+
+    }
+
     private void generateLocation(){
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null && FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber() != null)  {

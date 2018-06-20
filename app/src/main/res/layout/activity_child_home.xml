@@ -57,28 +57,37 @@
         android:textSize="25sp"/>
 
 
-
     <Button
+        android:id="@+id/settings_img_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/displayName"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/settings_img_btn"
-        android:textSize="20sp"
-        android:text="@string/change_image"
-        android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="22dp"
         android:background="@drawable/buttonshape"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
         android:shadowColor="#A8A8A8"
         android:shadowDx="0"
         android:shadowDy="0"
         android:shadowRadius="5"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground"
         android:stateListAnimator="@animator/lift_on_touch"
+        android:text="@string/change_image"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         tools:ignore="UnusedAttribute" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="54dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/settings_img_btn"
+        android:layout_marginEnd="19dp"
+        android:onClick="logoutButton"
+        app:srcCompat="@drawable/ic_out" />
 
 
 </RelativeLayout>
