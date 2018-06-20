@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -111,30 +113,42 @@ public class ChildrenSearch extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(ChildrenSearch.this);
-                        builder.setMessage("Are you sure this is your Child ?")
+                        final EditText input = new EditText(ChildrenSearch.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT);
+                        input.setLayoutParams(lp);
+
+                        builder.setMessage("Are you sure this is your Child ? , if yes , Please fill the secure code.")
                                 .setCancelable(true)
+                                .setView(input)
                                 .setPositiveButton("Yes.", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         //do things
+                                        String secure_code = input.getText().toString();
+                                        if (!TextUtils.isEmpty(secure_code)) {
 
-                                        final String currentDate = DateFormat.getDateInstance().format(new Date());
+                                            mUserDatabase.child(child_id).child("Secure_Code").setValue(secure_code);
+                                            final String currentDate = DateFormat.getDateInstance().format(new Date());
 
-                                        Map friendsMap = new HashMap();
-                                        friendsMap.put("Family/" + current_user_id + "/" + child_id + "/date" , currentDate);
-                                        friendsMap.put("Family/" + child_id + "/" + current_user_id + "/date" , currentDate);
+                                            Map friendsMap = new HashMap();
+                                            friendsMap.put("Family/" + current_user_id + "/" + child_id + "/date", currentDate);
+                                            friendsMap.put("Family/" + child_id + "/" + current_user_id + "/date", currentDate);
 
 
-                                        allDatabase.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
-                                            @Override
-                                            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                                if (databaseError == null){
+                                            allDatabase.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
+                                                @Override
+                                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                                    if (databaseError == null) {
 
-                                                    Toast.makeText(ChildrenSearch.this, "Child Add Successfully !", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(ChildrenSearch.this, "Child Add Successfully !", Toast.LENGTH_SHORT).show();
+                                                    }
+
                                                 }
-
-                                            }
-                                        });
-
+                                            });
+                                        } else {
+                                            Toast.makeText(ChildrenSearch.this,"Please fill the secure code !",Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 });
                         AlertDialog alert = builder.create();

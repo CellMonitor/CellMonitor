@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +47,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import id.zelory.compressor.Compressor;
 
-public class ChildHomeActivity extends AppCompatActivity {
+public class ChildHomeActivity extends AppCompatActivity implements Dialog.DialogListener {
 
     private DatabaseReference mChildRef;
     private FirebaseUser mCurrentUser;
@@ -311,10 +313,34 @@ public class ChildHomeActivity extends AppCompatActivity {
 
     public void logoutButton(View view){
 
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(ChildHomeActivity.this,LoginActivity.class);
-        startActivity(intent);
-        finish();
+
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Children")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.hasChild("Secure_Code"))    {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(ChildHomeActivity.this,LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+
+                    Dialog dialog = new Dialog();
+                    dialog.show(getSupportFragmentManager(),"example dialog");
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
 
     }
 
@@ -386,4 +412,31 @@ public class ChildHomeActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void applyTexts(final String secure_code) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("Children")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("Secure_Code")){
+                    if (dataSnapshot.child("Secure_Code").getValue().equals(secure_code)){
+
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(ChildHomeActivity.this,LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+
+                    } else {
+                        Toast.makeText(ChildHomeActivity.this,"Secure code is incorrect !",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
