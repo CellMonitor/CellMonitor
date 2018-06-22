@@ -239,18 +239,8 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void childLoginClicked(View view){
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Notice if you signed in as a child you can not logout from the account till you reinstall the application !")
-                .setCancelable(true)
-                .setPositiveButton("Ok, dismiss", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        //do things
-                        Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
-                        startActivity(intent);
-                    }
-                });
-        AlertDialog alert = builder.create();
-        alert.show();
+        Intent intent = new Intent(LoginActivity.this,ChildLoginActivity.class);
+        startActivity(intent);
 
 
 
