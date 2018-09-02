@@ -8,77 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:928005593643:android:1162e2e93e4c5c94",
-        "android_client_info": {
-          "package_name": "com.mustapha.tefa.cellmonitor"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "928005593643-rotbgf760b1qsrrutu0t7kiumnoi49dq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mustapha.tefa.cellmonitor",
-            "certificate_hash": "ee09d6ec240afb2b83c25ebc1db1d77a469f5901"
-          }
-        },
-        {
-          "client_id": "928005593643-k2degnvkbl571bdsb9pmhdtle58n22m7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mustapha.tefa.cellmonitor",
-            "certificate_hash": "fd9cf5aa1f2eebc1a311d27b57ffda68d52e1183"
-          }
-        },
-        {
-          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA3whUZxjHoFarbu-wT4zLIWC3Z8dSAfGI"
-        },
-        {
-          "current_key": "AIzaSyBw7MJEw3JbAsqlbepvR4E9PQ82rYw6TyE"
-        },
-        {
-          "current_key": "AIzaSyBb3oj5SX38Uh3ZRi2JokryIMx9hDULw3M"
-        },
-        {
-          "current_key": "AIzaSyA1FtqV8F781TnD8oxa0KgKx2l7przxrYE"
-        },
-        {
-          "current_key": "AIzaSyC0IdqTKN5RbYEu8yrB7o-4uORzCdYnr_Q"
-        },
-        {
-          "current_key": "AIzaSyBqrYk5gQ882Q69DpBqoNXUvO2mMxVNJ7A"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:928005593643:android:d5d1249bd9628167",
         "android_client_info": {
           "package_name": "com.youssif.joe.weapp"
@@ -86,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "928005593643-la36b9jdjq5p8b50p25ci4d6e33lon4j.apps.googleusercontent.com",
+          "client_id": "928005593643-cb07n45dqc6tu7s0va43d1m2mgmf71ed.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.youssif.joe.weapp",
-            "certificate_hash": "c6f59bf9204068c8e0b5f2cdb05cf8d9dce98ead"
+            "certificate_hash": "b006afcb209469a34ef9868dc9df941273804acf"
           }
         },
         {
@@ -110,24 +39,20 @@
           }
         },
         {
-          "client_id": "928005593643-fn5tr7rbqs8i30f9qdipk9cg4itclloi.apps.googleusercontent.com",
+          "client_id": "928005593643-la36b9jdjq5p8b50p25ci4d6e33lon4j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.youssif.joe.weapp",
+            "certificate_hash": "c6f59bf9204068c8e0b5f2cdb05cf8d9dce98ead"
+          }
+        },
+        {
+          "client_id": "928005593643-ablbun680pvg2nnqmhl4sars2lj5g9f8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.youssif.joe.weapp",
             "certificate_hash": "ee09d6ec240afb2b83c25ebc1db1d77a469f5901"
           }
-        },
-        {
-          "client_id": "928005593643-cb07n45dqc6tu7s0va43d1m2mgmf71ed.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.youssif.joe.weapp",
-            "certificate_hash": "b006afcb209469a34ef9868dc9df941273804acf"
-          }
-        },
-        {
-          "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
-          "client_type": 3
         },
         {
           "client_id": "928005593643-bthkl3l554523gkjt3quisppgkeh8ic2.apps.googleusercontent.com",
@@ -148,10 +73,7 @@
           "current_key": "AIzaSyA1FtqV8F781TnD8oxa0KgKx2l7przxrYE"
         },
         {
-          "current_key": "AIzaSyC0IdqTKN5RbYEu8yrB7o-4uORzCdYnr_Q"
-        },
-        {
-          "current_key": "AIzaSyBqrYk5gQ882Q69DpBqoNXUvO2mMxVNJ7A"
+          "current_key": "AIzaSyB_0kLq1b44cqWBJaYNa3zzkq5m7NycWtI"
         }
       ],
       "services": {
